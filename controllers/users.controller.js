@@ -1,8 +1,9 @@
 const passport = require('passport');
 const JWT = require('jsonwebtoken');
+const Users = require('../models/mUsers');
+const nodeMailer = require('../middlewares/node-mailer');
 // eslint-disable-next-line no-unused-vars
 const passportConfig = require('../middlewares/passport');
-const Users = require('../models/mUsers');
 
 const CONSTANT = {
   SERVER_ERROR: 'Server Error',
@@ -20,6 +21,8 @@ const signToken = (userID) => {
   );
   return token;
 };
+
+const randOTP = () => Math.floor(Math.random() * 1000000);
 
 module.exports = {
   login: async (req, res, next) => {
@@ -54,26 +57,31 @@ module.exports = {
     })(req, res, next);
   },
   register: async (req, res) => {
+    const otp = randOTP();
     const { username, password } = req.body;
     const newUser = new Users({
       email: username,
       password,
-      role: 0,
-      otp: 1,
+      role: 1,
+      otp,
       activated: true,
     });
-    newUser.save(async (err) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json(CONSTANT.SERVER_ERROR);
-      } else {
-        res.status(201).json({
-          message: {
-            msgBody: 'An Account Has Been Created',
-            msgError: false,
-          },
-        });
-      }
-    });
+    const result = await nodeMailer.registerByMail(username, otp);
+    if (result.success) {
+      newUser.save(async (err) => {
+        if (err) {
+          res.status(500).json(CONSTANT.SERVER_ERROR);
+        } else {
+          res.status(201).json({
+            message: {
+              msgBody: 'An Account Has Been Created',
+              msgError: false,
+            },
+          });
+        }
+      });
+    } else {
+      res.status(500).json(CONSTANT.SERVER_ERROR);
+    }
   },
 };

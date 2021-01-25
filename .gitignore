@@ -105,8 +105,6 @@ dist
 
 .env
 
-/bin/
-
 /node_modules/
 
 /.idea/
