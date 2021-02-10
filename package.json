@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
-    "swagger-autogen": "node ./middlewares/swagger.js"
+    "start": "node ./middlewares/swagger.js && node ./bin/www",
+    "dev": "node ./middlewares/swagger.js && nodemon ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
