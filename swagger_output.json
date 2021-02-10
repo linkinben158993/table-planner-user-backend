@@ -4,11 +4,12 @@
     "title": "Table Planner User APIs",
     "description": "Currently Active APIs For Table Planner User Page"
   },
-  "host": "localhost:3000",
+  "host": "http://localhost:3000",
   "basePath": "/",
   "tags": [],
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "consumes": [],
   "produces": [],
