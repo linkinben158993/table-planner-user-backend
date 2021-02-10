@@ -5,6 +5,7 @@ const doc = {
     title: 'Table Planner User APIs',
     description: 'Currently Active APIs For Table Planner User Page',
   },
+  host: process.env.host || 'http://localhost:3000',
   schemes: ['http', 'https'],
 };
 
