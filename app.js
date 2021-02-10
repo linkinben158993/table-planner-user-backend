@@ -43,20 +43,20 @@ const server = http.createServer(app);
 // Swagger configuration
 const swaggerFile = require('./swagger_output.json');
 
-const swaggerOptions = {
-  swaggerDefinition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Table Planner User APIs',
-      description: 'Currently Active APIs For Table Planner User Page',
-      contact: {
-        name: 'An Hung Kha Tuan Kiet',
-      },
-    },
-    servers: [{ url: 'https://localhost:3000', description: 'Development Server' }],
-  },
-  apis: ['./routes/users.js'],
-};
+// const swaggerOptions = {
+//   swaggerDefinition: {
+//     openapi: '3.0.0',
+//     info: {
+//       title: 'Table Planner User APIs',
+//       description: 'Currently Active APIs For Table Planner User Page',
+//       contact: {
+//         name: 'An Hung Kha Tuan Kiet',
+//       },
+//     },
+//     servers: [{ url: 'https://localhost:3000', description: 'Development Server' }],
+//   },
+//   apis: ['./routes/users.js'],
+// };
 app.use('/apis-doc', swaggerUI.serve, swaggerUI.setup(swaggerFile));
 
 // Mongo configuration
