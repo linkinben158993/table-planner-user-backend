@@ -32,8 +32,8 @@ module.exports = {
       to: `${receiverEmail}`,
       subject: 'Activate Your Account Via Google',
       text:
-        `Provide Following OTP To Activate Your Account: ${otp} \n`
-        + 'Please do not provide this OTP for anyone else!',
+        `Provide Following OTP To Activate Your Account: ${otp} \n` +
+        'Please do not provide this OTP for anyone else!',
     };
     return new Promise((resolve) => {
       transporter.sendMail(mailOptions, (error, info) => {
@@ -55,8 +55,8 @@ module.exports = {
       to: `${receiverEmail}`,
       subject: 'Resend OTP',
       text:
-        `Provide Following OTP To ${reason} Your Account: ${otp} \n`
-        + 'If this is not you, ignore this email!',
+        `Provide Following OTP To ${reason} Your Account: ${otp} \n` +
+        'If this is not you, ignore this email!',
     };
     return new Promise((resolve) => {
       transporter.sendMail(mailOptions, (error, info) => {
@@ -78,8 +78,8 @@ module.exports = {
       to: `${receiverEmail}`,
       subject: 'Resend OTP For Resetting Password',
       text:
-        `Provide Following OTP To Activate Reset Your Password Your Password: ${otp} \n`
-        + 'If this is not you, ignore this email!',
+        `Provide Following OTP To Activate Reset Your Password Your Password: ${otp} \n` +
+        'If this is not you, ignore this email!',
     };
     return new Promise((resolve) => {
       transporter.sendMail(mailOptions, (error, info) => {

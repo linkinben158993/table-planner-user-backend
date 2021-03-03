@@ -17,7 +17,7 @@ const signToken = (userID) => {
     },
     process.env.secretOrKey,
     // 2 Weeks 14 * 1000 * 60 * 60 * 24 Test Refresh Token Below
-    { expiresIn: 14 * 1000 * 60 * 60 * 24 },
+    { expiresIn: 14 * 1000 * 60 * 60 * 24 }
   );
   return token;
 };
@@ -46,7 +46,9 @@ module.exports = {
   authenticated: async (req, res, next) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {
       if (err) {
-        res.status(500).json({ isAuthenticated: false, user: null, access_token: null });
+        res
+          .status(500)
+          .json({ isAuthenticated: false, user: null, access_token: null });
       } else {
         const { email, role, fullName } = callBack;
         res.status(200).json({
@@ -82,6 +84,7 @@ module.exports = {
         }
       });
     } else {
+      console.log('Error:', result);
       res.status(500).json(CONSTANT.SERVER_ERROR);
     }
   },
