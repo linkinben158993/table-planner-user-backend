@@ -51,6 +51,7 @@ UserSchema.pre('save', function (next) {
 
   bcrypt.hash(this.password, 10, (err, passwordHashed) => {
     if (err) {
+      console.log('Hashed Error!');
       return next(err);
     }
     this.password = passwordHashed;
@@ -67,7 +68,10 @@ UserSchema.methods.checkPassword = function (password, callBack) {
 
     if (!isMatch) {
       console.log('Password not match!');
-      return callBack(null, { message: { msgBody: 'Password not match!', msgError: true }, errCode: 'ERR_PASSWORD_NOT_MATCH' });
+      return callBack(null, {
+        message: { msgBody: 'Password not match!', msgError: true },
+        errCode: 'ERR_PASSWORD_NOT_MATCH',
+      });
     }
 
     console.log('Pass all cases!');
@@ -128,10 +132,7 @@ UserSchema.statics.createUserWithOTP = function (email, callBack) {
 
 UserSchema.statics.findUserByUserOrFullName = function (queryString, callBack) {
   return this.find({
-    $or: [
-      { email: { $regex: queryString, $options: 'i' } },
-      { fullName: { $regex: queryString, $options: 'i' } },
-    ],
+    $or: [{ email: { $regex: queryString, $options: 'i' } }, { fullName: { $regex: queryString, $options: 'i' } }],
   })
     .then((value) => {
       if (value.length === 0) {
