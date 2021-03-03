@@ -72,6 +72,7 @@ module.exports = {
         if (err) {
           res.status(500).json(CONSTANT.SERVER_ERROR);
         } else {
+          console.log('Register By Email Success!');
           res.status(201).json({
             message: {
               msgBody: 'An Account Has Been Created',
