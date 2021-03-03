@@ -3,19 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "precommit": "lint-staged",
     "start": "node ./middlewares/swagger.js && node ./bin/www",
     "dev": "node ./middlewares/swagger.js && nodemon ./bin/www"
   },
-  "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "eslint --cache --fix"
-    ]
-  },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "pretty-quick --staged"
     }
   },
   "dependencies": {
@@ -50,7 +43,7 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-security": "^1.4.0",
     "husky": "^5.1.3",
-    "lint-staged": "^10.5.4",
-    "prettier": "2.2.1"
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0"
   }
 }
