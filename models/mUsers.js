@@ -51,30 +51,28 @@ UserSchema.pre('save', function (next) {
 
   bcrypt.hash(this.password, 10, (err, passwordHashed) => {
     if (err) {
-      console.log('Hashed Error!');
       return next(err);
     }
     this.password = passwordHashed;
     return next();
   });
+
+  return next();
 });
 
 UserSchema.methods.checkPassword = function (password, callBack) {
   bcrypt.compare(password, this.password, (err, isMatch) => {
     if (err) {
-      console.log('Something happened!');
       return callBack(err);
     }
 
     if (!isMatch) {
-      console.log('Password not match!');
       return callBack(null, {
         message: { msgBody: 'Password not match!', msgError: true },
         errCode: 'ERR_PASSWORD_NOT_MATCH',
       });
     }
 
-    console.log('Pass all cases!');
     return callBack(null, this);
   });
 };
@@ -153,10 +151,7 @@ UserSchema.statics.setBlockStatus = function (userId, callBack) {
       value
         .save()
         .then((value1) => callBack(null, value1))
-        .catch((err) => {
-          console.log(err);
-          return callBack(err);
-        });
+        .catch((err) => callBack(err));
     })
     .catch((err) => callBack(err));
 };

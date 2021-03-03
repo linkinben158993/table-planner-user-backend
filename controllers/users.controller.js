@@ -34,9 +34,11 @@ module.exports = {
       } else {
         const token = signToken(callBack._id);
         const { email, role, fullName } = callBack;
-        res
-          .status(200)
-          .json({ isAuthenticated: true, user: { email, role, fullName }, access_token: token });
+        res.status(200).json({
+          isAuthenticated: true,
+          user: { email, role, fullName },
+          access_token: token,
+        });
       }
     })(req, res, next);
   },
@@ -71,7 +73,6 @@ module.exports = {
         if (err) {
           res.status(500).json(CONSTANT.SERVER_ERROR);
         } else {
-          console.log('Register By Email Success!');
           res.status(201).json({
             message: {
               msgBody: 'An Account Has Been Created',

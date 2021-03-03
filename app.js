@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
-const swaggerJsDoc = require('swagger-jsdoc');
+// const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 
 const app = express();
@@ -41,6 +41,7 @@ const http = require('http');
 const server = http.createServer(app);
 
 // Swagger configuration
+// eslint-disable-next-line node/no-unpublished-require
 const swaggerFile = require('./swagger_output.json');
 
 // const swaggerOptions = {
@@ -60,18 +61,15 @@ const swaggerFile = require('./swagger_output.json');
 app.use('/apis-doc', swaggerUI.serve, swaggerUI.setup(swaggerFile));
 
 // Mongo configuration
-mongoose.connect(process.env.URI || 'localhost:27017', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log('Mongo is connecting');
-}).catch((err) => {
-  console.log(err);
-});
+mongoose
+  .connect(process.env.URI || 'localhost:27017', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {})
+  .catch(() => {});
 
-mongoose.connection.on('connected', () => {
-  console.log('Mongo is successfully connected');
-});
+mongoose.connection.on('connected', () => {});
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -95,7 +93,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
