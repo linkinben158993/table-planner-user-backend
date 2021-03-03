@@ -34,14 +34,10 @@
     }
   },
   "lint-staged": {
-    "concurrent": false,
-    "linters": {
-      "src/**/*.{js,jsx}": [
-        "prettier --write",
-        "eslint --fix",
-        "git add"
-      ]
-    }
+    "**/*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "devDependencies": {
     "eslint": "^7.18.0",
