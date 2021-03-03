@@ -8,11 +8,11 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && echo 'Hello World'"
     }
   },
   "lint-staged": {
-    "**/*.js": [
+    "*.{js}": [
       "eslint --fix",
       "git add"
     ]
