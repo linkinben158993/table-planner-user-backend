@@ -6,16 +6,18 @@
     "start": "node ./middlewares/swagger.js && node ./bin/www",
     "dev": "node ./middlewares/swagger.js && nodemon ./bin/www"
   },
+  "lint-staged": {
+    "src/**/*.{js,jsx}": [
+      "eslint . --fix", "git add"
+    ],
+    "src/**/*.scss": [
+      "stylelint --syntax scss --fix", "git add"
+    ]
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  },
-  "lint-staged": {
-    "**/*.js": [
-      "eslint --fix",
-      "git add"
-    ]
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
