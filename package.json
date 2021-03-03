@@ -34,11 +34,14 @@
     }
   },
   "lint-staged": {
-    "**/*.js": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
+    "concurrent": false,
+    "linters": {
+      "src/**/*.{js,jsx}": [
+        "prettier --write",
+        "eslint --fix",
+        "git add"
+      ]
+    },
   "devDependencies": {
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
