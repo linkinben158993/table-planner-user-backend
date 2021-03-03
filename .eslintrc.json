@@ -299,13 +299,6 @@
         "node/prefer-global/url": ["error", "always"],
         "node/prefer-promises/dns": "error",
         "node/prefer-promises/fs": "error",
-        "no-underscore-dangle": "off",
-        "prettier/prettier": [
-            "warn",
-            {
-                "printWidth": 100,
-                "singleQuote": true
-            }
-        ]
+        "no-underscore-dangle": "off"
     }
 }
