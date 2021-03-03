@@ -47,12 +47,11 @@ module.exports = {
         res.status(500).json({ isAuthenticated: false, user: null, access_token: null });
       } else {
         const { email, role, fullName } = callBack;
-        res.status(200)
-          .json({
-            isAuthenticated: true,
-            user: { email, role, fullName },
-            access_token: req.headers.access_token,
-          });
+        res.status(200).json({
+          isAuthenticated: true,
+          user: { email, role, fullName },
+          access_token: req.headers.access_token,
+        });
       }
     })(req, res, next);
   },
