@@ -51,7 +51,7 @@
     }
   },
   "lint-staged": {
-    "./**/*.{js,jsx}": [
+    "./**/*.{js}": [
       "pretty-quick --staged",
       "prettier --single-quote --write",
       "eslint --fix",

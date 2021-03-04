@@ -69,7 +69,9 @@ mongoose
   .then(() => {
     console.log('Something!');
   })
-  .catch(() => {});
+  .catch(() => {
+    console.log('Something happened!');
+  });
 
 mongoose.connection.on('connected', () => {});
 
