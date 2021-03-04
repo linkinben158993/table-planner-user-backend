@@ -24,14 +24,14 @@ const UserSchema = new mongoose.Schema({
   avatar: {
     type: String,
     require: false,
-    default: 'https://toppng.com/uploads/preview/hackerman-11556286446gid8lfj2ce.png',
+    default:
+      'https://toppng.com/uploads/preview/hackerman-11556286446gid8lfj2ce.png',
   },
   role: {
     type: Number,
     // -1: guest, 0: user, 1: admin
     enum: [-1, 0, 1],
   },
-  // matches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Match' }],
   otp: {
     type: Number,
   },
@@ -77,7 +77,12 @@ UserSchema.methods.checkPassword = function (password, callBack) {
   });
 };
 
-UserSchema.methods.changePassword = function (user, oldPassword, newPassword, callBack) {
+UserSchema.methods.changePassword = function (
+  user,
+  oldPassword,
+  newPassword,
+  callBack
+) {
   if (oldPassword === newPassword) {
     return callBack(null, {
       message: {
@@ -130,7 +135,10 @@ UserSchema.statics.createUserWithOTP = function (email, callBack) {
 
 UserSchema.statics.findUserByUserOrFullName = function (queryString, callBack) {
   return this.find({
-    $or: [{ email: { $regex: queryString, $options: 'i' } }, { fullName: { $regex: queryString, $options: 'i' } }],
+    $or: [
+      { email: { $regex: queryString, $options: 'i' } },
+      { fullName: { $regex: queryString, $options: 'i' } },
+    ],
   })
     .then((value) => {
       if (value.length === 0) {
