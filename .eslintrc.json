@@ -1,18 +1,18 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "node": true
   },
   "extends": [
     "airbnb-base",
     "plugin:node/recommended",
     "plugin:security/recommended"
   ],
-  "parserOptions": {
-    "ecmaVersion": 12,
-    "sourceType": "module"
-  },
   "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 12
+  },
   "plugins": ["prettier"],
   "rules": {
     "no-console": 2,
