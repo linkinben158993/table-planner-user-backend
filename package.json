@@ -52,10 +52,10 @@
   },
   "lint-staged": {
     ".**/*.{controller.js,js}": [
+      "git add",
       "pretty-quick --staged",
       "prettier --single-quote --write",
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ]
   }
 }
