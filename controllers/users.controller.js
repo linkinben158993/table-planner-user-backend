@@ -73,6 +73,7 @@ module.exports = {
     if (result.success) {
       newUser.save(async (err) => {
         if (err) {
+          console.log(err);
           res.status(500).json(CONSTANT.SERVER_ERROR);
         } else {
           res.status(201).json({
