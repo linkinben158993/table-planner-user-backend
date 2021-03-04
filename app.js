@@ -21,7 +21,7 @@ app.use(
     reSave: true,
     saveUninitialized: true,
     cookie: { secure: false },
-  })
+  }),
 );
 
 // For later research
@@ -32,7 +32,7 @@ app.enable('trust proxy');
 app.use(
   cors({
     credentials: true,
-  })
+  }),
 );
 
 // For socket if use
@@ -66,9 +66,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => {
-    console.log('Something happened!');
-  })
+  .then(() => {})
   .catch(() => {});
 
 mongoose.connection.on('connected', () => {});

@@ -26,6 +26,7 @@
     "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.2.0",
@@ -33,11 +34,11 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-security": "^1.4.0",
-    "prettier": "^2.2.1",
-    "pretty-quick": "^3.1.0",
     "husky": "^4.3.0",
+    "jest": "^26.6.0",
     "lint-staged": "^10.4.0",
-    "jest": "^26.6.0"
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0"
   },
   "scripts": {
     "start": "node ./middlewares/swagger.js && node ./bin/www",
@@ -50,9 +51,10 @@
     }
   },
   "lint-staged": {
-    "*": [
+    "*.js": [
       "pretty-quick --staged",
       "prettier --single-quote --write",
+      "eslint --fix",
       "git add"
     ]
   }
