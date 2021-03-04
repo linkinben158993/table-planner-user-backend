@@ -66,12 +66,8 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => {
-    console.log('Something!');
-  })
-  .catch(() => {
-    console.log('Something happened!');
-  });
+  .then(() => {})
+  .catch(() => {});
 
 mongoose.connection.on('connected', () => {});
 

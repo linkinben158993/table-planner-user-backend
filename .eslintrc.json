@@ -25,7 +25,6 @@
     "node/prefer-promises/dns": "error",
     "node/prefer-promises/fs": "error",
     "no-underscore-dangle": "off",
-    "semi": ["error", "never"],
     "prettier/prettier": [
       "warn",
       {

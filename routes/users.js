@@ -4,11 +4,12 @@ const userCtrl = require('../controllers/users.controller');
 const router = express.Router();
 
 /* GET users listing. */
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
   res.send('respond with a resource');
 });
 
-router.post('/login',
+router.post(
+  '/login',
   /* #swagger.parameters['loginUser'] = {
        in: 'body',
        description: 'Info for logging in.',
@@ -18,9 +19,11 @@ router.post('/login',
         $password: "123456"
        }
 } */
-  userCtrl.login);
+  userCtrl.login,
+);
 
-router.post('/register',
+router.post(
+  '/register',
   /* #swagger.parameters['newUser'] = {
      in: 'body',
      description: 'Info for registering new account.',
@@ -30,7 +33,8 @@ router.post('/register',
       $password: "123456"
      }
 } */
-  userCtrl.register);
+  userCtrl.register,
+);
 
 router.get('/authenticated', userCtrl.authenticated);
 

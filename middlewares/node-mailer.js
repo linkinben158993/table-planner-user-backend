@@ -26,23 +26,18 @@ const transporter = nodeMailer.createTransport({
 
 module.exports = {
   registerByMail: (receiverEmail, otp) => {
-    console.log('Sending mail!');
+    // console.log('Sending mail!');
     const mailOptions = {
       from: `"My Table Planner" ${email}`,
       to: `${receiverEmail}`,
       subject: 'Activate Your Account Via Google',
-      text:
-        `Provide Following OTP To Activate Your Account: ${otp} \n` +
-        'Please do not provide this OTP for anyone else!',
+      text: `Provide Following OTP To Activate Your Account: ${otp} \n Please do not provide this OTP for anyone else!`,
     };
     return new Promise((resolve) => {
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.log('Error Sending Mail!');
-          console.log(error);
           resolve({ success: false, error });
         } else {
-          console.log('Mail Should Be Sent');
           resolve({ success: true, info });
         }
       });
@@ -50,22 +45,17 @@ module.exports = {
   },
 
   resendOTP: (receiverEmail, otp, reason) => {
-    console.log('Sending mail!');
     const mailOptions = {
       from: `"My Table Planner" ${email}`,
       to: `${receiverEmail}`,
       subject: 'Resend OTP',
-      text:
-        `Provide Following OTP To ${reason} Your Account: ${otp} \n` +
-        'If this is not you, ignore this email!',
+      text: `Provide Following OTP To ${reason} Your Account: ${otp} \n  If this is not you, ignore this email!`,
     };
     return new Promise((resolve) => {
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.log('Error Sending Mail!');
           resolve({ success: false, error });
         } else {
-          console.log('Mail Should Be Sent');
           resolve({ success: true, info });
         }
       });
@@ -73,22 +63,17 @@ module.exports = {
   },
 
   resetPassword: (receiverEmail, otp) => {
-    console.log('Sending mail!');
     const mailOptions = {
       from: `"My Table Planner" ${email}`,
       to: `${receiverEmail}`,
       subject: 'Resend OTP For Resetting Password',
-      text:
-        `Provide Following OTP To Activate Reset Your Password Your Password: ${otp} \n` +
-        'If this is not you, ignore this email!',
+      text: `Provide Following OTP To Activate Reset Your Password Your Password: ${otp} \n If this is not you, ignore this email!`,
     };
     return new Promise((resolve) => {
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.log('Error Sending Mail!');
           resolve({ success: false, error });
         } else {
-          console.log('Mail Should Be Sent');
           resolve({ success: true, info });
         }
       });
