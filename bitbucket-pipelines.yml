@@ -41,13 +41,6 @@ pipelines:
             - node
           script:
             - echo "Your deployment to production script goes here..."
-            - heroku config:add secretOrKey=HungKhaAnKietTuan
-            - heroku config:add nodeMailerEmail=peterpans2025@gmail.com
-            - heroku config:add nodeMailerPassword=anhchien0123
-            - heroku config:add nodeMailerClId=968409339132-737scfdqpvfb4od8to8s83gbiegfn03u.apps.googleusercontent.com
-            - heroku config:add nodeMailerSecret=Iponu5pDR1ds4rbhe-bl2dod
-            - heroku config:add nodeMailerRefreshToken=1//04Ww-5zvu-BE1CgYIARAAGAQSNwF-L9Ir2YOkn1AcO3Yx9LkZsXj7Og9LyS-AHc1PuPUob5Z5lBeeMu4E70Qj3jHx0vg31jTnU4M
-            - heroku config:addnodeMailerAccessToken=ya29.a0AfH6SMDNZG_wXeFM4qH7fXexHcleMHtunrvHm6LGZnYe9evM9tgWSHkBmoLgfzpLf_zaNV41Zsn19epshxb2_53194rpDMDGaalOkvy-MKhzBL3ZRcVr4zw5HDxRcNt4ql48AgyA8dYIejfVq7a3focGtZvrwMwt0ujm_p9fK34
             - pipe: atlassian/heroku-deploy:1.2.1
               variables:
                 HEROKU_API_KEY: '60143d53-4116-4e21-a1c6-398aefa89225'
