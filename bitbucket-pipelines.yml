@@ -29,7 +29,7 @@ pipelines:
     - step:
         name: Create Artifact
         script:
-          - tar czfv Table_Planner_Artifact.tgz dist/
+          - tar czfv Table_Planner_Artifact.tgz table-planner-user-backend/
         artifacts:
           - Table_Planner_Artifact.tgz
     - step:
