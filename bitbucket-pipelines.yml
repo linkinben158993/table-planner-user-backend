@@ -27,6 +27,12 @@ pipelines:
         script:
           - echo "Your deployment to staging script goes here..."
     - step:
+        name: Create Artifact
+        script:
+          - tar czfv Table_Planner_Artifact.tgz dist/
+        artifacts:
+          - Table_Planner_Artifact.tgz
+    - step:
         name: 'Deployment to Production'
         deployment: production
         trigger: 'manual'
@@ -36,3 +42,4 @@ pipelines:
             variables:
               HEROKU_API_KEY: '60143d53-4116-4e21-a1c6-398aefa89225'
               HEROKU_APP_NAME: 'table-planner-user'
+              ZIP_FILE: 'Table_Planner_Artifact.tgz'
