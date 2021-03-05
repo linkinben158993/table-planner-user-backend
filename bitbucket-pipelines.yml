@@ -24,12 +24,19 @@ pipelines:
   branches:
     main:
       - step:
-          name: 'Deployment to Staging'
-          deployment: staging
+          name: 'Build and Test'
           script:
-            - echo "Your deployment to staging script goes here..."
+            - echo "Your build and test goes here..."
       - step:
-          name: Create Artifact
+          name: 'Lint'
+          script:
+            - echo "Your linting goes here..."
+      - step:
+          name: 'Security scan'
+          script:
+            - echo "Your security scan goes here..."
+      - step:
+          name: 'Create Artifact'
           script:
             - git archive --format=tar.gz main -o table_planner_artifact.tar.gz
           artifacts:
