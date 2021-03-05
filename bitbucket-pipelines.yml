@@ -29,17 +29,19 @@ pipelines:
     - step:
         name: Create Artifact
         script:
-          - tar czfv Table_Planner_Artifact.tgz table-planner-user-backend/
+          - git archive --format=tar.gz master -o table_planner_artifact.tar.gz
         artifacts:
-          - Table_Planner_Artifact.tgz
+          - table_planner_artifact.tar.gz
     - step:
         name: 'Deployment to Production'
         deployment: production
-        trigger: 'manual'
+        caches:
+          - node
         script:
           - echo "Your deployment to production script goes here..."
           - pipe: atlassian/heroku-deploy:1.2.1
             variables:
               HEROKU_API_KEY: '60143d53-4116-4e21-a1c6-398aefa89225'
-              HEROKU_APP_NAME: 'table-planner-user'
-              ZIP_FILE: 'Table_Planner_Artifact.tgz'
+              HEROKU_APP_NAME: 'table-planner-user-bitbucket'
+              ZIP_FILE: 'table_planner_artifact.tar.gz'
+              WAIT: 'true'
