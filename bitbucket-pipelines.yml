@@ -21,8 +21,8 @@ pipelines:
             - echo "Your security scan goes here..."
 
     # The following deployment steps will be executed for each pipeline run. To configure your steps and conditionally deploy see https://support.atlassian.com/bitbucket-cloud/docs/configure-bitbucket-pipelinesyml/
-    branches:
-      main:
+  branches:
+    main:
       - step:
           name: 'Deployment to Staging'
           deployment: staging
