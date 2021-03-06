@@ -34,7 +34,6 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-security": "^1.4.0",
     "husky": "^4.3.0",
-    "jest": "^26.6.0",
     "lint-staged": "^10.4.0",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0"
@@ -53,7 +52,8 @@
     "*.js": [
       "pretty-quick --staged",
       "prettier --single-quote --write",
-      "eslint . --fix"
+      "eslint . --fix",
+      "npm run test"
     ]
   }
 }
