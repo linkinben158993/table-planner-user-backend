@@ -26,6 +26,7 @@
     "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
+    "chai": "^4.3.3",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.2.0",
@@ -35,13 +36,14 @@
     "eslint-plugin-security": "^1.4.0",
     "husky": "^4.3.0",
     "lint-staged": "^10.4.0",
+    "mocha": "^8.3.0",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0"
   },
   "scripts": {
     "start": "node ./middlewares/swagger.js && node ./bin/www",
     "dev": "node ./middlewares/swagger.js && nodemon ./bin/www",
-    "test": "echo \"Error: no test specified\" && Exit 1"
+    "test": "echo \"Error: no test specified\" && mocha"
   },
   "husky": {
     "hooks": {
@@ -53,6 +55,9 @@
       "pretty-quick --staged",
       "prettier --single-quote --write",
       "eslint . --fix",
+      "npm run test"
+    ],
+    "*": [
       "npm run test"
     ]
   }

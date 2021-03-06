@@ -13,6 +13,7 @@
     "ecmaVersion": 12
   },
   "plugins": ["prettier"],
+  "ignorePatterns": ["test.js", "test.module.js"],
   "rules": {
     "no-console": 2,
     "node/exports-style": ["error", "module.exports"],
