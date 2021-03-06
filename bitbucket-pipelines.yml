@@ -52,13 +52,5 @@ pipelines:
               variables:
                 HEROKU_API_KEY: '60143d53-4116-4e21-a1c6-398aefa89225'
                 HEROKU_APP_NAME: 'table-planner-user-bitbucket'
-                URI: 'mongodb+srv://admin:admin123456@myfirstcluster.p2ff0.mongodb.net/TablePlanner?retryWrites=true&w=majority'
-                secretOrKey: 'HungKhaAnKietTuan'
-                nodeMailerEmail: 'peterpans2025@gmail.com'
-                nodeMailerPassword: 'anhchien0123'
-                nodeMailerClId: '968409339132-737scfdqpvfb4od8to8s83gbiegfn03u.apps.googleusercontent.com'
-                nodeMailerSecret: 'Iponu5pDR1ds4rbhe-bl2dod'
-                nodeMailerRefreshToken: '1//04Ww-5zvu-BE1CgYIARAAGAQSNwF-L9Ir2YOkn1AcO3Yx9LkZsXj7Og9LyS-AHc1PuPUob5Z5lBeeMu4E70Qj3jHx0vg31jTnU4M'
-                nodeMailerAccessToken: 'ya29.a0AfH6SMDNZG_wXeFM4qH7fXexHcleMHtunrvHm6LGZnYe9evM9tgWSHkBmoLgfzpLf_zaNV41Zsn19epshxb2_53194rpDMDGaalOkvy-MKhzBL3ZRcVr4zw5HDxRcNt4ql48AgyA8dYIejfVq7a3focGtZvrwMwt0ujm_p9fK34'
                 ZIP_FILE: 'table_planner_artifact.tar.gz'
                 WAIT: 'true'
