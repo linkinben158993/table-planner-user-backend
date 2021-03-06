@@ -28,10 +28,6 @@ pipelines:
           script:
             - echo "Your build and test goes here..."
       - step:
-          name: 'Security scan'
-          script:
-            - echo "Your security scan goes here..."
-      - step:
           name: 'Create Artifact'
           script:
             - git archive --format=tar.gz main -o table_planner_artifact.tar.gz
