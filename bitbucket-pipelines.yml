@@ -28,13 +28,6 @@ pipelines:
           script:
             - echo "Your build and test goes here..."
       - step:
-          name: 'Lint'
-          script:
-            - echo "Your linting goes here..."
-            - pretty-quick --staged
-            - prettier --single-quote --write
-            - eslint . --fix
-      - step:
           name: 'Security scan'
           script:
             - echo "Your security scan goes here..."
