@@ -1,14 +1,17 @@
 const chai = require('chai');
 const request = require('chai-http');
-const { server } = require('../app');
 
 chai.should();
 chai.use(request);
 
+const server = require('../app').server;
+chai.request.agent(server);
+
 describe('Test Users API', () => {
   // Test users route
-  describe('POST /users/login: Case Correct Username and Password', () => {
-    it('Should return user info, isAuthenticate and access_token', (done) => {
+  describe('POST /users/login:', () => {
+    // Best Case
+    it('Case Correct Username and Password', (done) => {
       const genericUser = {
         username: 'an@gmail.com',
         password: '123456',
@@ -32,7 +35,33 @@ describe('Test Users API', () => {
           done();
         })
         .catch(done);
-    }).timeout(4000);
+    });
     // Should have timeout because takes time to connect to cloud database!
+
+    // Case wrong username or password
+    it('Case Wrong Username or Password', (done) => {
+      const genericUser = {
+        username: 'an@gmail.com',
+        password: '12345',
+      };
+      chai
+        .request(server)
+        .post('/users/login')
+        .send(genericUser)
+        .then((response) => {
+          response.should.have.status(400);
+          console.log('Pass status code!');
+          response.body.should.be.a('object');
+          console.log('Pass body type!');
+          response.body.should.have
+            .property('msgBody')
+            .eq('Password not match!');
+          console.log('Pass msgBody!');
+          response.body.should.have.property('msgError').eq(true);
+          console.log('Pass msgError!');
+          done();
+        })
+        .catch(done);
+    });
   });
 });

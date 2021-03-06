@@ -66,10 +66,16 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => {})
+  .then(() => {
+    // Test hook before test case if possible
+    app.emit('app_started');
+  })
   .catch(() => {});
 
-mongoose.connection.on('connected', () => {});
+mongoose.connection.on('connected', () => {
+  // Test hook before test case if possible
+  app.emit('app_started');
+});
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -103,4 +109,7 @@ app.use((err, req, res) => {
   res.render('error');
 });
 
-module.exports = { app, server };
+module.exports = {
+  app,
+  server,
+};
