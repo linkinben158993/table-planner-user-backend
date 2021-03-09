@@ -8,7 +8,8 @@ chai.use(request);
 describe('POST /users/login:', () => {
   let server;
 
-  beforeEach(async () => {
+  before(async () => {
+    console.log('Initialize Server Instance!');
     server = require('../../app').server;
     await chai.request.agent(server);
   });
