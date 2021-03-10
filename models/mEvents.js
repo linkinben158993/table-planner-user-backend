@@ -53,7 +53,8 @@ const EventSchema = new mongoose.Schema({
 });
 
 // Add new event and which user is its host
-EventSchema.statics.addEvent = function (userId, eventName, eventDescription, tableType, callBack) {
+EventSchema.statics.addEvent = function (userId, event, callBack) {
+  const { eventName, eventDescription, tableType } = event;
   const newEvent = new this({
     name: eventName,
     description: eventDescription,
@@ -97,14 +98,15 @@ EventSchema.statics.addEvent = function (userId, eventName, eventDescription, ta
     .catch((err) => callBack(null, err));
 };
 
-EventSchema.statics.editEvent = function (eventId, eventNewName, eventNewDescription, callBack) {
+EventSchema.statics.editEvent = function (host, event, callBack) {
+  const { eventId, eventName, eventDescription } = event;
   this.findOne({ _id: eventId })
     .then((document) => {
       if (!document) {
         callBack(
           {
             message: {
-              msgBody: 'No document found!',
+              msgBody: 'No event found!',
               msgError: true,
             },
           },
@@ -112,8 +114,8 @@ EventSchema.statics.editEvent = function (eventId, eventNewName, eventNewDescrip
         );
       } else {
         document.set({
-          name: eventNewName,
-          description: eventNewDescription,
+          name: eventName,
+          description: eventDescription,
         });
         document
           .save()
