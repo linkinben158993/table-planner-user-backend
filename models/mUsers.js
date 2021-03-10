@@ -41,6 +41,12 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  myEvents: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Events',
+    },
+  ],
 });
 
 UserSchema.pre('save', function (next) {
@@ -67,7 +73,10 @@ UserSchema.methods.checkPassword = function (password, callBack) {
 
     if (!isMatch) {
       return callBack(null, {
-        message: { msgBody: 'Password not match!', msgError: true },
+        message: {
+          msgBody: 'Password not match!',
+          msgError: true,
+        },
         errCode: 'ERR_PASSWORD_NOT_MATCH',
       });
     }
@@ -129,7 +138,20 @@ UserSchema.statics.createUserWithOTP = function (email, callBack) {
 
 UserSchema.statics.findUserByUserOrFullName = function (queryString, callBack) {
   return this.find({
-    $or: [{ email: { $regex: queryString, $options: 'i' } }, { fullName: { $regex: queryString, $options: 'i' } }],
+    $or: [
+      {
+        email: {
+          $regex: queryString,
+          $options: 'i',
+        },
+      },
+      {
+        fullName: {
+          $regex: queryString,
+          $options: 'i',
+        },
+      },
+    ],
   })
     .then((value) => {
       if (value.length === 0) {

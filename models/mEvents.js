@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Users = require('./mUsers');
 
 const EventSchema = new mongoose.Schema({
   name: {
@@ -21,8 +22,7 @@ const EventSchema = new mongoose.Schema({
     elements: [
       {
         id: {
-          type: String,
-          unique: true,
+          type: mongoose.Types.ObjectId,
         },
         type: {
           type: String,
@@ -40,11 +40,90 @@ const EventSchema = new mongoose.Schema({
             type: String,
             required: true,
           },
-          guests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Guest' }],
+          guests: [
+            {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: 'Guest',
+            },
+          ],
         },
       },
     ],
   },
 });
+
+// Add new event and which user is its host
+EventSchema.statics.addEvent = function (userId, eventName, eventDescription, tableType, callBack) {
+  const newEvent = new this({
+    name: eventName,
+    description: eventDescription,
+    startTime: Date.now(),
+    tables: {
+      tableType,
+      elements: [],
+    },
+  });
+  newEvent
+    .save()
+    .then(() => {
+      Users.findOne({ _id: userId })
+        .then((document) => {
+          if (!document) {
+            callBack(
+              {
+                message: {
+                  msgBody: 'No document found!',
+                  msgError: true,
+                },
+              },
+              null,
+            );
+          } else {
+            document.myEvents.push(newEvent);
+            document
+              .save()
+              .then(() => {
+                callBack(null, true);
+              })
+              .catch((err) => {
+                callBack(null, err);
+              });
+          }
+        })
+        .catch((err) => {
+          callBack(null, err);
+        });
+    })
+    .catch((err) => callBack(null, err));
+};
+
+EventSchema.statics.editEvent = function (eventId, eventNewName, eventNewDescription, callBack) {
+  this.findOne({ _id: eventId })
+    .then((document) => {
+      if (!document) {
+        callBack(
+          {
+            message: {
+              msgBody: 'No document found!',
+              msgError: true,
+            },
+          },
+          null,
+        );
+      } else {
+        document.set({
+          name: eventNewName,
+          description: eventNewDescription,
+        });
+        document
+          .save()
+          .then((response) => {
+            callBack(null, response);
+          })
+          .catch((err) => callBack(null, err));
+      }
+    })
+    .catch((err) => callBack(null, err));
+};
 
 module.exports = mongoose.model('Event', EventSchema);
