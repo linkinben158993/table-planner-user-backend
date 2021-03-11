@@ -16,6 +16,9 @@
   "ignorePatterns": ["test.js", "test.module.js", "*.test.js"],
   "rules": {
     "no-console": 2,
+    "linebreak-style": 0,
+    "global-require": 0,
+    "eslint linebreak-style": [0, "error", "windows"],
     "node/exports-style": ["error", "module.exports"],
     "node/file-extension-in-import": ["error", "always"],
     "node/prefer-global/buffer": ["error", "always"],
