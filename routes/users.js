@@ -36,6 +36,34 @@ router.post(
   userCtrl.register,
 );
 
+router.post(
+  '/forget-password',
+  /* #swagger.parameters['resetUser'] = {
+   in: 'body',
+   description: 'Info for resetting account password.',
+   required: true,
+   schema: {
+    $email: "an@gmail.com",
+   }
+} */
+  userCtrl.forgetPassword,
+);
+
+router.post(
+  '/reset-password',
+  /* #swagger.parameters['resetUser'] = {
+   in: 'body',
+   description: 'Info for resetting account password.',
+   required: true,
+   schema: {
+    $email: "an@gmail.com",
+    $oldPassword: "an@gmail.com",
+    $newPassword: "an@gmail.com",
+   }
+} */
+  userCtrl.resetPassword,
+);
+
 router.get('/authenticated', userCtrl.authenticated);
 
 module.exports = router;
