@@ -7,12 +7,26 @@ chai.use(request);
 // Test users route
 describe('Test *events* Endpoints:', () => {
   let server;
+  // Should be initialized before each test for protected routes
+  let jwt;
+  const genericUser = {
+    username: 'an@gmail.com',
+    password: '123456',
+  };
   const genericEvent = {};
 
   before(async () => {
     console.log('Initialize Server Instance!');
     server = require('../../app').server;
     await chai.request.agent(server);
+    // Init jwt here for protected routes
+    await chai
+      .request(server)
+      .post('/users/login')
+      .send(genericUser)
+      .then((response) => {
+        jwt = response.body.access_token;
+      });
   });
 
   // Best Case
@@ -26,6 +40,7 @@ describe('Test *events* Endpoints:', () => {
       .request(server)
       .post('/events/add')
       .send(genericEvent)
+      .set('access_token', jwt)
       .then((response) => {
         response.should.have.status(200);
         console.log('Pass status code!');
@@ -53,6 +68,7 @@ describe('Test *events* Endpoints:', () => {
     chai
       .request(server)
       .post('/events/edit')
+      .set('access_token', jwt)
       .send(genericEvent)
       .then((response) => {
         response.should.have.status(200);

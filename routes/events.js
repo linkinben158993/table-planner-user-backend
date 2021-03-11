@@ -3,10 +3,73 @@ const eventCtrl = require('../controllers/events.controller');
 
 const router = express.Router();
 
-router.get('/my', eventCtrl.getAllEvents);
+router.get(
+  '/my',
+  /* #swagger.parameters['loginUser'] = {
+       in: 'header',
+       description: 'Token From Login.',
+       required: true,
+       name: 'access_token',
+       schema: {
+        $access_token: "<Get This From Login API>"
+       }
+  }
+ */
+  eventCtrl.getAllEvents,
+);
 
-router.post('/add', eventCtrl.addNewEvent);
+router.post(
+  '/add',
+  /*
+  #swagger.parameters['loginUser'] = {
+     in: 'header',
+     description: 'Token From Login.',
+     required: true,
+     name: 'access_token',
+     schema: {
+      $access_token: "<Get This From Login API>"
+     }
+  },
+  #swagger.parameters['newEvent'] = {
+     in: 'body',
+     description: 'Token From Login.',
+     required: true,
+     name: 'newEvent',
+     schema: {
+      $eventName: "Test Event With JWT Protection And De-reference stuff From Swagger",
+      $eventDescription: "Test Event With JWT Protection And De-reference stuff From Swagger",
+      $tableType: "Test Event Table Type"
+    }
+  }
+*/
+  eventCtrl.addNewEvent,
+);
 
-router.post('/edit', eventCtrl.editEvent);
+router.post(
+  '/edit',
+  /*
+    #swagger.parameters['loginUser'] = {
+       in: 'header',
+       description: 'Token From Login.',
+       required: true,
+       name: 'access_token',
+       schema: {
+        $access_token: "<Get This From Login API>"
+       }
+    },
+    #swagger.parameters['editEvent'] = {
+       in: 'body',
+       description: 'Token From Login.',
+       required: true,
+       name: 'newEvent',
+       schema: {
+        $eventId: "6048506f8fb7b6249151343e",
+        $eventName: "Test Edit Event With JWT Protection And De-reference stuff From Swagger",
+        $eventDescription: "Test Edit Event Table Type"
+      }
+    }
+*/
+  eventCtrl.editEvent,
+);
 
 module.exports = router;

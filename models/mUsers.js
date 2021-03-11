@@ -62,7 +62,7 @@ UserSchema.pre('save', function (next) {
     return next();
   });
 
-  return next();
+  return null;
 });
 
 UserSchema.methods.checkPassword = function (password, callBack) {
@@ -111,7 +111,7 @@ UserSchema.methods.changePassword = function (user, oldPassword, newPassword, ca
   });
 };
 
-UserSchema.statics.createUserWithOTP = function (email, callBack) {
+UserSchema.statics.createUserWithOTP = function (email, password, otp, callBack) {
   this.findOne({ email }, (err, user) => {
     if (err) {
       return callBack(err);
@@ -122,17 +122,25 @@ UserSchema.statics.createUserWithOTP = function (email, callBack) {
           msgBody: 'User Exists',
           msgError: true,
         },
-        user,
+        user: {
+          username: user.email,
+          fullName: user.fullName,
+        },
       });
     }
 
-    const OTP = Math.floor(Math.random() * 1000000);
-
-    // Return user's information and otp here, send mail here?
-    return callBack(null, {
+    const newUser = new this({
       email,
-      otp: OTP,
+      password,
+      role: 0,
+      otp,
+      activated: false,
     });
+
+    return newUser
+      .save()
+      .then(() => callBack(null, true))
+      .catch((err1) => callBack(null, err1));
   });
 };
 

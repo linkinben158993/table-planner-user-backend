@@ -7,6 +7,7 @@ const passportConfig = require('../middlewares/passport');
 
 const CONSTANT = {
   SERVER_ERROR: 'Server Error',
+  BAD_REQUEST: 'Bad Request',
 };
 
 const signToken = (userID) => {
@@ -36,7 +37,11 @@ module.exports = {
         const { email, role, fullName } = callBack;
         res.status(200).json({
           isAuthenticated: true,
-          user: { email, role, fullName },
+          user: {
+            email,
+            role,
+            fullName,
+          },
           access_token: token,
         });
       }
@@ -46,12 +51,20 @@ module.exports = {
   authenticated: async (req, res, next) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {
       if (err) {
-        res.status(500).json({ isAuthenticated: false, user: null, access_token: null });
+        res.status(500).json({
+          isAuthenticated: false,
+          user: null,
+          access_token: null,
+        });
       } else {
         const { email, role, fullName } = callBack;
         res.status(200).json({
           isAuthenticated: true,
-          user: { email, role, fullName },
+          user: {
+            email,
+            role,
+            fullName,
+          },
           access_token: req.headers.access_token,
         });
       }
@@ -59,30 +72,34 @@ module.exports = {
   },
   register: async (req, res) => {
     const otp = randOTP();
-    const { username, password } = req.body;
-    const newUser = new Users({
-      email: username,
-      password,
-      role: 0,
-      otp,
-      activated: true,
-    });
-    const result = await nodeMailer.registerByMail(username, otp);
-    if (result.success) {
-      newUser.save(async (err) => {
-        if (err) {
-          res.status(500).json(CONSTANT.SERVER_ERROR);
+    const { username, password, isNormalFlow } = req.body;
+    // Should ensures isNormalFlow and username from clients, password can be based on isNormalFlow
+    if (isNormalFlow === undefined || !username) {
+      res.status(400).json(CONSTANT.BAD_REQUEST);
+    } else {
+      const result = await nodeMailer.registerByMail(username, otp);
+      if (result.success) {
+        // Password should be sent when isNormalFlow is true
+        if (isNormalFlow) {
+          Users.createUserWithOTP(username, password, otp, (err, document) => {
+            if (err) {
+              res.status(500).json(CONSTANT.SERVER_ERROR);
+            } else {
+              res.status(201).json(document);
+            }
+          });
         } else {
-          res.status(201).json({
-            message: {
-              msgBody: 'An Account Has Been Created',
-              msgError: false,
-            },
+          Users.createUserWithOTP(username, 'SUPER-HARD-TO-REMEMBER-PASSWORD', otp, (err, document) => {
+            if (err) {
+              res.status(500).json(CONSTANT.SERVER_ERROR);
+            } else {
+              res.status(201).json(document);
+            }
           });
         }
-      });
-    } else {
-      res.status(500).json(CONSTANT.SERVER_ERROR);
+      } else {
+        res.status(500).json(CONSTANT.SERVER_ERROR);
+      }
     }
   },
 };
