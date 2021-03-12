@@ -69,9 +69,7 @@ UserSchema.methods.checkPassword = function (password, callBack) {
   bcrypt.compare(password, this.password, (err, isMatch) => {
     if (err) {
       callBack(err);
-    }
-
-    if (!isMatch) {
+    } else if (!isMatch) {
       callBack({
         message: {
           msgBody: 'Password not match!',
@@ -79,9 +77,9 @@ UserSchema.methods.checkPassword = function (password, callBack) {
         },
         errCode: 'ERR_PASSWORD_NOT_MATCH',
       });
+    } else {
+      callBack(null, this);
     }
-
-    callBack(null, this);
   });
 };
 
@@ -101,7 +99,10 @@ UserSchema.methods.changePassword = function (user, oldPassword, newPassword, ca
 
     if (isMatch) {
       user
-        .set({ password: newPassword })
+        .set({
+          password: newPassword,
+          otp: -1,
+        })
         .save()
         .then((value) => {
           callBack(null, value);
@@ -144,6 +145,46 @@ UserSchema.statics.createUserWithOTP = function (email, password, otp, callBack)
       .then(() => callBack(null, true))
       .catch((err1) => callBack(null, err1));
   });
+};
+
+UserSchema.statics.activateAccount = function (email, otp, callBack) {
+  return this.findOne({
+    email,
+    activated: { $ne: true },
+  })
+    .then((value) => {
+      if (!value) {
+        callBack({
+          message: {
+            msgBody: 'No user found!',
+            msgError: true,
+          },
+        });
+      } else if (value.otp !== otp) {
+        callBack({
+          message: {
+            msgBody: 'OTP Not Correct!',
+            msgError: true,
+          },
+        });
+      } else {
+        value
+          .set({
+            otp: -1,
+            activated: true,
+          })
+          .save()
+          .then(() => {
+            callBack(null, value);
+          })
+          .catch((err) => {
+            callBack(err);
+          });
+      }
+    })
+    .catch((err) => {
+      callBack(err);
+    });
 };
 
 UserSchema.statics.findUserByUserOrFullName = function (queryString, callBack) {
@@ -201,13 +242,23 @@ UserSchema.statics.resetOTP = function (email, otp, callBack) {
     .catch((err) => callBack(err));
 };
 
-UserSchema.statics.resetUserPassword = function (email, oldPassword, newPassword, callBack) {
-  return this.findOne({ email })
+UserSchema.statics.resetUserPassword = function (email, otp, oldPassword, newPassword, callBack) {
+  return this.findOne({
+    email,
+    activated: { $ne: false },
+  })
     .then((value) => {
       if (!value) {
         callBack({
           message: {
             msgBody: 'No user found!',
+            msgError: true,
+          },
+        });
+      } else if (value.otp !== otp) {
+        callBack({
+          message: {
+            msgBody: 'OTP Not Correct!',
             msgError: true,
           },
         });

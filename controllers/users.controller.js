@@ -28,10 +28,10 @@ const randOTP = () => Math.floor(Math.random() * 1000000);
 module.exports = {
   login: async (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, callBack) => {
-      if (err) {
+      if (err && !err.errCode) {
         res.status(500).json({ errCode: 'Something happened!' });
-      } else if (callBack.errCode) {
-        res.status(400).json(callBack.message);
+      } else if (err.errCode) {
+        res.status(400).json(err.message);
       } else {
         const token = signToken(callBack._id);
         const { email, role, fullName } = callBack;
@@ -102,6 +102,31 @@ module.exports = {
       }
     }
   },
+  activate: async (req, res) => {
+    const { otp, email } = req.body;
+    if (!otp || !email) {
+      res.status(400).json(CONSTANT.BAD_REQUEST);
+    } else {
+      Users.activateAccount(email, otp, (err, document) => {
+        if (err) {
+          res.status(400).json({
+            message: {
+              msgBody: `Activate account: ${email} failed!`,
+              msgError: false,
+            },
+            trace: err,
+          });
+        } else {
+          res.status(200).json({
+            message: {
+              msgBody: `Activate account: ${document.email}`,
+              msgError: false,
+            },
+          });
+        }
+      });
+    }
+  },
   forgetPassword: async (req, res) => {
     if (!req.body.email) {
       res.status(400).json(CONSTANT.BAD_REQUEST);
@@ -127,11 +152,11 @@ module.exports = {
     }
   },
   resetPassword: async (req, res) => {
-    if (!req.body.email || !req.body.oldPassword || !req.body.newPassword) {
+    if (!req.body.email || !req.body.otp || !req.body.oldPassword || !req.body.newPassword) {
       res.status(400).json(CONSTANT.BAD_REQUEST);
     } else {
-      const { email, oldPassword, newPassword } = req.body;
-      Users.resetUserPassword(email, oldPassword, newPassword, (err, document) => {
+      const { email, otp, oldPassword, newPassword } = req.body;
+      Users.resetUserPassword(email, otp, oldPassword, newPassword, (err, document) => {
         if (err) {
           res.status(400).json(err);
         } else {
