@@ -10,7 +10,8 @@ describe('Test Users API', () => {
   });
 
   importTest('users.test', './users/users.test');
-  importTest('events.test', './events/events.test');
+  //importTest('events.test', './events/events.test');
+  importTest('guests.test', './guests/guests.test');
 
   after(function () {
     console.log('Run all test!');
