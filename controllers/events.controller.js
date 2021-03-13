@@ -1,6 +1,8 @@
 const passport = require('passport');
 const Users = require('../models/mUsers');
 const Events = require('../models/mEvents');
+const Guests = require('../models/mGuests');
+const nodeMailer = require('../middlewares/node-mailer');
 
 const BAD_REQUEST = {
   message: {
@@ -141,6 +143,43 @@ module.exports = {
           .select('tables')
           .then((document) => {
             res.status(200).json({ document });
+          })
+          .catch((err1) => {
+            res.status(500).json({
+              SERVER_ERROR,
+              err1,
+            });
+          });
+      }
+    })(req, res);
+  },
+  sendMailToAllGuest: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err, callBack) => {
+      const { eventId } = req.body;
+      if (err) {
+        res.status(500).json(SERVER_ERROR);
+      }
+      if (!eventId) {
+        res.status(400).json(BAD_REQUEST);
+      } else if (!callBack) {
+        res.status(403).json('Forbidden');
+      } else {
+        Events.findOne({ _id: eventId }, 'name description startTime creator')
+          .populate('creator')
+          .then((event) => {
+            // Get all guest's emails of event
+            Guests.find({ event: eventId })
+              .select('email')
+              .then((mails) => {
+                nodeMailer.sendQRCodeToGuests(mails, event);
+              })
+              .catch((err1) => {
+                res.status(500).json({
+                  SERVER_ERROR,
+                  err1,
+                });
+              });
+            res.status(200).json({ msg: 'Send mail success!' });
           })
           .catch((err1) => {
             res.status(500).json({

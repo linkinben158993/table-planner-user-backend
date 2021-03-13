@@ -1,5 +1,6 @@
 const nodeMailer = require('nodemailer');
 const dotenv = require('dotenv');
+const QRCode = require('qrcode');
 
 dotenv.config();
 
@@ -76,6 +77,30 @@ module.exports = {
         } else {
           resolve({ success: true, info });
         }
+      });
+    });
+  },
+
+  sendQRCodeToGuests: (receivers, event) => {
+    receivers.forEach((receiver) => {
+      const data = {
+        eventId: event._id,
+        mailOfGuest: receiver,
+      };
+      const stringData = JSON.stringify(data);
+      QRCode.toDataURL(stringData, (err, code) => {
+        if (err) throw err;
+        const mailOptions = {
+          from: `"My Table Planner" ${email}`,
+          to: `${receiver}`,
+          subject: `Invite you attend ${event.name}`,
+          html: `<img src="${code}">`,
+        };
+        transporter.sendMail(mailOptions, (error) => {
+          if (error) {
+            throw error;
+          }
+        });
       });
     });
   },
