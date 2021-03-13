@@ -14,42 +14,40 @@ const EventSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  tables: {
-    tableType: {
-      type: String,
-      required: true,
-    },
-    elements: [
-      {
-        id: {
-          type: mongoose.Types.ObjectId,
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  tables: [
+    {
+      id: {
+        type: String,
+      },
+      type: {
+        type: String,
+      },
+      position: {
+        x: {
+          type: Number,
         },
-        type: {
-          type: String,
-        },
-        position: {
-          x: {
-            type: Number,
-          },
-          y: {
-            type: Number,
-          },
-        },
-        data: {
-          label: {
-            type: String,
-            required: true,
-          },
-          guests: [
-            {
-              type: mongoose.Schema.Types.ObjectId,
-              ref: 'Guest',
-            },
-          ],
+        y: {
+          type: Number,
         },
       },
-    ],
-  },
+      data: {
+        label: {
+          type: String,
+          required: true,
+        },
+        guests: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Guest',
+          },
+        ],
+      },
+    },
+  ],
 });
 
 // Add new event and which user is its host
