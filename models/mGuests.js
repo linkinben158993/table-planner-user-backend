@@ -1,3 +1,4 @@
+// const { response } = require('express');
 const mongoose = require('mongoose');
 
 const GuestSchema = new mongoose.Schema({
@@ -22,9 +23,7 @@ const GuestSchema = new mongoose.Schema({
 });
 
 GuestSchema.statics.addGuest = function (guest, callBack) {
-  const {
- guestName, guestMail, guestPhone, eventId 
-} = guest;
+  const { guestName, guestMail, guestPhone, eventId } = guest;
 
   const newGuest = new this({
     name: guestName,
@@ -43,9 +42,48 @@ GuestSchema.statics.addGuest = function (guest, callBack) {
     });
 };
 
-// GuestSchema.statics.editGuest = function (guest, callBack) {
-//   const { guestName, guestMail, guestPhone } = guest;
-//   this.findOne();
-// };
+GuestSchema.statics.editGuest = function (guest, callBack) {
+  const { guestId, guestName, guestMail, guestPhone } = guest;
+  this.findOne({ _id: guestId })
+    .then((document) => {
+      if (!document) {
+        callBack(
+          {
+            message: {
+              msgBody: 'Can not found guest!',
+              msgError: true,
+            },
+          },
+          null,
+        );
+      } else {
+        document.set({
+          name: guestName,
+          email: guestMail,
+          phoneNumber: guestPhone,
+        });
+        document
+          .save()
+          .then((response) => {
+            callBack(null, response);
+          })
+          .catch((err) => callBack(null, err));
+      }
+    })
+    .catch((err) => callBack(null, err));
+};
+
+GuestSchema.statics.getGuestListInEvent = function (eventId, callBack) {
+  return this.find({
+    event: eventId,
+  })
+    .then((value) => {
+      if (value.length === 0) {
+        return callBack(null, 0);
+      }
+      return callBack(null, 0);
+    })
+    .catch((err) => callBack(err));
+};
 
 module.exports = mongoose.model('Guest', GuestSchema);
