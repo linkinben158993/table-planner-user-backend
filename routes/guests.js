@@ -31,4 +31,21 @@ router.post(
   guestCtrl.addNewGuest,
 );
 
+router.get(
+  '/get/:id',
+  /*
+    #swagger.parameters['loginUser'] = {
+      in: 'header',
+      description: 'Token From Login.',
+      required: true,
+      name: 'access_token',
+      schema: {
+        $access_token: "<Get This From Login API>"
+      }
+    }
+
+  */
+  guestCtrl.getGuestList,
+);
+
 module.exports = router;

@@ -16,19 +16,14 @@ module.exports = {
   addNewGuest: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err1, callBack) => {
       if (err1) {
-        res.status(500)
-          .json(err1);
+        res.status(500).json(err1);
       }
       if (!callBack) {
-        res.status(403)
-          .json('Forbidden');
+        res.status(403).json('Forbidden');
       } else {
-        const {
-          guestName, guestMail, guestPhone, eventId,
-        } = req.body;
+        const { guestName, guestMail, guestPhone, eventId } = req.body;
         if (!guestName || !guestMail || !eventId) {
-          res.status(400)
-            .json(BAD_REQUEST);
+          res.status(400).json(BAD_REQUEST);
         } else {
           const newGuest = {
             guestName,
@@ -38,17 +33,45 @@ module.exports = {
           };
           Guests.addGuest(newGuest, (err2, document) => {
             if (err2) {
-              res.status(500)
-                .json(SERVER_ERROR);
+              res.status(500).json(SERVER_ERROR);
             } else {
-              res.status(200)
-                .json({
-                  message: {
-                    msgBody: 'Add New Guest Successful!',
-                    msgError: false,
-                  },
-                  document,
-                });
+              res.status(200).json({
+                message: {
+                  msgBody: 'Add New Guest Successful!',
+                  msgError: false,
+                },
+                document,
+              });
+            }
+          });
+        }
+      }
+    })(req, res);
+  },
+
+  getGuestList: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err1, callBack) => {
+      if (err1) {
+        res.status(500).json(err1);
+      }
+      if (!callBack) {
+        res.status(403).json('Forbidden');
+      } else {
+        const eventId = req.params.id;
+        if (!eventId) {
+          res.status(400).json(BAD_REQUEST);
+        } else {
+          Guests.getGuestListInEvent(eventId, (err2, document) => {
+            if (err2) {
+              res.status(500).json(SERVER_ERROR);
+            } else {
+              res.status(200).json({
+                message: {
+                  msgBody: 'Get Guest List Successful!',
+                  msgError: false,
+                },
+                document,
+              });
             }
           });
         }
