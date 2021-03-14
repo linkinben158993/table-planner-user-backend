@@ -1,4 +1,3 @@
-// const { response } = require('express');
 const mongoose = require('mongoose');
 
 const GuestSchema = new mongoose.Schema({
@@ -81,9 +80,38 @@ GuestSchema.statics.getGuestListInEvent = function (eventId, callBack) {
       if (value.length === 0) {
         return callBack(null, 0);
       }
-      return callBack(null, 0);
+      return callBack(null, value);
     })
     .catch((err) => callBack(err));
+};
+
+GuestSchema.statics.deleteGuestById = function (guestId, callBack) {
+  const { id } = guestId;
+  this.findOne({ _id: id })
+    .then((document) => {
+      if (!document) {
+        callBack(
+          {
+            message: {
+              msgBody: 'Can not found guest',
+              msgError: true,
+            },
+          },
+          null,
+        );
+      } else {
+        document.deleteOne({ _id: id });
+        document
+          .save()
+          .then((response) => {
+            callBack(null, response);
+          })
+          .catch((err) => callBack(err));
+      }
+    })
+    .catch((err) => {
+      callBack(err);
+    });
 };
 
 module.exports = mongoose.model('Guest', GuestSchema);

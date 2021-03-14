@@ -78,4 +78,65 @@ module.exports = {
       }
     })(req, res);
   },
+
+  editGuest: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err1, callBack) => {
+      if (err1) {
+        res.status(500).json(err1);
+      }
+      if (!callBack) {
+        res.status(403).json('Forbidden');
+      } else {
+        const { guestId, guestName, guestMail, guestPhone } = req.body;
+        if (!guestName || !guestMail || !guestId) {
+          res.status(400).json(BAD_REQUEST);
+        } else {
+          const guest = { guestId, guestName, guestMail, guestPhone };
+          Guests.editGuest(guest, (err2, document) => {
+            if (err2) {
+              res.status(500).json(SERVER_ERROR);
+            } else {
+              res.status(200).json({
+                message: {
+                  msgBody: 'Edit Guest Successful!',
+                  msgError: false,
+                },
+                document,
+              });
+            }
+          });
+        }
+      }
+    })(req, res);
+  },
+
+  deleteGuest: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err1, callBack) => {
+      if (err1) {
+        res.status(500).json(err1);
+      }
+      if (!callBack) {
+        res.status(403).json('Forbidden');
+      } else {
+        const guestId = req.body;
+        if (!guestId) {
+          res.status(400).json(BAD_REQUEST);
+        } else {
+          Guests.deleteGuestById(guestId, (err2, document) => {
+            if (err2) {
+              res.status(500).json(SERVER_ERROR);
+            } else {
+              res.status(200).json({
+                message: {
+                  msgBody: 'Delete Guest Successful!',
+                  msgError: false,
+                },
+                document,
+              });
+            }
+          });
+        }
+      }
+    })(req, res);
+  },
 };
