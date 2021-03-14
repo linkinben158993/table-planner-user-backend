@@ -102,4 +102,47 @@ module.exports = {
       }
     }
   },
+  forgetPassword: async (req, res) => {
+    if (!req.body.email) {
+      res.status(400).json(CONSTANT.BAD_REQUEST);
+    } else {
+      const newOTP = randOTP();
+      const result = await nodeMailer.resetPassword(req.body.email, newOTP);
+      if (result.success) {
+        Users.resetOTP(req.body.email, newOTP, (err, document) => {
+          if (err) {
+            res.status(500).json(CONSTANT.SERVER_ERROR);
+          } else {
+            res.status(200).json({
+              message: {
+                msgBody: `Please Check Your Email For OTP To Reset Your Password For: ${document.email}`,
+                msgError: false,
+              },
+            });
+          }
+        });
+      } else {
+        res.status(500).json(CONSTANT.SERVER_ERROR);
+      }
+    }
+  },
+  resetPassword: async (req, res) => {
+    if (!req.body.email || !req.body.oldPassword || !req.body.newPassword) {
+      res.status(400).json(CONSTANT.BAD_REQUEST);
+    } else {
+      const { email, oldPassword, newPassword } = req.body;
+      Users.resetUserPassword(email, oldPassword, newPassword, (err, document) => {
+        if (err) {
+          res.status(400).json(err);
+        } else {
+          res.status(200).json({
+            message: {
+              msgBody: `Change password successfully for ${document.email}`,
+              msgError: false,
+            },
+          });
+        }
+      });
+    }
+  },
 };

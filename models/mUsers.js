@@ -68,11 +68,11 @@ UserSchema.pre('save', function (next) {
 UserSchema.methods.checkPassword = function (password, callBack) {
   bcrypt.compare(password, this.password, (err, isMatch) => {
     if (err) {
-      return callBack(err);
+      callBack(err);
     }
 
     if (!isMatch) {
-      return callBack(null, {
+      callBack({
         message: {
           msgBody: 'Password not match!',
           msgError: true,
@@ -81,33 +81,35 @@ UserSchema.methods.checkPassword = function (password, callBack) {
       });
     }
 
-    return callBack(null, this);
+    callBack(null, this);
   });
 };
 
 UserSchema.methods.changePassword = function (user, oldPassword, newPassword, callBack) {
   if (oldPassword === newPassword) {
-    return callBack(null, {
+    callBack({
       message: {
         msgBody: 'New Password Should Be Different From Old Password!',
         msgError: true,
       },
     });
   }
-  return user.checkPassword(oldPassword, (err, isMatch) => {
+  user.checkPassword(oldPassword, (err, isMatch) => {
     if (err) {
-      return callBack(err);
-    }
-    if (isMatch.message) {
-      return callBack(null, {
-        message: {
-          msgBody: 'Old Password Does Not Match!',
-          msgError: true,
-        },
-      });
+      callBack(err);
     }
 
-    return callBack(null, newPassword, isMatch);
+    if (isMatch) {
+      user
+        .set({ password: newPassword })
+        .save()
+        .then((value) => {
+          callBack(null, value);
+        })
+        .catch((err1) => {
+          callBack(err1);
+        });
+    }
   });
 };
 
@@ -183,6 +185,45 @@ UserSchema.statics.setBlockStatus = function (userId, callBack) {
         .catch((err) => callBack(err));
     })
     .catch((err) => callBack(err));
+};
+
+UserSchema.statics.resetOTP = function (email, otp, callBack) {
+  return this.findOne({ email })
+    .then((value) => {
+      value
+        .set({ otp })
+        .save()
+        .then((value1) => {
+          callBack(null, value1);
+        })
+        .catch((err) => callBack(err));
+    })
+    .catch((err) => callBack(err));
+};
+
+UserSchema.statics.resetUserPassword = function (email, oldPassword, newPassword, callBack) {
+  return this.findOne({ email })
+    .then((value) => {
+      if (!value) {
+        callBack({
+          message: {
+            msgBody: 'No user found!',
+            msgError: true,
+          },
+        });
+      } else {
+        value.changePassword(value, oldPassword, newPassword, (err, isMatch) => {
+          if (err) {
+            callBack(err);
+          } else {
+            callBack(null, isMatch);
+          }
+        });
+      }
+    })
+    .catch((err) => {
+      callBack(err);
+    });
 };
 
 module.exports = mongoose.model('User', UserSchema);

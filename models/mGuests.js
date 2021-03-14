@@ -12,12 +12,12 @@ const GuestSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
   },
+  priority: {
+    type: Number,
+  },
   event: {
     type: String,
     required: true,
-  },
-  table: {
-    type: String,
   },
 });
 
