@@ -171,7 +171,11 @@ module.exports = {
             Guests.find({ event: eventId })
               .select('email')
               .then((mails) => {
-                nodeMailer.sendQRCodeToGuests(mails, event);
+                if (mails.length === 0) {
+                  nodeMailer.sendQRCodeToGuests(['thienan.nguyenhoang311@gmail.com'], event);
+                } else {
+                  nodeMailer.sendQRCodeToGuests(mails, event);
+                }
               })
               .catch((err1) => {
                 res.status(500).json({

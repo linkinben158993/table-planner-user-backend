@@ -94,6 +94,8 @@ module.exports = {
           from: `"My Table Planner" ${email}`,
           to: `${receiver}`,
           subject: `Invite you attend ${event.name}`,
+          text: 'Please present qr code provided below for checking in event!',
+          attachDataUrls: true,
           html: `<img src="${code}">`,
         };
         transporter.sendMail(mailOptions, (error) => {

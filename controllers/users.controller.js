@@ -30,7 +30,7 @@ module.exports = {
     passport.authenticate('local', { session: false }, (err, callBack) => {
       if (err && !err.errCode) {
         res.status(500).json({ errCode: 'Something happened!' });
-      } else if (err.errCode) {
+      } else if (err && err.errCode) {
         res.status(400).json(err.message);
       } else {
         const token = signToken(callBack._id);

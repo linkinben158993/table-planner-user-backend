@@ -59,7 +59,7 @@ router.post(
     },
     #swagger.parameters['editEvent'] = {
        in: 'body',
-       description: 'Token From Login.',
+       description: 'Event Id For Editing.',
        required: true,
        name: 'newEvent',
        schema: {
@@ -70,6 +70,31 @@ router.post(
     }
 */
   eventCtrl.editEvent,
+);
+
+router.post(
+  '/invite-qr',
+  /*
+  #swagger.parameters['loginUser'] = {
+     in: 'header',
+     description: 'Token From Login.',
+     required: true,
+     name: 'access_token',
+     schema: {
+      $access_token: "<Get This From Login API>"
+     }
+  },
+  #swagger.parameters['sendMailEvent'] = {
+     in: 'body',
+     description: 'Event For Sending Invitation.',
+     required: true,
+     name: 'sendMailEvent',
+     schema: {
+      $eventId: "6048506f8fb7b6249151343e",
+    }
+  }
+*/
+  eventCtrl.sendMailToAllGuest,
 );
 
 module.exports = router;
