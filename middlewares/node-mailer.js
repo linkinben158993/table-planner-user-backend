@@ -37,9 +37,15 @@ module.exports = {
     return new Promise((resolve) => {
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          resolve({ success: false, error });
+          resolve({
+            success: false,
+            error,
+          });
         } else {
-          resolve({ success: true, info });
+          resolve({
+            success: true,
+            info,
+          });
         }
       });
     });
@@ -55,9 +61,15 @@ module.exports = {
     return new Promise((resolve) => {
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          resolve({ success: false, error });
+          resolve({
+            success: false,
+            error,
+          });
         } else {
-          resolve({ success: true, info });
+          resolve({
+            success: true,
+            info,
+          });
         }
       });
     });
@@ -73,9 +85,15 @@ module.exports = {
     return new Promise((resolve) => {
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          resolve({ success: false, error });
+          resolve({
+            success: false,
+            error,
+          });
         } else {
-          resolve({ success: true, info });
+          resolve({
+            success: true,
+            info,
+          });
         }
       });
     });
@@ -96,7 +114,11 @@ module.exports = {
           subject: `Invite you attend ${event.name}`,
           text: 'Please present qr code provided below for checking in event!',
           attachDataUrls: true,
-          html: `<img src="${code}">`,
+          html: `
+                Invite you attend ${event.name} <br>
+                Please present qr code provided below for checking in event! <br>
+                <img src='${code}'>
+          `,
         };
         transporter.sendMail(mailOptions, (error) => {
           if (error) {
