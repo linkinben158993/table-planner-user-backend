@@ -101,4 +101,46 @@ router.post(
   guestCtrl.deleteGuest,
 );
 
+router.post(
+  '/import',
+  /*
+    #swagger.parameters['loginUser'] = {
+        in: 'header',
+        description: 'Token From Login.',
+        required: true,
+        name: 'access_token',
+        schema: {
+        $access_token: "<Get This From Login API>"
+        }
+    },
+    #swagger.parameters['newGuest'] = {
+        in: 'body',
+        description: 'Token From Login.',
+        required: true,
+        name: 'newGuest',
+        schema: [
+          {
+            "guestName": "Test 1",
+            "guestMail": "Test Guest With JWT Protection And De-reference stuff From Swagger",
+            "guestPhone": "Test Event Table Type",
+            "eventId": "6048529d3a797826f6920062"
+          },
+          {
+            "guestName": "Test 2",
+            "guestMail": "Test Guest With JWT Protection And De-reference stuff From Swagger",
+            "guestPhone": "Test Event Table Type",
+            "eventId": "6048529d3a797826f6920062"
+          },
+          {
+            "guestName": "Test 3",
+            "guestMail": "Test Guest With JWT Protection And De-reference stuff From Swagger",
+            "guestPhone": "Test Event Table Type",
+            "eventId": "6048529d3a797826f6920062"
+          }
+        ]
+    }
+    */
+  guestCtrl.importGuests,
+);
+
 module.exports = router;

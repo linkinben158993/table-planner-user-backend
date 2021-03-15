@@ -139,4 +139,43 @@ module.exports = {
       }
     })(req, res);
   },
+
+  importGuests: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, async (err1, callBack) => {
+      if (err1) {
+        res.status(500).json(err1);
+      }
+      if (!callBack) {
+        res.status(403).json('Forbidden');
+      } else {
+        //
+        const temp = req.body;
+        const guests = [];
+        temp.forEach((element) => {
+          const { guestName, guestMail, guestPhone, eventId } = element;
+          const guest = {
+            name: guestName,
+            email: guestMail,
+            phoneNumber: guestPhone,
+            priority: '',
+            event: eventId,
+          };
+          guests.push(guest);
+        });
+        Guests.insertMany(guests, (err, response) => {
+          if (err) {
+            res.status(500).json(SERVER_ERROR);
+          } else {
+            res.status(200).json({
+              message: {
+                msgBody: 'Import Guest Successful!',
+                msgError: false,
+              },
+              response,
+            });
+          }
+        });
+      }
+    })(req, res);
+  },
 };

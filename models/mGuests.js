@@ -7,7 +7,7 @@ const GuestSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: true,
+    require: true,
   },
   phoneNumber: {
     type: String,
@@ -28,8 +28,8 @@ GuestSchema.statics.addGuest = function (guest, callBack) {
     name: guestName,
     email: guestMail,
     phoneNumber: guestPhone,
+    priority: '',
     event: eventId,
-    table: 'Unknown',
   });
   return newGuest
     .save()
@@ -100,13 +100,14 @@ GuestSchema.statics.deleteGuestById = function (guestId, callBack) {
           null,
         );
       } else {
-        document.deleteOne({ _id: id });
         document
-          .save()
+          .deleteOne({ _id: id })
           .then((response) => {
             callBack(null, response);
           })
-          .catch((err) => callBack(err));
+          .catch((err) => {
+            callBack(err);
+          });
       }
     })
     .catch((err) => {
