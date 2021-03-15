@@ -69,9 +69,7 @@ UserSchema.methods.checkPassword = function (password, callBack) {
   bcrypt.compare(password, this.password, (err, isMatch) => {
     if (err) {
       callBack(err);
-    }
-
-    if (!isMatch) {
+    } else if (!isMatch) {
       callBack({
         message: {
           msgBody: 'Password not match!',
@@ -79,9 +77,9 @@ UserSchema.methods.checkPassword = function (password, callBack) {
         },
         errCode: 'ERR_PASSWORD_NOT_MATCH',
       });
+    } else {
+      callBack(null, this);
     }
-
-    callBack(null, this);
   });
 };
 

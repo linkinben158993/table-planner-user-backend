@@ -28,10 +28,10 @@ const randOTP = () => Math.floor(Math.random() * 1000000);
 module.exports = {
   login: async (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, callBack) => {
-      if (err) {
+      if (err && !err.errCode) {
         res.status(500).json({ errCode: 'Something happened!' });
-      } else if (callBack.errCode) {
-        res.status(400).json(callBack.message);
+      } else if (err && err.errCode) {
+        res.status(400).json(err.message);
       } else {
         const token = signToken(callBack._id);
         const { email, role, fullName } = callBack;

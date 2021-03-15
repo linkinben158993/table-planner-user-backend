@@ -51,7 +51,7 @@ passport.use(
       // User not found
       if (!user) {
         // console.log('Passport: User not found!');
-        return done(null, {
+        return done({
           message: { msgBody: 'User not found', msgError: true },
           errCode: 'ERR_USER_NOT_FOUND',
         });
@@ -59,7 +59,7 @@ passport.use(
       // User has not been activated
       if (!user.activated) {
         // console.log('Passport: User has not been activated!');
-        return done(null, {
+        return done({
           message: { msgBody: 'User has not been activated!', msgError: true },
           errCode: 'ERR_USER_NOT_ACTIVATED',
         });
@@ -67,7 +67,7 @@ passport.use(
       // User has been blocked by admin
       if (user.blocked) {
         // console.log('Passport: User has been blocked by admin!');
-        return done(null, {
+        return done({
           message: {
             msgBody: 'User has been blocked by admin!',
             msgError: true,

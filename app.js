@@ -80,6 +80,7 @@ mongoose.connection.on('connected', () => {
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const eventsRouter = require('./routes/events');
+const guestsRouter = require('./routes/guests');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -94,6 +95,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/events', eventsRouter);
+app.use('/guests', guestsRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

@@ -29,6 +29,7 @@
     "node/prefer-promises/dns": "error",
     "node/prefer-promises/fs": "error",
     "no-underscore-dangle": "off",
+    "object-curly-newline": "off",
     "prettier/prettier": [
       "warn",
       {
