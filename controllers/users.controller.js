@@ -102,6 +102,31 @@ module.exports = {
       }
     }
   },
+  activate: async (req, res) => {
+    const { otp, email } = req.body;
+    if (!otp || !email) {
+      res.status(400).json(CONSTANT.BAD_REQUEST);
+    } else {
+      Users.activateAccount(email, otp, (err, document) => {
+        if (err) {
+          res.status(400).json({
+            message: {
+              msgBody: `Activate account: ${email} failed!`,
+              msgError: false,
+            },
+            trace: err,
+          });
+        } else {
+          res.status(200).json({
+            message: {
+              msgBody: `Activate account: ${document.email}`,
+              msgError: false,
+            },
+          });
+        }
+      });
+    }
+  },
   forgetPassword: async (req, res) => {
     if (!req.body.email) {
       res.status(400).json(CONSTANT.BAD_REQUEST);
@@ -127,11 +152,11 @@ module.exports = {
     }
   },
   resetPassword: async (req, res) => {
-    if (!req.body.email || !req.body.oldPassword || !req.body.newPassword) {
+    if (!req.body.email || !req.body.otp || !req.body.oldPassword || !req.body.newPassword) {
       res.status(400).json(CONSTANT.BAD_REQUEST);
     } else {
-      const { email, oldPassword, newPassword } = req.body;
-      Users.resetUserPassword(email, oldPassword, newPassword, (err, document) => {
+      const { email, otp, oldPassword, newPassword } = req.body;
+      Users.resetUserPassword(email, otp, oldPassword, newPassword, (err, document) => {
         if (err) {
           res.status(400).json(err);
         } else {

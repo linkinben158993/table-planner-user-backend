@@ -37,6 +37,20 @@ router.post(
 );
 
 router.post(
+  '/activate',
+  /* #swagger.parameters['newUser'] = {
+     in: 'body',
+     description: 'Info for activating new account.',
+     required: true,
+     schema: {
+      $email: "an@gmail.com",
+      $otp: "123456"
+     }
+} */
+  userCtrl.activate,
+);
+
+router.post(
   '/forget-password',
   /* #swagger.parameters['resetUser'] = {
    in: 'body',
@@ -56,6 +70,7 @@ router.post(
    description: 'Info for resetting account password.',
    required: true,
    schema: {
+    $otp: "123456",
     $email: "an@gmail.com",
     $oldPassword: "an@gmail.com",
     $newPassword: "an@gmail.com",
