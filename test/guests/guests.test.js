@@ -4,7 +4,7 @@ const request = require('chai-http');
 chai.should();
 chai.use(request);
 
-//Test users route
+//Test guests route
 describe('Test *guests* Endpoints:', () => {
   let server;
   // Should be initialized before each test for protected routes
@@ -51,7 +51,6 @@ describe('Test *guests* Endpoints:', () => {
           msgBody: 'Add New Guest Successful!',
           msgError: false,
         });
-        console.log(response.body);
         idGuest = response.body._id;
         console.log('Pass field message!');
         done();
@@ -82,57 +81,32 @@ describe('Test *guests* Endpoints:', () => {
   });
 
   //Edit Guest
-  // it('Edit Guest', (done) => {
-  //   const guest = {
-  //     "guestId": "604dccac0c7eca693c497f80",
-  //     "guestName": "edit guest",
-  //     "guestMail": "edit guest mail",
-  //     "guestPhone": "0123456"
-  //   };
-  //   chai
-  //     .request(server)
-  //     .post('/guests/edit')
-  //     .send(guest)
-  //     .set('access_token', jwt)
-  //     .then((response) => {
-  //       response.should.have.status(200);
-  //       console.log('Pass status code!');
-  //       response.body.should.be.a('object');
-  //       console.log('Pass body type!');
-  //       response.body.should.have.property('message').to.deep.equal({
-  //         msgBody: 'Edit Guest Successful!',
-  //         msgError: false,
-  //       });
-  //       console.log('Pass field message!');
-  //       done();
-  //   })
-  //   .catch(done);
-  // });
-
-  // //Delete Guest
-  // it('Delete Guest', (done) => {
-  //   const guestId = {
-  //     "id": "604dccac0c7eca693c497f80"
-  //   }
-  //   chai
-  //     .request(server)
-  //     .post('/guests/delete')
-  //     .send(guestId)
-  //     .set('access_token', jwt)
-  //     .then((response) => {
-  //       response.should.have.status(200);
-  //       console.log('Pass status code!');
-  //       response.body.should.be.a('object');
-  //       console.log('Pass body type!');
-  //       response.body.should.have.property('message').to.deep.equal({
-  //         msgBody: 'Delete Guest Successful!',
-  //         msgError: false,
-  //       });
-  //       console.log('Pass field message!');
-  //       done();
-  //   })
-  //   .catch(done);
-  // });
+  it('Edit Guest', (done) => {
+    const guest = {
+      guestId: '604dccac0c7eca693c497f81',
+      guestName: 'edit guest',
+      guestMail: 'edit guest mail',
+      guestPhone: '0123456',
+    };
+    chai
+      .request(server)
+      .post('/guests/edit')
+      .send(guest)
+      .set('access_token', jwt)
+      .then((response) => {
+        response.should.have.status(200);
+        console.log('Pass status code!');
+        response.body.should.be.a('object');
+        console.log('Pass body type!');
+        response.body.should.have.property('message').to.deep.equal({
+          msgBody: 'Edit Guest Successful!',
+          msgError: false,
+        });
+        console.log('Pass field message!');
+        done();
+      })
+      .catch(done);
+  });
 
   //Import Guest
   it('Import Guest', (done) => {

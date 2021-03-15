@@ -9,9 +9,9 @@ describe('Test Users API', () => {
     console.log('Try running something before each test!');
   });
 
-  //importTest('users.test', './users/users.test');
-  //importTest('events.test', './events/events.test');
-  //importTest('guests.test', './guests/guests.test');
+  importTest('users.test', './users/users.test');
+  importTest('events.test', './events/events.test');
+  importTest('guests.test', './guests/guests.test');
 
   after(function () {
     console.log('Run all test!');
