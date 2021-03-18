@@ -15,12 +15,7 @@ const fileValidator = (req, file, callBack) => {
   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
     callBack(null, true);
   } else {
-    callBack({
-      message: {
-        msgBody: 'Unsupported File Type!',
-        msgError: true,
-      },
-    });
+    callBack(new Error('Not Supported File Extenstion'));
   }
 };
 

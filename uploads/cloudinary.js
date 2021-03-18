@@ -11,14 +11,18 @@ cloudinary.config({
 
 module.exports = {
   uploadsImages: (file, folder) => {
-    const res = new Promise((resolve) => {
+    const res = new Promise((resolve, reject) => {
       cloudinary.uploader.upload(
         file,
         (result) => {
-          resolve({
-            url: result.url,
-            id: result.public_id,
-          });
+          if (result.asset_id) {
+            resolve({
+              url: result.url,
+              id: result.public_id,
+            });
+          } else {
+            reject(new Error('Something happened'));
+          }
         },
         {
           resource_type: 'auto',
