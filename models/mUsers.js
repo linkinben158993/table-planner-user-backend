@@ -72,10 +72,10 @@ UserSchema.methods.checkPassword = function (password, callBack) {
     } else if (!isMatch) {
       callBack({
         message: {
-          msgBody: 'Password not match!',
+          msgBody: 'Password/Username not match!',
           msgError: true,
         },
-        errCode: 'ERR_PASSWORD_NOT_MATCH',
+        errCode: 'ERR_USERNAME_PASSWORD_NOT_MATCH',
       });
     } else {
       callBack(null, this);
