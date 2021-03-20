@@ -55,13 +55,12 @@ const EventSchema = new mongoose.Schema({
 
 // Add new event and which user is its host
 EventSchema.statics.addEvent = function (userId, event, callBack) {
-  const { eventName, eventDescription, tableType } = event;
+  const { eventName, eventDescription } = event;
   const newEvent = new this({
     name: eventName,
     description: eventDescription,
     startTime: Date.now(),
     tables: {
-      tableType,
       elements: [],
     },
   });

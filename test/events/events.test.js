@@ -59,7 +59,7 @@ describe('Test *events* Endpoints:', () => {
 
   // Case wrong username or password
   it('Edit Event', (done) => {
-    const genericId = '6048506f8fb7b6249151343e';
+    const genericId = '605574898c954d1c536d605b';
     const genericEvent = {
       eventId: genericId,
       eventName: 'Test Edit Event Test',
