@@ -83,10 +83,6 @@ EventSchema.statics.addEvent = function (userId, event, callBack) {
   const newEvent = new this({
     name: eventName,
     description: eventDescription,
-    startTime: Date.now(),
-    tables: {
-      elements: [],
-    },
   });
   newEvent
     .save()
