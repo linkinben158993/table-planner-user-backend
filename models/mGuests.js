@@ -125,4 +125,21 @@ GuestSchema.statics.deleteGuestById = function (guestId, callBack) {
     });
 };
 
+GuestSchema.statics.assignGuestsToSeats = function (guestSeats, callBack) {
+  const bulkOptions = guestSeats.map((guestSeat) => ({
+    updateOne: {
+      filter: { _id: guestSeat.guestId },
+      update: { $set: { table: guestSeat.table }, upsert: true },
+    },
+  }));
+
+  this.bulkWrite(bulkOptions)
+    .then((response) => {
+      callBack(null, response);
+    })
+    .catch((err) => {
+      callBack(err);
+    });
+};
+
 module.exports = mongoose.model('Guest', GuestSchema);

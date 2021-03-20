@@ -139,7 +139,6 @@ module.exports = {
       }
     })(req, res);
   },
-
   importGuests: async (req, res) => {
     passport.authenticate('jwt', { session: false }, async (err1, callBack) => {
       if (err1) {
@@ -163,7 +162,7 @@ module.exports = {
           };
           guests.push(guest);
         });
-        Guests.insertMany(guests, (err, response) => {
+        await Guests.insertMany(guests, (err, response) => {
           if (err) {
             res.status(500).json(SERVER_ERROR);
           } else {
@@ -173,6 +172,53 @@ module.exports = {
                 msgError: false,
               },
               response,
+            });
+          }
+        });
+      }
+    })(req, res);
+  },
+  assignTable: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, async (err1, callBack) => {
+      if (err1) {
+        res.status(500).json(err1);
+      }
+      if (!callBack) {
+        res.status(403).json('Forbidden');
+      } else {
+        const guestList = [
+          {
+            guestId: '6056286519027c2d666365fd',
+            table: {
+              id: '1',
+              seatNo: 1,
+            },
+          },
+          {
+            guestId: '6056286b19027c2d666365fe',
+            table: {
+              id: '2',
+              seatNo: 2,
+            },
+          },
+          {
+            guestId: '6056287019027c2d666365ff',
+            table: {
+              id: '3',
+              seatNo: 3,
+            },
+          },
+        ];
+        Guests.assignGuestsToSeats(guestList, (err, document) => {
+          if (err) {
+            res.status(500).json(SERVER_ERROR);
+          } else {
+            res.status(201).json({
+              message: {
+                msgBody: 'Assign Successful',
+                msgError: false,
+              },
+              trace: document,
             });
           }
         });

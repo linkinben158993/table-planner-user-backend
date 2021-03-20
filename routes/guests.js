@@ -145,4 +145,6 @@ router.post(
   guestCtrl.deleteGuest,
 );
 
+router.post('/assign', guestCtrl.assignTable);
+
 module.exports = router;
