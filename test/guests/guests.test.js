@@ -30,33 +30,33 @@ describe('Test *guests* Endpoints:', () => {
   });
 
   //Add guests
-  it('Add New Guest', (done) => {
-    const genericGuest = {
-      guestName: 'Test Guests - Name',
-      guestMail: 'Testguest@gmai.com',
-      guestPhone: 'Test Guests - Phone',
-      eventId: '6048529d3a797826f6920062',
-    };
-    chai
-      .request(server)
-      .post('/guests/add')
-      .send(genericGuest)
-      .set('access_token', jwt)
-      .then((response) => {
-        response.should.have.status(200);
-        console.log('Pass status code!');
-        response.body.should.be.a('object');
-        console.log('Pass body type!');
-        response.body.should.have.property('message').to.deep.equal({
-          msgBody: 'Add New Guest Successful!',
-          msgError: false,
-        });
-        idGuest = response.body._id;
-        console.log('Pass field message!');
-        done();
-      })
-      .catch(done);
-  });
+  // it('Add New Guest', (done) => {
+  //   const genericGuest = [{
+  //     guestName: 'Test Guests - Name',
+  //     guestMail: 'Testguest@gmai.com',
+  //     guestPhone: 'Test Guests - Phone',
+  //     eventId: '6048529d3a797826f6920062',
+  //   }];
+  //   chai
+  //     .request(server)
+  //     .post('/guests/add')
+  //     .send(genericGuest)
+  //     .set('access_token', jwt)
+  //     .then((response) => {
+  //       response.should.have.status(200);
+  //       console.log('Pass status code!');
+  //       response.body.should.be.a('object');
+  //       console.log('Pass body type!');
+  //       response.body.should.have.property('message').to.deep.equal({
+  //         msgBody: 'Add New Guest Successful!',
+  //         msgError: false,
+  //       });
+  //       idGuest = response.body._id;
+  //       console.log('Pass field message!');
+  //       done();
+  //     })
+  //     .catch(done);
+  // });
 
   //Get List
   it('Get List', (done) => {
@@ -135,7 +135,7 @@ describe('Test *guests* Endpoints:', () => {
     ];
     chai
       .request(server)
-      .post('/guests/import')
+      .post('/guests/add')
       .send(Guests)
       .set('access_token', jwt)
       .then((response) => {

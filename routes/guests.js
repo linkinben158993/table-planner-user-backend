@@ -3,6 +3,34 @@ const guestCtrl = require('../controllers/guests.controller');
 
 const router = express.Router();
 
+// router.post(
+//   '/add',
+//   /*
+//     #swagger.parameters['loginUser'] = {
+//         in: 'header',
+//         description: 'Token From Login.',
+//         required: true,
+//         name: 'access_token',
+//         schema: {
+//         $access_token: "<Get This From Login API>"
+//         }
+//     },
+//     #swagger.parameters['newGuest'] = {
+//         in: 'body',
+//         description: 'Token From Login.',
+//         required: true,
+//         name: 'newGuest',
+//         schema: {
+//         $guestName: "Test Guest With JWT Protection And De-reference stuff From Swagger",
+//         $guestMail: "Test Guest With JWT Protection And De-reference stuff From Swagger",
+//         $guestPhone: "Test Event Table Type",
+//         $eventId: "6048529d3a797826f6920062",
+//         }
+//     }
+//     */
+//   guestCtrl.addNewGuest,
+// );
+
 router.post(
   '/add',
   /*
@@ -11,24 +39,39 @@ router.post(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        schema: {
-        $access_token: "<Get This From Login API>"
-        }
+        value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
+MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
+.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
     },
     #swagger.parameters['newGuest'] = {
         in: 'body',
         description: 'Token From Login.',
         required: true,
         name: 'newGuest',
-        schema: {
-        $guestName: "Test Guest With JWT Protection And De-reference stuff From Swagger",
-        $guestMail: "Test Guest With JWT Protection And De-reference stuff From Swagger",
-        $guestPhone: "Test Event Table Type",
-        $eventId: "6048529d3a797826f6920062",
-        }
+        schema: [
+          {
+            "guestName": "Test 1",
+            "guestMail": "Test Guest With JWT Protection And De-reference stuff From Swagger",
+            "guestPhone": "Test Event Table Type",
+            "eventId": "6048529d3a797826f6920062"
+          },
+          {
+            "guestName": "Test 2",
+            "guestMail": "Test Guest With JWT Protection And De-reference stuff From Swagger",
+            "guestPhone": "Test Event Table Type",
+            "eventId": "6048529d3a797826f6920062"
+          },
+          {
+            "guestName": "Test 3",
+            "guestMail": "Test Guest With JWT Protection And De-reference stuff From Swagger",
+            "guestPhone": "Test Event Table Type",
+            "eventId": "6048529d3a797826f6920062"
+          }
+        ]
     }
     */
-  guestCtrl.addNewGuest,
+  guestCtrl.importGuests,
 );
 
 router.get(
@@ -39,9 +82,10 @@ router.get(
       description: 'Token From Login.',
       required: true,
       name: 'access_token',
-      schema: {
-        $access_token: "<Get This From Login API>"
-      }
+      value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
+MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
+.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
     }
 
   */
@@ -99,48 +143,6 @@ router.post(
     }
   */
   guestCtrl.deleteGuest,
-);
-
-router.post(
-  '/import',
-  /*
-    #swagger.parameters['loginUser'] = {
-        in: 'header',
-        description: 'Token From Login.',
-        required: true,
-        name: 'access_token',
-        schema: {
-        $access_token: "<Get This From Login API>"
-        }
-    },
-    #swagger.parameters['newGuest'] = {
-        in: 'body',
-        description: 'Token From Login.',
-        required: true,
-        name: 'newGuest',
-        schema: [
-          {
-            "guestName": "Test 1",
-            "guestMail": "Test Guest With JWT Protection And De-reference stuff From Swagger",
-            "guestPhone": "Test Event Table Type",
-            "eventId": "6048529d3a797826f6920062"
-          },
-          {
-            "guestName": "Test 2",
-            "guestMail": "Test Guest With JWT Protection And De-reference stuff From Swagger",
-            "guestPhone": "Test Event Table Type",
-            "eventId": "6048529d3a797826f6920062"
-          },
-          {
-            "guestName": "Test 3",
-            "guestMail": "Test Guest With JWT Protection And De-reference stuff From Swagger",
-            "guestPhone": "Test Event Table Type",
-            "eventId": "6048529d3a797826f6920062"
-          }
-        ]
-    }
-    */
-  guestCtrl.importGuests,
 );
 
 module.exports = router;
