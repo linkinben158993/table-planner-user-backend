@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Users = require('./mUsers');
+const Guests = require('./mGuests');
 
 const EventSchema = new mongoose.Schema({
   name: {
@@ -22,35 +23,9 @@ const EventSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  tables: [
-    {
-      id: {
-        type: String,
-      },
-      type: {
-        type: String,
-      },
-      position: {
-        x: {
-          type: Number,
-        },
-        y: {
-          type: Number,
-        },
-      },
-      data: {
-        label: {
-          type: String,
-        },
-        guests: [
-          {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Guest',
-          },
-        ],
-      },
-    },
-  ],
+  elements: {
+    type: String,
+  },
 });
 
 EventSchema.statics.getEventById = function (eventId, callBack) {
@@ -66,12 +41,18 @@ EventSchema.statics.getEventById = function (eventId, callBack) {
         null,
       );
     } else {
-      callBack(null, {
-        message: {
-          msgBody: 'Get event successful',
-          msgError: true,
-        },
-        data: value,
+      Guests.getGuestListInEvent(eventId, (err2, document) => {
+        if (err2) {
+          callBack(err2);
+        } else {
+          callBack(null, {
+            message: {
+              msgBody: 'Get event successful',
+              msgError: true,
+            },
+            data: { event: value, guests: document },
+          });
+        }
       });
     }
   });

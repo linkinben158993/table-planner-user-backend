@@ -46,7 +46,7 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
     },
     #swagger.parameters['newGuest'] = {
         in: 'body',
-        description: 'Token From Login.',
+        description: 'New Guests Array For Import.',
         required: true,
         name: 'newGuest',
         schema: [
@@ -129,7 +129,7 @@ router.post(
         required: true,
         name: 'access_token',
         schema: {
-        $access_token: "<Get This From Login API>"
+          $access_token: "<Get This From Login API>"
         }
     },
     #swagger.parameters['Guest'] = {
@@ -138,7 +138,7 @@ router.post(
         required: true,
         name: 'guestId',
         schema: {
-        $id: "604c85f990942b4b4416c639",
+          $id: "604c85f990942b4b4416c639",
         }
     }
   */

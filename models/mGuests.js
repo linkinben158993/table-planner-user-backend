@@ -19,6 +19,16 @@ const GuestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  table: {
+    id: {
+      type: String,
+      default: null,
+    },
+    seatNo: {
+      type: Number,
+      default: null,
+    },
+  },
 });
 
 GuestSchema.statics.addGuest = function (guest, callBack) {
@@ -34,7 +44,7 @@ GuestSchema.statics.addGuest = function (guest, callBack) {
   return newGuest
     .save()
     .then(() => {
-      callBack(null, true);
+      callBack(null, guest);
     })
     .catch((err) => {
       callBack(null, err);

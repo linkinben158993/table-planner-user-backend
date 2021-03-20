@@ -152,13 +152,14 @@ module.exports = {
         const temp = req.body;
         const guests = [];
         temp.forEach((element) => {
-          const { guestName, guestMail, guestPhone, eventId } = element;
+          const { guestName, guestMail, guestPhone, eventId, table } = element;
           const guest = {
             name: guestName,
             email: guestMail,
             phoneNumber: guestPhone,
             priority: '',
             event: eventId,
+            table,
           };
           guests.push(guest);
         });
