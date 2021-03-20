@@ -14,6 +14,10 @@ const EventSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  endTime: {
+    type: Date,
+    default: new Date(+new Date() + 7 * 24 * 60 * 60 * 1000),
+  },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -37,7 +41,6 @@ const EventSchema = new mongoose.Schema({
       data: {
         label: {
           type: String,
-          required: true,
         },
         guests: [
           {

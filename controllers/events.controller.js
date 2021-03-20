@@ -49,13 +49,18 @@ module.exports = {
       if (!callBack) {
         res.status(403).json('Forbidden');
       } else {
-        const { eventName, eventDescription, tableType } = req.body;
+        const { eventName, eventDescription, tableType, eventLabel } = req.body;
         // Redefine host with passport jwt
         if (!eventName || !eventDescription || !tableType) {
           res.status(400).json(BAD_REQUEST);
         } else {
           const { _id } = callBack;
-          const newEvent = { eventName, eventDescription, tableType };
+          const newEvent = {
+            eventName,
+            eventDescription,
+            tableType,
+            eventLabel,
+          };
           Events.addEvent(_id, newEvent, (err1, document) => {
             if (err1) {
               res.status(500).json(SERVER_ERROR);
