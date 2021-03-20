@@ -101,4 +101,31 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
   eventCtrl.sendMailToAllGuest,
 );
 
+router.post(
+  '/invite-qr',
+  /*
+  #swagger.parameters['loginUser'] = {
+     in: 'header',
+     description: 'Token From Login.',
+     required: true,
+     name: 'access_token',
+     value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
+MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
+.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
+  },
+  #swagger.parameters['tableEvents'] = {
+     in: 'body',
+     description: 'Event For Updating Table.',
+     required: true,
+     name: 'updateTableEvent',
+     schema: {
+      $eventId: "6048506f8fb7b6249151343e",
+      $tables: []
+    }
+  }
+*/
+  eventCtrl.addOrUpdateTable,
+);
+
 module.exports = router;
