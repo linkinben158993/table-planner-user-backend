@@ -19,6 +19,29 @@ const SERVER_ERROR = {
 // const host = '600ea488f70da93fde2b3acc';
 
 module.exports = {
+  getEventByID: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err, callBack) => {
+      if (err) {
+        res.status(500).json(err);
+      }
+      if (!callBack) {
+        res.status(403).json('Forbidden');
+      } else {
+        const eventId = req.params.id;
+        if (!eventId) {
+          res.status(400).json(BAD_REQUEST);
+        } else {
+          Events.getEventById(eventId, (err1, document) => {
+            if (err1) {
+              res.status(500).json(SERVER_ERROR);
+            } else {
+              res.status(200).json(document);
+            }
+          });
+        }
+      }
+    })(req, res);
+  },
   // Currently hardcode for default user for convenience change immediately on applying passport
   getAllEvents: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {

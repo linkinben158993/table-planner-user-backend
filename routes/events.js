@@ -4,6 +4,22 @@ const eventCtrl = require('../controllers/events.controller');
 const router = express.Router();
 
 router.get(
+  '/my/:id',
+  /* #swagger.parameters['loginUser'] = {
+     in: 'header',
+     description: 'Token From Login.',
+     required: true,
+     name: 'access_token',
+     value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
+MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
+.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
+}
+  */
+  eventCtrl.getEventByID,
+);
+
+router.get(
   '/my',
   /* #swagger.parameters['loginUser'] = {
        in: 'header',
@@ -39,8 +55,7 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
      name: 'newEvent',
      schema: {
       $eventName: "Test Event With JWT Protection And De-reference stuff From Swagger",
-      $eventDescription: "Test Event With JWT Protection And De-reference stuff From Swagger",
-      $tableType: "Test Event Table Type"
+      $eventDescription: "Test Event With JWT Protection And De-reference stuff From Swagger"
     }
   }
 */

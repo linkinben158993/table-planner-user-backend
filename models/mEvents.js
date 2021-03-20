@@ -53,6 +53,30 @@ const EventSchema = new mongoose.Schema({
   ],
 });
 
+EventSchema.statics.getEventById = function (eventId, callBack) {
+  this.findOne({ _id: eventId }).then((value) => {
+    if (!value) {
+      callBack(
+        {
+          message: {
+            msgBody: 'No document found!',
+            msgError: true,
+          },
+        },
+        null,
+      );
+    } else {
+      callBack(null, {
+        message: {
+          msgBody: 'Get event successful',
+          msgError: true,
+        },
+        data: value,
+      });
+    }
+  });
+};
+
 // Add new event and which user is its host
 EventSchema.statics.addEvent = function (userId, event, callBack) {
   const { eventName, eventDescription } = event;
@@ -84,7 +108,7 @@ EventSchema.statics.addEvent = function (userId, event, callBack) {
             document
               .save()
               .then(() => {
-                callBack(null, true);
+                callBack(null, newEvent);
               })
               .catch((err) => {
                 callBack(null, err);
