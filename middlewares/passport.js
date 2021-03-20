@@ -52,7 +52,7 @@ passport.use(
       if (!user) {
         // console.log('Passport: User not found!');
         return done({
-          message: { msgBody: 'User not found', msgError: true },
+          message: { msgBody: 'Password/Username not match!', msgError: true },
           errCode: 'ERR_USER_NOT_FOUND',
         });
       }
