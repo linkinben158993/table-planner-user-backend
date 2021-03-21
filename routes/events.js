@@ -83,7 +83,9 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
        schema: {
         $eventId: "6048506f8fb7b6249151343e",
         $eventName: "Test Edit Event With JWT Protection And De-reference stuff From Swagger",
-        $eventDescription: "Test Edit Event Table Type"
+        $eventDescription: "Test Edit Event Table Type",
+        $eventElements: "Stringify object from React Flow
+        <Not Required But Should Pass Empty String On Submit or Old State>"
       }
     }
 */

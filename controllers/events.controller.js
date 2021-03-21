@@ -1,5 +1,4 @@
 const passport = require('passport');
-const Users = require('../models/mUsers');
 const Events = require('../models/mEvents');
 const Guests = require('../models/mGuests');
 const nodeMailer = require('../middlewares/node-mailer');
@@ -51,7 +50,7 @@ module.exports = {
       if (!callBack) {
         res.status(403).json('Forbidden');
       } else {
-        Users.findOne({ _id: callBack._id })
+        Events.find({ creator: callBack._id })
           .then((document) => {
             res.status(200).json({ document });
           })
@@ -101,7 +100,7 @@ module.exports = {
   },
   editEvent: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      const { eventId, eventName, eventDescription } = req.body;
+      const { eventId, eventName, eventDescription, eventElements } = req.body;
       if (err) {
         res.status(500).json(SERVER_ERROR);
       }
@@ -111,7 +110,12 @@ module.exports = {
         res.status(403).json('Forbidden');
       } else {
         // If if events is from of this user's possession?
-        const newEvent = { eventId, eventName, eventDescription };
+        const newEvent = {
+          eventId,
+          eventName,
+          eventDescription,
+          eventElements,
+        };
         Events.editEvent(callBack._id, newEvent, (err1, document) => {
           if (err1) {
             res.status(500).json(SERVER_ERROR);

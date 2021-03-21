@@ -25,6 +25,7 @@ const EventSchema = new mongoose.Schema({
   },
   elements: {
     type: String,
+    default: null,
   },
 });
 
@@ -65,23 +66,24 @@ EventSchema.statics.addEvent = function (userId, event, callBack) {
     name: eventName,
     description: eventDescription,
   });
-  newEvent
-    .save()
-    .then(() => {
-      Users.findOne({ _id: userId })
-        .then((document) => {
-          if (!document) {
-            callBack(
-              {
-                message: {
-                  msgBody: 'No document found!',
-                  msgError: true,
-                },
-              },
-              null,
-            );
-          } else {
-            document.myEvents.push(newEvent);
+  Users.findOne({ _id: userId })
+    .then((document) => {
+      if (!document) {
+        callBack(
+          {
+            message: {
+              msgBody: 'No document found!',
+              msgError: true,
+            },
+          },
+          null,
+        );
+      } else {
+        newEvent.set({ creator: document._id });
+        document.myEvents.push(newEvent);
+        newEvent
+          .save()
+          .then(() => {
             document
               .save()
               .then(() => {
@@ -90,17 +92,17 @@ EventSchema.statics.addEvent = function (userId, event, callBack) {
               .catch((err) => {
                 callBack(null, err);
               });
-          }
-        })
-        .catch((err) => {
-          callBack(null, err);
-        });
+          })
+          .catch((err) => callBack(null, err));
+      }
     })
-    .catch((err) => callBack(null, err));
+    .catch((err) => {
+      callBack(null, err);
+    });
 };
 
 EventSchema.statics.editEvent = function (host, event, callBack) {
-  const { eventId, eventName, eventDescription } = event;
+  const { eventId, eventName, eventDescription, eventElements } = event;
   this.findOne({ _id: eventId })
     .then((document) => {
       if (!document) {
@@ -117,6 +119,7 @@ EventSchema.statics.editEvent = function (host, event, callBack) {
         document.set({
           name: eventName,
           description: eventDescription,
+          elements: eventElements,
         });
         document
           .save()
