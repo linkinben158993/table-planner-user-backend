@@ -61,10 +61,10 @@ EventSchema.statics.getEventById = function (eventId, callBack) {
 
 // Add new event and which user is its host
 EventSchema.statics.addEvent = function (userId, event, callBack) {
-  const { eventName, eventDescription } = event;
+  const { name, description } = event;
   const newEvent = new this({
-    name: eventName,
-    description: eventDescription,
+    name,
+    description,
   });
   Users.findOne({ _id: userId })
     .then((document) => {
@@ -102,8 +102,8 @@ EventSchema.statics.addEvent = function (userId, event, callBack) {
 };
 
 EventSchema.statics.editEvent = function (host, event, callBack) {
-  const { eventId, eventName, eventDescription, eventElements } = event;
-  this.findOne({ _id: eventId })
+  const { id, name, description, elements } = event;
+  this.findOne({ _id: id })
     .then((document) => {
       if (!document) {
         callBack(
@@ -117,9 +117,9 @@ EventSchema.statics.editEvent = function (host, event, callBack) {
         );
       } else {
         document.set({
-          name: eventName,
-          description: eventDescription,
-          elements: eventElements,
+          name,
+          description,
+          elements,
         });
         document
           .save()

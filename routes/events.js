@@ -119,7 +119,7 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
 );
 
 router.post(
-  '/invite-qr',
+  '/update-table',
   /*
   #swagger.parameters['loginUser'] = {
      in: 'header',
@@ -133,9 +133,9 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
   },
   #swagger.parameters['tableEvents'] = {
      in: 'body',
-     description: 'Event For Updating Table.',
+     description: 'Event For Sending Invitation.',
      required: true,
-     name: 'updateTableEvent',
+     name: 'mailInvitationEvent',
      schema: {
       $id: "6048506f8fb7b6249151343e",
       $tables: []
