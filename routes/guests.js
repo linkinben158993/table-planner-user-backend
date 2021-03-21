@@ -51,22 +51,14 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
         name: 'newGuest',
         schema: [
           {
-            "guestName": "Test 1",
-            "guestMail": "Test Guest With JWT Protection And De-reference stuff From Swagger",
-            "guestPhone": "Test Event Table Type",
-            "eventId": "6048529d3a797826f6920062"
-          },
-          {
-            "guestName": "Test 2",
-            "guestMail": "Test Guest With JWT Protection And De-reference stuff From Swagger",
-            "guestPhone": "Test Event Table Type",
-            "eventId": "6048529d3a797826f6920062"
-          },
-          {
-            "guestName": "Test 3",
-            "guestMail": "Test Guest With JWT Protection And De-reference stuff From Swagger",
-            "guestPhone": "Test Event Table Type",
-            "eventId": "6048529d3a797826f6920062"
+            "name": "Test 1",
+            "email": "Test Guest With JWT Protection And De-reference stuff From Swagger",
+            "phoneNumber": "Test Event Table Type",
+            "eventId": "6048529d3a797826f6920062",
+            "table": {
+              "id": "1",
+              "seatNo": 1,
+            }
           }
         ]
     }
@@ -110,10 +102,10 @@ router.post(
         required: true,
         name: 'newGuest',
         schema: {
-        $guestId: "604c85f990942b4b4416c639",
-        $guestName: "edit guest",
-        $guestMail: "edit guest mail",
-        $guestPhone: "0123456",
+        $id: "604c85f990942b4b4416c639",
+        $name: "edit guest",
+        $email: "edit guest mail",
+        $phoneNumber: "0123456",
         }
     }
     */

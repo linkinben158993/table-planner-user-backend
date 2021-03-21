@@ -32,12 +32,12 @@ const GuestSchema = new mongoose.Schema({
 });
 
 GuestSchema.statics.addGuest = function (guest, callBack) {
-  const { guestName, guestMail, guestPhone, eventId } = guest;
+  const { name, email, phoneNumber, eventId } = guest;
 
   const newGuest = new this({
-    name: guestName,
-    email: guestMail,
-    phoneNumber: guestPhone,
+    name,
+    email,
+    phoneNumber,
     priority: '',
     event: eventId,
   });
@@ -118,6 +118,32 @@ GuestSchema.statics.deleteGuestById = function (id, callBack) {
             callBack(err);
           });
       }
+    })
+    .catch((err) => {
+      callBack(err);
+    });
+};
+
+GuestSchema.statics.importGuestsToEvent = function (guests, callBack) {
+  const bulkOptions = guests.map((guest) => ({
+    updateOne: {
+      filter: { email: guest.email, event: guest.event },
+      update: {
+        $set: {
+          phoneNumber: guest.phoneNumber,
+          name: guest.name,
+          priority: guest.priority,
+          table: guest.table,
+        },
+        upsert: true,
+      },
+      upsert: true,
+    },
+  }));
+
+  this.bulkWrite(bulkOptions)
+    .then((response) => {
+      callBack(null, response);
     })
     .catch((err) => {
       callBack(err);

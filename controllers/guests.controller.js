@@ -151,18 +151,18 @@ module.exports = {
         const temp = req.body;
         const guests = [];
         temp.forEach((element) => {
-          const { guestName, guestMail, guestPhone, eventId, table } = element;
+          const { name, email, phoneNumber, eventId, table } = element;
           const guest = {
-            name: guestName,
-            email: guestMail,
-            phoneNumber: guestPhone,
+            name,
+            email,
+            phoneNumber,
             priority: '',
             event: eventId,
             table,
           };
           guests.push(guest);
         });
-        await Guests.insertMany(guests, (err, response) => {
+        Guests.importGuestsToEvent(guests, (err, response) => {
           if (err) {
             res.status(500).json(SERVER_ERROR);
           } else {
