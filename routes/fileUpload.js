@@ -33,14 +33,12 @@ router.post('/events', async (req, res) => {
           },
         });
       } else {
-        // eslint-disable-next-line no-restricted-syntax
-        for (const file of files) {
+        files.map(async (file) => {
           const { path } = file;
-          // eslint-disable-next-line no-await-in-loop
           const newPath = await uploader(path);
           urls.push(newPath);
           fs.unlinkSync(path);
-        }
+        });
 
         res.status(200).json({
           message: {

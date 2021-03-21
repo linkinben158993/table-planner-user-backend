@@ -82,9 +82,9 @@ GuestSchema.statics.editGuest = function (guest, callBack) {
     .catch((err) => callBack(null, err));
 };
 
-GuestSchema.statics.getGuestListInEvent = function (eventId, callBack) {
+GuestSchema.statics.getGuestListInEvent = function (id, callBack) {
   return this.find({
-    event: eventId,
+    event: id,
   })
     .then((value) => {
       if (value.length === 0) {
@@ -95,8 +95,7 @@ GuestSchema.statics.getGuestListInEvent = function (eventId, callBack) {
     .catch((err) => callBack(err));
 };
 
-GuestSchema.statics.deleteGuestById = function (guestId, callBack) {
-  const { id } = guestId;
+GuestSchema.statics.deleteGuestById = function (id, callBack) {
   this.findOne({ _id: id })
     .then((document) => {
       if (!document) {
@@ -125,11 +124,11 @@ GuestSchema.statics.deleteGuestById = function (guestId, callBack) {
     });
 };
 
-GuestSchema.statics.assignGuestsToSeats = function (guestSeats, callBack) {
-  const bulkOptions = guestSeats.map((guestSeat) => ({
+GuestSchema.statics.assignGuestsToSeats = function (seats, callBack) {
+  const bulkOptions = seats.map((seat) => ({
     updateOne: {
-      filter: { _id: guestSeat.guestId },
-      update: { $set: { table: guestSeat.table }, upsert: true },
+      filter: { _id: seat.guestId },
+      update: { $set: { table: seat.table }, upsert: true },
     },
   }));
 
@@ -141,5 +140,8 @@ GuestSchema.statics.assignGuestsToSeats = function (guestSeats, callBack) {
       callBack(err);
     });
 };
+
+GuestSchema.set('toObject', { getters: true });
+GuestSchema.set('toJSON', { getters: true });
 
 module.exports = mongoose.model('Guest', GuestSchema);

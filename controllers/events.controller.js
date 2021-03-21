@@ -26,11 +26,11 @@ module.exports = {
       if (!callBack) {
         res.status(403).json('Forbidden');
       } else {
-        const eventId = req.params.id;
-        if (!eventId) {
+        const { id } = req.params;
+        if (!id) {
           res.status(400).json(BAD_REQUEST);
         } else {
-          Events.getEventById(eventId, (err1, document) => {
+          Events.getEventById(id, (err1, document) => {
             if (err1) {
               res.status(500).json(SERVER_ERROR);
             } else {
@@ -71,15 +71,15 @@ module.exports = {
       if (!callBack) {
         res.status(403).json('Forbidden');
       } else {
-        const { eventName, eventDescription } = req.body;
+        const { name, description } = req.body;
         // Redefine host with passport jwt
-        if (!eventName || !eventDescription) {
+        if (!name || !description) {
           res.status(400).json(BAD_REQUEST);
         } else {
           const { _id } = callBack;
           const newEvent = {
-            eventName,
-            eventDescription,
+            name,
+            description,
           };
           Events.addEvent(_id, newEvent, (err1, document) => {
             if (err1) {
@@ -90,7 +90,7 @@ module.exports = {
                   msgBody: 'Add New Event Successful!',
                   msgError: false,
                 },
-                document,
+                data: document,
               });
             }
           });
@@ -100,20 +100,20 @@ module.exports = {
   },
   editEvent: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      const { eventId, eventName, eventDescription, eventElements } = req.body;
+      const { id, name, description, eventElements } = req.body;
       if (err) {
         res.status(500).json(SERVER_ERROR);
       }
-      if (!eventId || !eventName || !eventDescription) {
+      if (!id || !name || !description) {
         res.status(400).json(BAD_REQUEST);
       } else if (!callBack) {
         res.status(403).json('Forbidden');
       } else {
         // If if events is from of this user's possession?
         const newEvent = {
-          eventId,
-          eventName,
-          eventDescription,
+          id,
+          name,
+          description,
           eventElements,
         };
         Events.editEvent(callBack._id, newEvent, (err1, document) => {
@@ -134,17 +134,17 @@ module.exports = {
   },
   addOrUpdateTable: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      const { eventId, tables } = req.body;
+      const { id, tables } = req.body;
       if (err) {
         res.status(500).json(SERVER_ERROR);
       }
-      if (!eventId || !tables) {
+      if (!id || !tables) {
         res.status(400).json(BAD_REQUEST);
       } else if (!callBack) {
         res.status(403).json('Forbidden');
       } else {
         // If if events is from of this user's possession?
-        Events.updateOne({ _id: eventId }, { $set: { tables } })
+        Events.updateOne({ _id: id }, { $set: { tables } })
           .then((document) => {
             res.status(200).json({ document });
           })
@@ -159,17 +159,17 @@ module.exports = {
   },
   getTableOfEvent: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      const { eventId } = req.body;
+      const { id } = req.body;
       if (err) {
         res.status(500).json(SERVER_ERROR);
       }
-      if (!eventId) {
+      if (!id) {
         res.status(400).json(BAD_REQUEST);
       } else if (!callBack) {
         res.status(403).json('Forbidden');
       } else {
         // If if events is from of this user's possession?
-        Events.findById(eventId)
+        Events.findById(id)
           .select('tables')
           .then((document) => {
             res.status(200).json({ document });
@@ -185,20 +185,20 @@ module.exports = {
   },
   sendMailToAllGuest: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      const { eventId } = req.body;
+      const { id } = req.body;
       if (err) {
         res.status(500).json(SERVER_ERROR);
       }
-      if (!eventId) {
+      if (!id) {
         res.status(400).json(BAD_REQUEST);
       } else if (!callBack) {
         res.status(403).json('Forbidden');
       } else {
-        Events.findOne({ _id: eventId }, 'name description startTime creator')
+        Events.findOne({ _id: id }, 'name description startTime creator')
           .populate('creator')
           .then((event) => {
             // Get all guest's emails of event
-            Guests.find({ event: eventId })
+            Guests.find({ event: id })
               .select('email')
               .then((mails) => {
                 if (mails.length === 0) {

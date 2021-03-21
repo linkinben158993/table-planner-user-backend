@@ -132,4 +132,7 @@ EventSchema.statics.editEvent = function (host, event, callBack) {
     .catch((err) => callBack(null, err));
 };
 
+EventSchema.set('toObject', { getters: true });
+EventSchema.set('toJSON', { getters: true });
+
 module.exports = mongoose.model('Event', EventSchema);

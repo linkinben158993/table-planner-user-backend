@@ -54,8 +54,8 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
      required: true,
      name: 'newEvent',
      schema: {
-      $eventName: "Test Event With JWT Protection And De-reference stuff From Swagger",
-      $eventDescription: "Test Event With JWT Protection And De-reference stuff From Swagger"
+      $name: "Test Event With JWT Protection And De-reference stuff From Swagger",
+      $description: "Test Event With JWT Protection And De-reference stuff From Swagger"
     }
   }
 */
@@ -81,10 +81,10 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
        required: true,
        name: 'newEvent',
        schema: {
-        $eventId: "6048506f8fb7b6249151343e",
-        $eventName: "Test Edit Event With JWT Protection And De-reference stuff From Swagger",
-        $eventDescription: "Test Edit Event Table Type",
-        $eventElements: "Stringify object from React Flow
+        $id: "6048506f8fb7b6249151343e",
+        $name: "Test Edit Event With JWT Protection And De-reference stuff From Swagger",
+        $description: "Test Edit Event Table Type",
+        $elements: "Stringify object from React Flow
         <Not Required But Should Pass Empty String On Submit or Old State>"
       }
     }
@@ -111,7 +111,7 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
      required: true,
      name: 'sendMailEvent',
      schema: {
-      $eventId: "6048506f8fb7b6249151343e",
+      $id: "6048506f8fb7b6249151343e",
     }
   }
 */
@@ -137,7 +137,7 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
      required: true,
      name: 'updateTableEvent',
      schema: {
-      $eventId: "6048506f8fb7b6249151343e",
+      $id: "6048506f8fb7b6249151343e",
       $tables: []
     }
   }

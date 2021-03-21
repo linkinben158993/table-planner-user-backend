@@ -277,4 +277,7 @@ UserSchema.statics.resetUserPassword = function (email, otp, oldPassword, newPas
     });
 };
 
+UserSchema.set('toObject', { getters: true });
+UserSchema.set('toJSON', { getters: true });
+
 module.exports = mongoose.model('User', UserSchema);
