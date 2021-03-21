@@ -100,7 +100,7 @@ module.exports = {
   },
   editEvent: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      const { id, name, description, eventElements } = req.body;
+      const { id, name, description, elements } = req.body;
       if (err) {
         res.status(500).json(SERVER_ERROR);
       }
@@ -114,7 +114,7 @@ module.exports = {
           id,
           name,
           description,
-          eventElements,
+          elements,
         };
         Events.editEvent(callBack._id, newEvent, (err1, document) => {
           if (err1) {
