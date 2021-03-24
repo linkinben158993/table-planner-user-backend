@@ -30,7 +30,8 @@ router.post(
      required: true,
      schema: {
       $username: "an@gmail.com",
-      $password: "123456"
+      $password: "123456",
+      $isNormalFlow: true
      }
 } */
   userCtrl.register,
