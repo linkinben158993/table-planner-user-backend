@@ -1,29 +1,21 @@
 const passport = require('passport');
 const Guests = require('../models/mGuests');
-
-const BAD_REQUEST = {
-  message: {
-    msgBody: 'Bad User Input',
-    msgError: true,
-  },
-};
-
-const SERVER_ERROR = {
-  SERVER_ERROR: 'Server Error',
-};
+const CustomResponse = require('../constants/response.message');
 
 module.exports = {
   addNewGuest: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err1, callBack) => {
       if (err1) {
-        res.status(500).json(err1);
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err1;
+        res.status(500).json(response);
       }
       if (!callBack) {
         res.status(403).json('Forbidden');
       } else {
         const { guestName, guestMail, guestPhone, eventId } = req.body;
         if (!guestName || !guestMail || !eventId) {
-          res.status(400).json(BAD_REQUEST);
+          res.status(400).json(CustomResponse.BAD_REQUEST);
         } else {
           const newGuest = {
             guestName,
@@ -33,7 +25,9 @@ module.exports = {
           };
           Guests.addGuest(newGuest, (err2, document) => {
             if (err2) {
-              res.status(500).json(SERVER_ERROR);
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = err2;
+              res.status(500).json(response);
             } else {
               res.status(200).json({
                 message: {
@@ -52,18 +46,22 @@ module.exports = {
   getGuestList: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err1, callBack) => {
       if (err1) {
-        res.status(500).json(err1);
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err1;
+        res.status(500).json(response);
       }
       if (!callBack) {
-        res.status(403).json('Forbidden');
+        res.status(403).json(CustomResponse.FORBIDDEN);
       } else {
         const eventId = req.params.id;
         if (!eventId) {
-          res.status(400).json(BAD_REQUEST);
+          res.status(400).json(CustomResponse.BAD_REQUEST);
         } else {
           Guests.getGuestListInEvent(eventId, (err2, document) => {
             if (err2) {
-              res.status(500).json(SERVER_ERROR);
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = err2;
+              res.status(500).json(response);
             } else {
               res.status(200).json({
                 message: {
@@ -82,19 +80,23 @@ module.exports = {
   editGuest: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err1, callBack) => {
       if (err1) {
-        res.status(500).json(err1);
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err1;
+        res.status(500).json(response);
       }
       if (!callBack) {
-        res.status(403).json('Forbidden');
+        res.status(403).json(CustomResponse.FORBIDDEN);
       } else {
         const { guestId, guestName, guestMail, guestPhone } = req.body;
         if (!guestName || !guestMail || !guestId) {
-          res.status(400).json(BAD_REQUEST);
+          res.status(400).json(CustomResponse.BAD_REQUEST);
         } else {
           const guest = { guestId, guestName, guestMail, guestPhone };
           Guests.editGuest(guest, (err2, document) => {
             if (err2) {
-              res.status(500).json(SERVER_ERROR);
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = err2;
+              res.status(500).json(response);
             } else {
               res.status(200).json({
                 message: {
@@ -113,18 +115,22 @@ module.exports = {
   deleteGuest: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err1, callBack) => {
       if (err1) {
-        res.status(500).json(err1);
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err1;
+        res.status(500).json(response);
       }
       if (!callBack) {
-        res.status(403).json('Forbidden');
+        res.status(403).json(CustomResponse.FORBIDDEN);
       } else {
         const guestId = req.body;
         if (!guestId) {
-          res.status(400).json(BAD_REQUEST);
+          res.status(400).json(CustomResponse.BAD_REQUEST);
         } else {
           Guests.deleteGuestById(guestId, (err2, document) => {
             if (err2) {
-              res.status(500).json(SERVER_ERROR);
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = err2;
+              res.status(500).json(response);
             } else {
               res.status(200).json({
                 message: {
@@ -142,10 +148,12 @@ module.exports = {
   importGuests: async (req, res) => {
     passport.authenticate('jwt', { session: false }, async (err1, callBack) => {
       if (err1) {
-        res.status(500).json(err1);
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err1;
+        res.status(500).json(response);
       }
       if (!callBack) {
-        res.status(403).json('Forbidden');
+        res.status(403).json(CustomResponse.FORBIDDEN);
       } else {
         //
         const temp = req.body;
@@ -164,7 +172,9 @@ module.exports = {
         });
         Guests.importGuestsToEvent(guests, (err, response) => {
           if (err) {
-            res.status(500).json(SERVER_ERROR);
+            const response1 = CustomResponse.SERVER_ERROR;
+            response1.trace = err;
+            res.status(500).json(response1);
           } else {
             res.status(200).json({
               message: {
@@ -181,7 +191,9 @@ module.exports = {
   assignTable: async (req, res) => {
     passport.authenticate('jwt', { session: false }, async (err1, callBack) => {
       if (err1) {
-        res.status(500).json(err1);
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err1;
+        res.status(500).json(response);
       }
       if (!callBack) {
         res.status(403).json('Forbidden');
@@ -211,7 +223,9 @@ module.exports = {
         ];
         Guests.assignGuestsToSeats(guestList, (err, document) => {
           if (err) {
-            res.status(500).json(SERVER_ERROR);
+            const response = CustomResponse.SERVER_ERROR;
+            response.trace = err;
+            res.status(500).json(response);
           } else {
             res.status(201).json({
               message: {

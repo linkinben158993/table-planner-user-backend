@@ -4,11 +4,7 @@ const Users = require('../models/mUsers');
 const nodeMailer = require('../middlewares/node-mailer');
 // eslint-disable-next-line no-unused-vars
 const passportConfig = require('../middlewares/passport');
-
-const CONSTANT = {
-  SERVER_ERROR: 'Server Error',
-  BAD_REQUEST: 'Bad Request',
-};
+const CustomResponse = require('../constants/response.message');
 
 const signToken = (userID) => {
   const token = JWT.sign(
@@ -29,7 +25,9 @@ module.exports = {
   login: async (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, callBack) => {
       if (err && !err.errCode) {
-        res.status(500).json({ errCode: 'Something happened!' });
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err;
+        res.status(500).json(response);
       } else if (err && err.errCode) {
         res.status(400).json(err.message);
       } else {
@@ -75,7 +73,7 @@ module.exports = {
     const { username, password, isNormalFlow } = req.body;
     // Should ensures isNormalFlow and username from clients, password can be based on isNormalFlow
     if (isNormalFlow === undefined || !username) {
-      res.status(400).json(CONSTANT.BAD_REQUEST);
+      res.status(400).json(CustomResponse.BAD_REQUEST);
     } else {
       const result = await nodeMailer.registerByMail(username, otp);
       if (result.success) {
@@ -83,39 +81,51 @@ module.exports = {
         if (isNormalFlow) {
           Users.createUserWithOTP(username, password, otp, (err, document) => {
             if (err) {
-              res.status(500).json(CONSTANT.SERVER_ERROR);
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = err;
+              res.status(500).json(response);
             } else {
-              res.status(201).json(document);
+              res.status(201).json({
+                message: {
+                  msgBody: `Mail should be sent to ${username}`,
+                  msgError: false,
+                },
+                trace: document,
+              });
             }
           });
         } else {
           Users.createUserWithOTP(username, 'SUPER-HARD-TO-REMEMBER-PASSWORD', otp, (err, document) => {
             if (err) {
-              res.status(500).json(CONSTANT.SERVER_ERROR);
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = err;
+              res.status(500).json(response);
             } else {
-              res.status(201).json(document);
+              res.status(201).json({
+                message: {
+                  msgBody: `Mail should be sent to ${username}`,
+                  msgError: false,
+                },
+                trace: document,
+              });
             }
           });
         }
       } else {
-        res.status(500).json(CONSTANT.SERVER_ERROR);
+        res.status(500).json(CustomResponse.SERVER_ERROR);
       }
     }
   },
   activate: async (req, res) => {
     const { otp, email } = req.body;
     if (!otp || !email) {
-      res.status(400).json(CONSTANT.BAD_REQUEST);
+      res.status(400).json(CustomResponse.BAD_REQUEST);
     } else {
       Users.activateAccount(email, otp, (err, document) => {
         if (err) {
-          res.status(400).json({
-            message: {
-              msgBody: `Activate account: ${email} failed!`,
-              msgError: false,
-            },
-            trace: err,
-          });
+          const response = CustomResponse.SERVER_ERROR;
+          response.trace = err;
+          res.status(400).json(response);
         } else {
           res.status(200).json({
             message: {
@@ -129,14 +139,16 @@ module.exports = {
   },
   forgetPassword: async (req, res) => {
     if (!req.body.email) {
-      res.status(400).json(CONSTANT.BAD_REQUEST);
+      res.status(400).json(CustomResponse.BAD_REQUEST);
     } else {
       const newOTP = randOTP();
       const result = await nodeMailer.resetPassword(req.body.email, newOTP);
       if (result.success) {
         Users.resetOTP(req.body.email, newOTP, (err, document) => {
           if (err) {
-            res.status(500).json(CONSTANT.SERVER_ERROR);
+            const response = CustomResponse.SERVER_ERROR;
+            response.trace = err;
+            res.status(500).json(response);
           } else {
             res.status(200).json({
               message: {
@@ -147,18 +159,20 @@ module.exports = {
           }
         });
       } else {
-        res.status(500).json(CONSTANT.SERVER_ERROR);
+        res.status(500).json(CustomResponse.SERVER_ERROR);
       }
     }
   },
   resetPassword: async (req, res) => {
     if (!req.body.email || !req.body.otp || !req.body.oldPassword || !req.body.newPassword) {
-      res.status(400).json(CONSTANT.BAD_REQUEST);
+      res.status(400).json(CustomResponse.BAD_REQUEST);
     } else {
       const { email, otp, oldPassword, newPassword } = req.body;
       Users.resetUserPassword(email, otp, oldPassword, newPassword, (err, document) => {
         if (err) {
-          res.status(400).json(err);
+          const response = CustomResponse.SERVER_ERROR;
+          response.trace = err;
+          res.status(500).json(response);
         } else {
           res.status(200).json({
             message: {
