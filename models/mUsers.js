@@ -142,7 +142,7 @@ UserSchema.statics.createUserWithOTP = function (email, password, otp, callBack)
 
     return newUser
       .save()
-      .then(() => callBack(null, true))
+      .then(() => callBack(null, { username: newUser.email }))
       .catch((err1) => callBack(null, err1));
   });
 };
