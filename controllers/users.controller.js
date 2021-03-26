@@ -90,7 +90,7 @@ module.exports = {
                   msgBody: `Mail should be sent to ${username}`,
                   msgError: false,
                 },
-                trace: { document },
+                trace: document,
               });
             }
           });
