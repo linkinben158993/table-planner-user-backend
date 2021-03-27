@@ -29,7 +29,7 @@ module.exports = {
         response.trace = err;
         res.status(500).json(response);
       } else if (err && err.errCode) {
-        res.status(400).json(err.message);
+        res.status(400).json(err);
       } else {
         const token = signToken(callBack._id);
         const { email, role, fullName } = callBack;
