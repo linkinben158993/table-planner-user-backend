@@ -129,6 +129,7 @@ UserSchema.statics.createUserWithOTP = function (email, password, otp, callBack)
           username: user.email,
           fullName: user.fullName,
         },
+        errCode: 'ERR_USER_EXIST',
       });
     }
 

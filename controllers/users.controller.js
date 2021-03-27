@@ -80,10 +80,12 @@ module.exports = {
         // Password should be sent when isNormalFlow is true
         if (isNormalFlow) {
           Users.createUserWithOTP(username, password, otp, (err, document) => {
-            if (err) {
+            if (err && !err.errCode) {
               const response = CustomResponse.SERVER_ERROR;
               response.trace = err;
               res.status(500).json(response);
+            } else if (err && err.errCode) {
+              res.status(400).json(err);
             } else {
               res.status(201).json({
                 message: {
