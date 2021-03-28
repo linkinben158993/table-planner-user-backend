@@ -37,15 +37,12 @@ GuestSchema.statics.editGuest = function (guest, callBack) {
   this.findOne({ _id: id })
     .then((document) => {
       if (!document) {
-        callBack(
-          {
-            message: {
-              msgBody: 'Can not found guest!',
-              msgError: true,
-            },
+        callBack({
+          message: {
+            msgBody: 'Can not found guest!',
+            msgError: true,
           },
-          null,
-        );
+        });
       } else {
         document.set({
           name,
@@ -57,10 +54,10 @@ GuestSchema.statics.editGuest = function (guest, callBack) {
           .then((response) => {
             callBack(null, response);
           })
-          .catch((err) => callBack(null, err));
+          .catch((err) => callBack(err));
       }
     })
-    .catch((err) => callBack(null, err));
+    .catch((err) => callBack(err));
 };
 
 GuestSchema.statics.getGuestListInEvent = function (id, callBack) {

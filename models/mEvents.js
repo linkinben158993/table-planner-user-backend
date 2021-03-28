@@ -33,27 +33,18 @@ EventSchema.statics.getEventById = function (eventId, callBack) {
   this.findOne({ _id: eventId })
     .then((value) => {
       if (!value) {
-        callBack(
-          {
-            message: {
-              msgBody: 'No document found!',
-              msgError: true,
-            },
+        callBack({
+          message: {
+            msgBody: 'No document found!',
+            msgError: true,
           },
-          null,
-        );
+        });
       } else {
         Guests.getGuestListInEvent(eventId, (err2, document) => {
           if (err2) {
             callBack(err2);
           } else {
-            callBack(null, {
-              message: {
-                msgBody: 'Get event successful',
-                msgError: false,
-              },
-              data: { event: value, guests: document },
-            });
+            callBack(null, document);
           }
         });
       }
@@ -73,15 +64,12 @@ EventSchema.statics.addEvent = function (userId, event, callBack) {
   Users.findOne({ _id: userId })
     .then((document) => {
       if (!document) {
-        callBack(
-          {
-            message: {
-              msgBody: 'No document found!',
-              msgError: true,
-            },
+        callBack({
+          message: {
+            msgBody: 'No document found!',
+            msgError: true,
           },
-          null,
-        );
+        });
       } else {
         newEvent.set({ creator: document._id });
         document.myEvents.push(newEvent);
@@ -91,17 +79,17 @@ EventSchema.statics.addEvent = function (userId, event, callBack) {
             document
               .save()
               .then(() => {
-                callBack(null, newEvent);
+                callBack(null, document);
               })
               .catch((err) => {
-                callBack(null, err);
+                callBack(err);
               });
           })
-          .catch((err) => callBack(null, err));
+          .catch((err) => callBack(err));
       }
     })
     .catch((err) => {
-      callBack(null, err);
+      callBack(err);
     });
 };
 
