@@ -61,7 +61,7 @@
       "eslint . --fix",
       "npm run test"
     ],
-    "*": [
+    "*.js": [
       "npm run test"
     ]
   }
