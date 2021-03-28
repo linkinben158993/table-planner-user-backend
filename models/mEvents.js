@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Users = require('./mUsers');
-const Guests = require('./mGuests');
 
 const EventSchema = new mongoose.Schema({
   name: {
@@ -40,13 +39,7 @@ EventSchema.statics.getEventById = function (eventId, callBack) {
           },
         });
       } else {
-        Guests.getGuestListInEvent(eventId, (err2, document) => {
-          if (err2) {
-            callBack(err2);
-          } else {
-            callBack(null, document);
-          }
-        });
+        callBack(null, value);
       }
     })
     .catch((err) => {
