@@ -30,33 +30,37 @@ const EventSchema = new mongoose.Schema({
 });
 
 EventSchema.statics.getEventById = function (eventId, callBack) {
-  this.findOne({ _id: eventId }).then((value) => {
-    if (!value) {
-      callBack(
-        {
-          message: {
-            msgBody: 'No document found!',
-            msgError: true,
-          },
-        },
-        null,
-      );
-    } else {
-      Guests.getGuestListInEvent(eventId, (err2, document) => {
-        if (err2) {
-          callBack(err2);
-        } else {
-          callBack(null, {
+  this.findOne({ _id: eventId })
+    .then((value) => {
+      if (!value) {
+        callBack(
+          {
             message: {
-              msgBody: 'Get event successful',
+              msgBody: 'No document found!',
               msgError: true,
             },
-            data: { event: value, guests: document },
-          });
-        }
-      });
-    }
-  });
+          },
+          null,
+        );
+      } else {
+        Guests.getGuestListInEvent(eventId, (err2, document) => {
+          if (err2) {
+            callBack(err2);
+          } else {
+            callBack(null, {
+              message: {
+                msgBody: 'Get event successful',
+                msgError: true,
+              },
+              data: { event: value, guests: document },
+            });
+          }
+        });
+      }
+    })
+    .catch((err) => {
+      callBack(err);
+    });
 };
 
 // Add new event and which user is its host

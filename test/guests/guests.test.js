@@ -70,10 +70,13 @@ describe('Test *guests* Endpoints:', () => {
         console.log('Pass status code!');
         response.body.should.be.a('object');
         console.log('Pass body type!');
-        response.body.should.have.property('message').to.deep.equal({
-          msgBody: 'Get Guest List Successful!',
-          msgError: false,
-        });
+        response.body.should.have.property('message')
+          .to
+          .deep
+          .equal({
+            msgBody: 'Get Guest List Successful!',
+            msgError: false,
+          });
         console.log('Pass field message!');
         done();
       })
@@ -83,10 +86,10 @@ describe('Test *guests* Endpoints:', () => {
   //Edit Guest
   it('Edit Guest', (done) => {
     const guest = {
-      guestId: '604dccac0c7eca693c497f81',
-      guestName: 'edit guest',
-      guestMail: 'edit guest mail',
-      guestPhone: '0123456',
+      id: '605ff5dcb3d891995a68151a',
+      name: 'edit guest',
+      email: 'thienan.nguyenhoang311@gmail.com',
+      phoneNumber: '0123456',
     };
     chai
       .request(server)
@@ -98,10 +101,13 @@ describe('Test *guests* Endpoints:', () => {
         console.log('Pass status code!');
         response.body.should.be.a('object');
         console.log('Pass body type!');
-        response.body.should.have.property('message').to.deep.equal({
-          msgBody: 'Edit Guest Successful!',
-          msgError: false,
-        });
+        response.body.should.have.property('message')
+          .to
+          .deep
+          .equal({
+            msgBody: 'Edit Guest Successful!',
+            msgError: false,
+          });
         console.log('Pass field message!');
         done();
       })
@@ -112,25 +118,26 @@ describe('Test *guests* Endpoints:', () => {
   it('Import Guest', (done) => {
     const Guests = [
       {
-        guestName: 'Test 1',
-        guestMail:
-          'Test Guest With JWT Protection And De-reference stuff From Swagger',
-        guestPhone: 'Test Event Table Type',
+        name: 'Test 1',
+        email:
+          'thienan.nguyenhoang311@gmail.com',
+        phoneNumber: 'Test Event Table Type',
         eventId: '6048529d3a797826f6920062',
+        table: {
+          id: "1",
+          seatNo: 1
+        }
       },
       {
-        guestName: 'Test 2',
-        guestMail:
-          'Test Guest With JWT Protection And De-reference stuff From Swagger',
-        guestPhone: 'Test Event Table Type',
+        name: 'Test 2',
+        email:
+          'thienan.nguyenhoang.011@gmail.com',
+        phoneNumber: 'Test Event Table Type',
         eventId: '6048529d3a797826f6920062',
-      },
-      {
-        guestName: 'Test 3',
-        guestMail:
-          'Test Guest With JWT Protection And De-reference stuff From Swagger',
-        guestPhone: 'Test Event Table Type',
-        eventId: '6048529d3a797826f6920062',
+        table: {
+          id: "2",
+          seatNo: 2
+        }
       },
     ];
     chai
@@ -143,10 +150,13 @@ describe('Test *guests* Endpoints:', () => {
         console.log('Pass status code!');
         response.body.should.be.a('object');
         console.log('Pass body type!');
-        response.body.should.have.property('message').to.deep.equal({
-          msgBody: 'Import Guest Successful!',
-          msgError: false,
-        });
+        response.body.should.have.property('message')
+          .to
+          .deep
+          .equal({
+            msgBody: 'Import Guest Successful!',
+            msgError: false,
+          });
         console.log('Pass field message!');
         done();
       })

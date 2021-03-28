@@ -87,11 +87,11 @@ module.exports = {
       if (!callBack) {
         res.status(403).json(CustomResponse.FORBIDDEN);
       } else {
-        const { guestId, guestName, guestMail, guestPhone } = req.body;
-        if (!guestName || !guestMail || !guestId) {
+        const { id, name, email, phoneNumber } = req.body;
+        if (!name || !email || !id || !phoneNumber) {
           res.status(400).json(CustomResponse.BAD_REQUEST);
         } else {
-          const guest = { guestId, guestName, guestMail, guestPhone };
+          const guest = { id, name, email, phoneNumber };
           Guests.editGuest(guest, (err2, document) => {
             if (err2) {
               const response = CustomResponse.SERVER_ERROR;

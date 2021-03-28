@@ -32,9 +32,8 @@ describe('Test *events* Endpoints:', () => {
   // Best Case
   it('Add New Event', (done) => {
     const genericEvent = {
-      eventName: 'Test 4 Event',
-      eventDescription: 'Test 4 Event',
-      tableType: 'Test Event Table Type',
+      name: 'Test 4 Event',
+      description: 'Test 4 Event',
     };
     chai
       .request(server)
@@ -46,10 +45,13 @@ describe('Test *events* Endpoints:', () => {
         console.log('Pass status code!');
         response.body.should.be.a('object');
         console.log('Pass body type!');
-        response.body.should.have.property('message').to.deep.equal({
-          msgBody: 'Add New Event Successful!',
-          msgError: false,
-        });
+        response.body.should.have.property('message')
+          .to
+          .deep
+          .equal({
+            msgBody: 'Add New Event Successful!',
+            msgError: false,
+          });
         console.log('Pass field message!');
         done();
       })
@@ -59,11 +61,11 @@ describe('Test *events* Endpoints:', () => {
 
   // Case wrong username or password
   it('Edit Event', (done) => {
-    const genericId = '605574898c954d1c536d605b';
+    const genericId = '605ff5bc1a903e156ff4b046';
     const genericEvent = {
-      eventId: genericId,
-      eventName: 'Test Edit Event Test',
-      eventDescription: 'Test Edit Event Test',
+      id: genericId,
+      name: 'Test Edit Event Test',
+      description: 'Test Edit Event Test',
     };
     chai
       .request(server)
@@ -75,10 +77,13 @@ describe('Test *events* Endpoints:', () => {
         console.log('Pass status code!');
         response.body.should.be.a('object');
         console.log('Pass body type!');
-        response.body.should.have.property('message').to.deep.equal({
-          msgBody: 'Edit Event Successful!',
-          msgError: false,
-        });
+        response.body.should.have.property('message')
+          .to
+          .deep
+          .equal({
+            msgBody: 'Edit Event Successful!',
+            msgError: false,
+          });
         console.log('Pass field message!');
 
         done();

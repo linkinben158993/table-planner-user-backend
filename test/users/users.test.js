@@ -28,13 +28,17 @@ describe('POST /users/login:', () => {
         response.should.have.status(200);
         response.body.should.be.a('object');
         console.log('Pass body type!');
-        response.body.should.have.property('isAuthenticated').eq(true);
+        response.body.should.have.property('isAuthenticated')
+          .eq(true);
         console.log('Pass field isAuthenticated!');
-        response.body.should.have.property('user').to.deep.equal({
-          email: 'an@gmail.com',
-          role: 1,
-          fullName: "User's Name",
-        });
+        response.body.should.have.property('user')
+          .to
+          .deep
+          .equal({
+            email: 'an@gmail.com',
+            role: 1,
+            fullName: 'User\'s Name',
+          });
         console.log('Pass field user!');
         done();
       })
@@ -57,10 +61,14 @@ describe('POST /users/login:', () => {
         console.log('Pass status code!');
         response.body.should.be.a('object');
         console.log('Pass body type!');
-        response.body.should.have.property('msgBody').eq('Password not match!');
-        console.log('Pass msgBody!');
-        response.body.should.have.property('msgError').eq(true);
-        console.log('Pass msgError!');
+        response.body.should.have.property('message')
+          .to
+          .deep
+          .eq({
+            msgBody: 'Password/Username not match!',
+            msgError: true,
+          });
+        console.log('Pass object equal!');
         done();
       })
       .catch(done);

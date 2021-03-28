@@ -27,7 +27,6 @@ const transporter = nodeMailer.createTransport({
 
 module.exports = {
   registerByMail: (receiverEmail, otp) => {
-    // console.log('Sending mail!');
     const mailOptions = {
       from: `"My Table Planner" ${email}`,
       to: `${receiverEmail}`,
@@ -99,32 +98,40 @@ module.exports = {
     });
   },
 
-  sendQRCodeToGuests: (receivers, event) => {
-    receivers.forEach((receiver) => {
-      const data = {
-        eventId: event._id,
-        mailOfGuest: receiver,
-      };
-      const stringData = JSON.stringify(data);
-      QRCode.toDataURL(stringData, (err, code) => {
-        if (err) throw err;
-        const mailOptions = {
-          from: `"My Table Planner" ${email}`,
-          to: `${receiver}`,
-          subject: `Invite you attend ${event.name}`,
-          text: 'Please present qr code provided below for checking in event!',
-          attachDataUrls: true,
-          html: `
+  sendQRCodeToGuests: async (receivers, event) => {
+    const data = {
+      eventId: event._id,
+    };
+
+    const emails = receivers.map((guestMail) => guestMail.email);
+    const stringData = JSON.stringify(data);
+
+    const result = await QRCode.toDataURL(stringData);
+    const mailOptions = {
+      from: `"My Table Planner" ${email}`,
+      to: emails,
+      subject: `Invite you attend ${event.name}`,
+      text: 'Please present qr code provided below for checking in event!',
+      attachDataUrls: true,
+      html: `
                 Invite you attend ${event.name} <br>
                 Please present qr code provided below for checking in event! <br>
-                <img src='${code}'>
+                <img src='${result}'>
           `,
-        };
-        transporter.sendMail(mailOptions, (error) => {
-          if (error) {
-            throw error;
-          }
-        });
+    };
+    return new Promise((resolve) => {
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          resolve({
+            success: false,
+            error,
+          });
+        } else {
+          resolve({
+            success: true,
+            info,
+          });
+        }
       });
     });
   },

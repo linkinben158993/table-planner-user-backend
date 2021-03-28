@@ -4,7 +4,7 @@ function importTest(name, path) {
   });
 }
 
-describe('Test Users API', () => {
+describe('Test APIs', () => {
   beforeEach(function () {
     console.log('Try running something before each test!');
   });

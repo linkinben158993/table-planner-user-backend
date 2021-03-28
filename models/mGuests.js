@@ -52,8 +52,8 @@ GuestSchema.statics.addGuest = function (guest, callBack) {
 };
 
 GuestSchema.statics.editGuest = function (guest, callBack) {
-  const { guestId, guestName, guestMail, guestPhone } = guest;
-  this.findOne({ _id: guestId })
+  const { id, name, email, phoneNumber } = guest;
+  this.findOne({ _id: id })
     .then((document) => {
       if (!document) {
         callBack(
@@ -67,9 +67,9 @@ GuestSchema.statics.editGuest = function (guest, callBack) {
         );
       } else {
         document.set({
-          name: guestName,
-          email: guestMail,
-          phoneNumber: guestPhone,
+          name,
+          email,
+          phoneNumber,
         });
         document
           .save()
