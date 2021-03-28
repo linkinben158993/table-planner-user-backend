@@ -1,4 +1,5 @@
 const socketIO = require('socket.io');
+const mEvent = require('../models/mEvents');
 
 module.exports = {
   startSocketServer(server) {
@@ -7,8 +8,12 @@ module.exports = {
       origin: '*:*',
     });
 
-    io.on('connection', (response) => {
-      console.log('Connection established:', response);
+    io.on('connection', (request) => {
+      console.log(request);
+    });
+
+    io.on('get-event-status', (request) => {
+      console.log(request);
     });
   },
 };

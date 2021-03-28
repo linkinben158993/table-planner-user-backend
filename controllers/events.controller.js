@@ -97,25 +97,18 @@ module.exports = {
   },
   editEvent: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      const { id, name, description, elements } = req.body;
+      const data = req.body;
       if (err) {
         const response = CustomResponse.SERVER_ERROR;
         response.trace = err;
         res.status(500).json(response);
       }
-      if (!id || !name || !description) {
+      if (!data.id) {
         res.status(400).json(CustomResponse.BAD_REQUEST);
       } else if (!callBack) {
         res.status(403).json('Forbidden');
       } else {
-        // If if events is from of this user's possession?
-        const newEvent = {
-          id,
-          name,
-          description,
-          elements,
-        };
-        Events.editEvent(callBack._id, newEvent, (err1, document) => {
+        Events.editEvent(data, (err1, document) => {
           if (err1) {
             const response = CustomResponse.SERVER_ERROR;
             response.trace = err1;

@@ -50,7 +50,7 @@ EventSchema.statics.getEventById = function (eventId, callBack) {
             callBack(null, {
               message: {
                 msgBody: 'Get event successful',
-                msgError: true,
+                msgError: false,
               },
               data: { event: value, guests: document },
             });
@@ -105,35 +105,14 @@ EventSchema.statics.addEvent = function (userId, event, callBack) {
     });
 };
 
-EventSchema.statics.editEvent = function (host, event, callBack) {
-  const { id, name, description, elements } = event;
-  this.findOne({ _id: id })
-    .then((document) => {
-      if (!document) {
-        callBack(
-          {
-            message: {
-              msgBody: 'No event found!',
-              msgError: true,
-            },
-          },
-          null,
-        );
-      } else {
-        document.set({
-          name,
-          description,
-          elements,
-        });
-        document
-          .save()
-          .then((response) => {
-            callBack(null, response);
-          })
-          .catch((err) => callBack(null, err));
-      }
-    })
-    .catch((err) => callBack(null, err));
+EventSchema.statics.editEvent = function (event, callBack) {
+  this.update({ _id: event.id }, event, (err, document) => {
+    if (err) {
+      callBack(err);
+    } else {
+      callBack(null, document);
+    }
+  });
 };
 
 EventSchema.set('toObject', { getters: true });
