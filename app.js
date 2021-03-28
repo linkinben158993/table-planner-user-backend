@@ -39,7 +39,9 @@ app.use(
 const http = require('http');
 
 const server = http.createServer(app);
-require('./socketio/index').listen(server);
+const socket = require('./middlewares/socket-io');
+
+socket.startSocketServer(server);
 
 // Swagger configuration
 // eslint-disable-next-line node/no-unpublished-require

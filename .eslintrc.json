@@ -13,7 +13,14 @@
     "ecmaVersion": 12
   },
   "plugins": ["prettier"],
-  "ignorePatterns": ["test.js", "test.module.js", "*.test.js", "*.yml", "*.hbs"],
+  "ignorePatterns": [
+    "test.js",
+    "test.module.js",
+    "*.test.js",
+    "*.yml",
+    "*.hbs",
+    "*-io.js"
+  ],
   "rules": {
     "no-console": 2,
     "linebreak-style": 0,
