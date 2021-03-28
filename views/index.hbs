@@ -1,2 +1,9 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io.connect('/');
+    socket.on('announcements', function(data) {
+        console.log('Got announcement:', data.message);
+    }); 
+</script>
