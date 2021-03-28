@@ -79,7 +79,7 @@ EventSchema.statics.addEvent = function (userId, event, callBack) {
             document
               .save()
               .then(() => {
-                callBack(null, document);
+                callBack(null, newEvent);
               })
               .catch((err) => {
                 callBack(err);
