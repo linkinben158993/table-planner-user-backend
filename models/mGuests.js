@@ -14,6 +14,7 @@ const GuestSchema = new mongoose.Schema({
   },
   priority: {
     type: Number,
+    default: -1,
   },
   event: {
     type: String,
@@ -30,26 +31,6 @@ const GuestSchema = new mongoose.Schema({
     },
   },
 });
-
-GuestSchema.statics.addGuest = function (guest, callBack) {
-  const { name, email, phoneNumber, eventId } = guest;
-
-  const newGuest = new this({
-    name,
-    email,
-    phoneNumber,
-    priority: '',
-    event: eventId,
-  });
-  return newGuest
-    .save()
-    .then(() => {
-      callBack(null, guest);
-    })
-    .catch((err) => {
-      callBack(null, err);
-    });
-};
 
 GuestSchema.statics.editGuest = function (guest, callBack) {
   const { id, name, email, phoneNumber } = guest;

@@ -3,46 +3,6 @@ const Guests = require('../models/mGuests');
 const CustomResponse = require('../constants/response.message');
 
 module.exports = {
-  addNewGuest: async (req, res) => {
-    passport.authenticate('jwt', { session: false }, (err1, callBack) => {
-      if (err1) {
-        const response = CustomResponse.SERVER_ERROR;
-        response.trace = err1;
-        res.status(500).json(response);
-      }
-      if (!callBack) {
-        res.status(403).json('Forbidden');
-      } else {
-        const { guestName, guestMail, guestPhone, eventId } = req.body;
-        if (!guestName || !guestMail || !eventId) {
-          res.status(400).json(CustomResponse.BAD_REQUEST);
-        } else {
-          const newGuest = {
-            guestName,
-            guestMail,
-            guestPhone,
-            eventId,
-          };
-          Guests.addGuest(newGuest, (err2, document) => {
-            if (err2) {
-              const response = CustomResponse.SERVER_ERROR;
-              response.trace = err2;
-              res.status(500).json(response);
-            } else {
-              res.status(200).json({
-                message: {
-                  msgBody: 'Add New Guest Successful!',
-                  msgError: false,
-                },
-                document,
-              });
-            }
-          });
-        }
-      }
-    })(req, res);
-  },
-
   getGuestList: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err1, callBack) => {
       if (err1) {
