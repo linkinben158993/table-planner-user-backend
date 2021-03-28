@@ -10,10 +10,10 @@ router.get(
      description: 'Token From Login.',
      required: true,
      name: 'access_token',
-     value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+     value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
 MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
+.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
 }
   */
   eventCtrl.getEventByID,
@@ -26,10 +26,10 @@ router.get(
        description: 'Token From Login.',
        required: true,
        name: 'access_token',
-       value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+       value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
 MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
+.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
   }
  */
   eventCtrl.getAllEvents,
@@ -43,10 +43,10 @@ router.post(
      description: 'Token From Login.',
      required: true,
      name: 'access_token',
-     value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+     value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
 MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
+.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
   },
   #swagger.parameters['newEvent'] = {
      in: 'body',
@@ -70,10 +70,10 @@ router.post(
        description: 'Token From Login.',
        required: true,
        name: 'access_token',
-       value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+       value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
 MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
+.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
     },
     #swagger.parameters['editEvent'] = {
        in: 'body',
@@ -100,10 +100,10 @@ router.post(
      description: 'Token From Login.',
      required: true,
      name: 'access_token',
-     value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+     value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
 MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
+.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
   },
   #swagger.parameters['sendMailEvent'] = {
      in: 'body',
@@ -111,7 +111,7 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
      required: true,
      name: 'sendMailEvent',
      schema: {
-      $id: "6048506f8fb7b6249151343e",
+      $id: "6056e995ef1b7d0020e139f4",
     }
   }
 */
@@ -126,10 +126,10 @@ router.post(
      description: 'Token From Login.',
      required: true,
      name: 'access_token',
-     value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+     value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
 MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
+.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
   },
   #swagger.parameters['tableEvents'] = {
      in: 'body',
