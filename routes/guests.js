@@ -39,10 +39,10 @@ router.post(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
 MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
+.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
     },
     #swagger.parameters['newGuest'] = {
         in: 'body',
@@ -74,10 +74,10 @@ router.get(
       description: 'Token From Login.',
       required: true,
       name: 'access_token',
-      value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
 MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
+.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
     }
 
   */

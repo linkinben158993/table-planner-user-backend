@@ -97,25 +97,18 @@ module.exports = {
   },
   editEvent: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      const { id, name, description, elements } = req.body;
+      const data = req.body;
       if (err) {
         const response = CustomResponse.SERVER_ERROR;
         response.trace = err;
         res.status(500).json(response);
       }
-      if (!id || !name || !description) {
+      if (!data.id) {
         res.status(400).json(CustomResponse.BAD_REQUEST);
       } else if (!callBack) {
         res.status(403).json('Forbidden');
       } else {
-        // If if events is from of this user's possession?
-        const newEvent = {
-          id,
-          name,
-          description,
-          elements,
-        };
-        Events.editEvent(callBack._id, newEvent, (err1, document) => {
+        Events.editEvent(data, (err1, document) => {
           if (err1) {
             const response = CustomResponse.SERVER_ERROR;
             response.trace = err1;
@@ -130,59 +123,6 @@ module.exports = {
             });
           }
         });
-      }
-    })(req, res);
-  },
-  addOrUpdateTable: async (req, res) => {
-    passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      const { id, tables } = req.body;
-      if (err) {
-        const response = CustomResponse.SERVER_ERROR;
-        response.trace = err;
-        res.status(500).json(response);
-      }
-      if (!id || !tables) {
-        res.status(400).json(CustomResponse.BAD_REQUEST);
-      } else if (!callBack) {
-        res.status(403).json(CustomResponse.FORBIDDEN);
-      } else {
-        // If if events is from of this user's possession?
-        Events.updateOne({ _id: id }, { $set: { tables } })
-          .then((document) => {
-            res.status(200).json({ document });
-          })
-          .catch((err1) => {
-            const response = CustomResponse.SERVER_ERROR;
-            response.trace = err1;
-            res.status(500).json(response);
-          });
-      }
-    })(req, res);
-  },
-  getTableOfEvent: async (req, res) => {
-    passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      const { id } = req.body;
-      if (err) {
-        const response = CustomResponse.SERVER_ERROR;
-        response.trace = err;
-        res.status(500).json(response);
-      }
-      if (!id) {
-        res.status(400).json(CustomResponse.BAD_REQUEST);
-      } else if (!callBack) {
-        res.status(403).json(CustomResponse.FORBIDDEN);
-      } else {
-        // If if events is from of this user's possession?
-        Events.findById(id)
-          .select('tables')
-          .then((document) => {
-            res.status(200).json({ document });
-          })
-          .catch((err1) => {
-            const response = CustomResponse.SERVER_ERROR;
-            response.trace = err1;
-            res.status(500).json(response);
-          });
       }
     })(req, res);
   },
@@ -216,7 +156,9 @@ module.exports = {
                 } else {
                   const result = await nodeMailer.sendQRCodeToGuests(mails, event);
                   if (result.success) {
-                    res.status(200).json({ msg: { msgBody: 'Send mail success!', msgError: false } });
+                    res.status(200).json({
+                      msg: { msgBody: 'Send mail success!', msgError: false },
+                    });
                   } else {
                     res.status(500).json(CustomResponse.SERVER_ERROR);
                   }
