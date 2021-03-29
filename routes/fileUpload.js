@@ -17,15 +17,10 @@ router.post('/events', async (req, res) => {
         },
       });
     } else {
-      let result;
-      const uploader = async (path) => {
-        result = await cloudinary.uploadsImages(path, 'Images');
-        return result;
-      };
       const urls = [];
       const { files } = req;
 
-      if (files.lenght > 5 || files.lenght < 2) {
+      if (files.length > 5 || files.length < 2) {
         res.status(200).json({
           message: {
             msgBody: 'Should Not Above 5 Files Or Less Than 3 Files',
@@ -33,12 +28,13 @@ router.post('/events', async (req, res) => {
           },
         });
       } else {
-        files.map(async (file) => {
-          const { path } = file;
-          const newPath = await uploader(path);
-          urls.push(newPath);
+        for (let index = 0; index < files.length; index += 1) {
+          const { path } = files[index];
+          // eslint-disable-next-line no-await-in-loop
+          const newPath = await cloudinary.uploadsImages(path, 'Images');
           fs.unlinkSync(path);
-        });
+          urls.push(newPath);
+        }
 
         res.status(200).json({
           message: {
