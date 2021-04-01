@@ -131,7 +131,7 @@ GuestSchema.statics.importGuestsToEvent = function (guests, callBack) {
 GuestSchema.statics.assignGuestsToSeats = function (seats, callBack) {
   const bulkOptions = seats.map((seat) => ({
     updateOne: {
-      filter: { _id: seat.guestId },
+      filter: { _id: seat.id },
       update: { $set: { table: seat.table }, upsert: true },
     },
   }));

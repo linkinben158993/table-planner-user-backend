@@ -41,8 +41,8 @@ router.post(
         name: 'access_token',
         value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
+MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
+.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
     },
     #swagger.parameters['newGuest'] = {
         in: 'body',
@@ -76,8 +76,8 @@ router.get(
       name: 'access_token',
       value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
+MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
+.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
     }
 
   */
@@ -120,9 +120,10 @@ router.post(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        schema: {
-          $access_token: "<Get This From Login API>"
-        }
+        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
+MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
+.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
     },
     #swagger.parameters['Guest'] = {
         in: 'body',
@@ -137,6 +138,36 @@ router.post(
   guestCtrl.deleteGuest,
 );
 
-router.post('/assign', guestCtrl.assignTable);
+router.post(
+  '/assign',
+  /*
+  #swagger.parameters['loginUser'] = {
+      in: 'header',
+      description: 'Token From Login.',
+      required: true,
+      name: 'access_token',
+      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
+MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
+.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+  },
+  #swagger.parameters['guestList'] = {
+      in: 'body',
+      description: 'Guest List With Guest Seats.',
+      required: true,
+      name: 'newGuest',
+      schema: [
+        {
+          "id": "6048529d3a797826f6920062",
+          "table": {
+            "id": "1",
+            "seatNo": 1,
+          }
+        }
+      ]
+  }
+  */
+  guestCtrl.assignTable,
+);
 
 module.exports = router;

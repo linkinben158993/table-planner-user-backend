@@ -158,29 +158,7 @@ module.exports = {
       if (!callBack) {
         res.status(403).json('Forbidden');
       } else {
-        const guestList = [
-          {
-            guestId: '6056286519027c2d666365fd',
-            table: {
-              id: '1',
-              seatNo: 1,
-            },
-          },
-          {
-            guestId: '6056286b19027c2d666365fe',
-            table: {
-              id: '2',
-              seatNo: 2,
-            },
-          },
-          {
-            guestId: '6056287019027c2d666365ff',
-            table: {
-              id: '3',
-              seatNo: 3,
-            },
-          },
-        ];
+        const guestList = req.body;
         Guests.assignGuestsToSeats(guestList, (err, document) => {
           if (err) {
             const response = CustomResponse.SERVER_ERROR;

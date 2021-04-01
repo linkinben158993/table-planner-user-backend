@@ -12,6 +12,7 @@
     "eslint-config-airbnb": "^18.2.1",
     "express": "~4.16.1",
     "express-session": "^1.17.1",
+    "firebase-tools": "^9.8.0",
     "hbs": "^4.1.1",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
@@ -62,7 +63,7 @@
       "eslint . --fix",
       "npm run test"
     ],
-    "*": [
+    "*.js": [
       "npm run test"
     ]
   }

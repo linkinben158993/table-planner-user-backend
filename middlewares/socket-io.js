@@ -8,12 +8,24 @@ module.exports = {
       origin: '*:*',
     });
 
-    io.on('connection', (request) => {
-      console.log(request);
-    });
+    io.on('connection', (socket) => {
+      socket.emit('greeting', {
+        message: {
+          msgBody: 'Hello from server',
+          msgError: false,
+        },
+      });
 
-    io.on('get-event-status', (request) => {
-      console.log(request);
+      socket.on('get-event-status', (request) => {
+        console.log(request);
+        io.emit('reply-from-server', {
+          message: {
+            msgBody: 'Reply for previous',
+              msgError: true,
+          },
+          data: request,
+        })
+      });
     });
   },
 };

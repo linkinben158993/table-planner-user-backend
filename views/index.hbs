@@ -1,9 +1,23 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
+<button class='btn-socket' onclick='emitStuff()'>Click Me</button>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    var socket = io.connect('/');
-    socket.on('announcements', function(data) {
-        console.log('Got announcement:', data.message);
-    }); 
+  const socket = io.connect('http://localhost:3000/');
+  socket.on('greeting', (request) => {
+    console.log('Got announcement:', request);
+  });
+
+  socket.on('reply-from-server', (request) => {
+    console.log('Got reply:', request);
+  });
+
+  emitStuff = () =>{
+    socket.emit('get-event-status', {
+      message: {
+        msgBody: 'Hello from client',
+        msgError: false,
+      },
+    })
+  }
 </script>

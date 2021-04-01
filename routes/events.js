@@ -12,8 +12,8 @@ router.get(
      name: 'access_token',
      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
+MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
+.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
 }
   */
   eventCtrl.getEventByID,
@@ -28,8 +28,8 @@ router.get(
        name: 'access_token',
        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
+MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
+.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
   }
  */
   eventCtrl.getAllEvents,
@@ -45,8 +45,8 @@ router.post(
      name: 'access_token',
      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
+MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
+.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
   },
   #swagger.parameters['newEvent'] = {
      in: 'body',
@@ -72,8 +72,8 @@ router.post(
        name: 'access_token',
        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
+MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
+.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
     },
     #swagger.parameters['editEvent'] = {
        in: 'body',
@@ -102,8 +102,8 @@ router.post(
      name: 'access_token',
      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ
-.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI"
+MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
+.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
   },
   #swagger.parameters['sendMailEvent'] = {
      in: 'body',

@@ -20,6 +20,8 @@ router.post('/events', async (req, res) => {
       const urls = [];
       const { files } = req;
 
+      // eslint-disable-next-line no-console
+      console.log(files);
       if (files.length > 5 || files.length < 2) {
         res.status(200).json({
           message: {
