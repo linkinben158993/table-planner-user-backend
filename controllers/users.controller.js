@@ -114,6 +114,7 @@ module.exports = {
           });
         }
       } else {
+        console.log('Hello World');
         res.status(500).json(CustomResponse.SERVER_ERROR);
       }
     }
