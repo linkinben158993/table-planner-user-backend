@@ -174,7 +174,6 @@ module.exports = {
         if (err) {
           const response = CustomResponse.SERVER_ERROR;
           response.trace = err;
-          console.log('Hello World');
           res.status(500).json(response);
         } else {
           res.status(200).json({
