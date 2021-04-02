@@ -86,8 +86,8 @@ describe('Test *guests* Endpoints:', () => {
   //Edit Guest
   it('Edit Guest', (done) => {
     const guest = {
-      id: '605ff5dcb3d891995a68151a',
-      name: 'edit guest',
+      id: '606726457161bcb22fc1bf7a',
+      name: 'edit guest test',
       email: 'thienan.nguyenhoang311@gmail.com',
       phoneNumber: '0123456',
     };
