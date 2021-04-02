@@ -114,6 +114,7 @@ module.exports = {
           });
         }
       } else {
+        console.log('Hello Mother Fucker');
         res.status(500).json(CustomResponse.SERVER_ERROR);
       }
     }
