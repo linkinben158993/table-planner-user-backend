@@ -39,10 +39,7 @@ router.post(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
-.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
     },
     #swagger.parameters['newGuest'] = {
         in: 'body',
@@ -52,9 +49,13 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
         schema: [
           {
             "name": "Test 1",
-            "email": "thienan.nguyenhoang.011@gmail.com",
+            "email": "Test Guest With JWT Protection And De-reference stuff From Swagger",
             "phoneNumber": "Test Event Table Type",
-            "eventId": "6048529d3a797826f6920062"
+            "eventId": "6048529d3a797826f6920062",
+            "table": {
+              "id": "1",
+              "seatNo": 1,
+            }
           }
         ]
     }
@@ -70,10 +71,7 @@ router.get(
       description: 'Token From Login.',
       required: true,
       name: 'access_token',
-      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
-.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
     }
 
   */
@@ -100,7 +98,7 @@ router.post(
         schema: {
         $id: "604c85f990942b4b4416c639",
         $name: "edit guest",
-        $email: "thienan.nguyenhoang.011@gmail.com",
+        $email: "edit guest mail",
         $phoneNumber: "0123456",
         }
     }
@@ -116,10 +114,7 @@ router.post(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
-.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
     },
     #swagger.parameters['Guest'] = {
         in: 'body',
@@ -142,10 +137,7 @@ router.post(
       description: 'Token From Login.',
       required: true,
       name: 'access_token',
-      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
-.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
   },
   #swagger.parameters['guestList'] = {
       in: 'body',
