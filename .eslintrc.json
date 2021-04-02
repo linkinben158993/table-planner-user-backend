@@ -19,8 +19,7 @@
     "*.test.js",
     "*.yml",
     "*.hbs",
-    "*-io.js",
-    "routes/*"
+    "*-io.js"
   ],
   "rules": {
     "no-console": 2,
