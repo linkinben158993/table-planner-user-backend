@@ -170,11 +170,19 @@ module.exports = {
       res.status(400).json(CustomResponse.BAD_REQUEST);
     } else {
       const { email, otp, oldPassword, newPassword } = req.body;
-      Users.resetUserPassword(email, otp, oldPassword, newPassword, (err) => {
+      Users.resetUserPassword(email, otp, oldPassword, newPassword, (err, document) => {
         if (err) {
           const response = CustomResponse.SERVER_ERROR;
           response.trace = err;
           res.status(500).json(response);
+        } else {
+          const response = {
+            message: {
+              msgBody: `Change password successfully for ${document.email}`,
+              msgError: false,
+            },
+          };
+          res.status(200).json(response);
         }
       });
     }
