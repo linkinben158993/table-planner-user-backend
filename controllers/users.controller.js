@@ -114,7 +114,6 @@ module.exports = {
           });
         }
       } else {
-        console.log('Hello World');
         res.status(500).json(CustomResponse.SERVER_ERROR);
       }
     }
@@ -177,6 +176,7 @@ module.exports = {
           response.trace = err;
           res.status(500).json(response);
         } else {
+          console.log('Hello World');
           res.status(200).json({
             message: {
               msgBody: `Change password successfully for ${document.email}`,
