@@ -10,13 +10,10 @@ router.get(
      description: 'Token From Login.',
      required: true,
      name: 'access_token',
-     value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
-.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
-}
+     value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
+  }
   */
-  eventCtrl.getEventByID,
+  eventCtrl.getEventByID
 );
 
 router.get(
@@ -26,13 +23,10 @@ router.get(
        description: 'Token From Login.',
        required: true,
        name: 'access_token',
-       value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
-.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+       value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
   }
  */
-  eventCtrl.getAllEvents,
+  eventCtrl.getAllEvents
 );
 
 router.post(
@@ -43,10 +37,7 @@ router.post(
      description: 'Token From Login.',
      required: true,
      name: 'access_token',
-     value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
-.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+     value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
   },
   #swagger.parameters['newEvent'] = {
      in: 'body',
@@ -54,12 +45,12 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
      required: true,
      name: 'newEvent',
      schema: {
-      $name: "Test Event With JWT Protection And De-reference stuff From Swagger",
-      $description: "Test Event With JWT Protection And De-reference stuff From Swagger"
+      $name: 'Test Event With JWT Protection And De-reference stuff From Swagger',
+      $description: 'Test Event With JWT Protection And De-reference stuff From Swagger'
     }
   }
 */
-  eventCtrl.addNewEvent,
+  eventCtrl.addNewEvent
 );
 
 router.post(
@@ -70,10 +61,7 @@ router.post(
        description: 'Token From Login.',
        required: true,
        name: 'access_token',
-       value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
-.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+       value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
     },
     #swagger.parameters['editEvent'] = {
        in: 'body',
@@ -81,15 +69,14 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
        required: true,
        name: 'newEvent',
        schema: {
-        $id: "6048506f8fb7b6249151343e",
-        $name: "Test Edit Event With JWT Protection And De-reference stuff From Swagger",
-        $description: "Test Edit Event Table Type",
-        $elements: "Stringify object from React Flow
-        <Not Required But Should Pass Empty String On Submit or Old State>"
+        $id: '6048506f8fb7b6249151343e',
+        $name: 'Test Edit Event With JWT Protection And De-reference stuff From Swagger',
+        $description: 'Test Edit Event Table Type',
+        $elements: 'Stringify object from React Flow <Not Required But Should Pass Empty String On Submit or Old State>'
       }
     }
 */
-  eventCtrl.editEvent,
+  eventCtrl.editEvent
 );
 
 router.post(
@@ -100,10 +87,7 @@ router.post(
      description: 'Token From Login.',
      required: true,
      name: 'access_token',
-     value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
-.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+     value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
   },
   #swagger.parameters['sendMailEvent'] = {
      in: 'body',
@@ -111,11 +95,11 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
      required: true,
      name: 'sendMailEvent',
      schema: {
-      $id: "6056e995ef1b7d0020e139f4",
+      $id: '6056e995ef1b7d0020e139f4',
     }
   }
 */
-  eventCtrl.sendMailToAllGuest,
+  eventCtrl.sendMailToAllGuest
 );
 
 module.exports = router;

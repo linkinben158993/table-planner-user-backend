@@ -70,13 +70,10 @@ describe('Test *guests* Endpoints:', () => {
         console.log('Pass status code!');
         response.body.should.be.a('object');
         console.log('Pass body type!');
-        response.body.should.have.property('message')
-          .to
-          .deep
-          .equal({
-            msgBody: 'Get Guest List Successful!',
-            msgError: false,
-          });
+        response.body.should.have.property('message').to.deep.equal({
+          msgBody: 'Get Guest List Successful!',
+          msgError: false,
+        });
         console.log('Pass field message!');
         done();
       })
@@ -86,8 +83,8 @@ describe('Test *guests* Endpoints:', () => {
   //Edit Guest
   it('Edit Guest', (done) => {
     const guest = {
-      id: '605ff5dcb3d891995a68151a',
-      name: 'edit guest',
+      id: '606726457161bcb22fc1bf7a',
+      name: 'edit guest test',
       email: 'thienan.nguyenhoang311@gmail.com',
       phoneNumber: '0123456',
     };
@@ -101,13 +98,10 @@ describe('Test *guests* Endpoints:', () => {
         console.log('Pass status code!');
         response.body.should.be.a('object');
         console.log('Pass body type!');
-        response.body.should.have.property('message')
-          .to
-          .deep
-          .equal({
-            msgBody: 'Edit Guest Successful!',
-            msgError: false,
-          });
+        response.body.should.have.property('message').to.deep.equal({
+          msgBody: 'Edit Guest Successful!',
+          msgError: false,
+        });
         console.log('Pass field message!');
         done();
       })
@@ -119,25 +113,23 @@ describe('Test *guests* Endpoints:', () => {
     const Guests = [
       {
         name: 'Test 1',
-        email:
-          'thienan.nguyenhoang311@gmail.com',
+        email: 'thienan.nguyenhoang311@gmail.com',
         phoneNumber: 'Test Event Table Type',
         eventId: '6048529d3a797826f6920062',
         table: {
-          id: "1",
-          seatNo: 1
-        }
+          id: '1',
+          seatNo: 1,
+        },
       },
       {
         name: 'Test 2',
-        email:
-          'thienan.nguyenhoang.011@gmail.com',
+        email: 'thienan.nguyenhoang.011@gmail.com',
         phoneNumber: 'Test Event Table Type',
         eventId: '6048529d3a797826f6920062',
         table: {
-          id: "2",
-          seatNo: 2
-        }
+          id: '2',
+          seatNo: 2,
+        },
       },
     ];
     chai
@@ -150,13 +142,10 @@ describe('Test *guests* Endpoints:', () => {
         console.log('Pass status code!');
         response.body.should.be.a('object');
         console.log('Pass body type!');
-        response.body.should.have.property('message')
-          .to
-          .deep
-          .equal({
-            msgBody: 'Import Guest Successful!',
-            msgError: false,
-          });
+        response.body.should.have.property('message').to.deep.equal({
+          msgBody: 'Import Guest Successful!',
+          msgError: false,
+        });
         console.log('Pass field message!');
         done();
       })

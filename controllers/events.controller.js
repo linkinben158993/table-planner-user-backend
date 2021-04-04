@@ -150,7 +150,7 @@ module.exports = {
           .then((event) => {
             // Get all guest's emails of event
             Guests.find({ event: id })
-              .select('email')
+              .select('email _id')
               .then(async (mails) => {
                 if (mails.length === 0) {
                   res.status(400).json({
@@ -160,14 +160,17 @@ module.exports = {
                     },
                   });
                 } else {
-                  const result = await nodeMailer.sendQRCodeToGuests(mails, event);
-                  if (result.success) {
-                    res.status(200).json({
-                      msg: { msgBody: 'Send mail success!', msgError: false },
-                    });
-                  } else {
-                    res.status(500).json(CustomResponse.SERVER_ERROR);
-                  }
+                  nodeMailer.sendQRCodeToGuests(mails, event, (err1) => {
+                    if (err1) {
+                      const response1 = CustomResponse.SERVER_ERROR;
+                      response1.trace = err1;
+                      res.status(500).json(response1);
+                    } else {
+                      res.status(200).json({
+                        msg: { msgBody: 'Send mail success!', msgError: false },
+                      });
+                    }
+                  });
                 }
               })
               .catch((err1) => {

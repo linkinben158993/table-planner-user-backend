@@ -176,12 +176,13 @@ module.exports = {
           response.trace = err;
           res.status(500).json(response);
         } else {
-          res.status(200).json({
+          const response = {
             message: {
               msgBody: `Change password successfully for ${document.email}`,
               msgError: false,
             },
-          });
+          };
+          res.status(200).json(response);
         }
       });
     }

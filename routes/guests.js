@@ -39,10 +39,7 @@ router.post(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
-.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
     },
     #swagger.parameters['newGuest'] = {
         in: 'body',
@@ -63,7 +60,7 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
         ]
     }
     */
-  guestCtrl.importGuests,
+  guestCtrl.importGuests
 );
 
 router.get(
@@ -74,14 +71,11 @@ router.get(
       description: 'Token From Login.',
       required: true,
       name: 'access_token',
-      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
-.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
     }
 
   */
-  guestCtrl.getGuestList,
+  guestCtrl.getGuestList
 );
 
 router.post(
@@ -109,7 +103,7 @@ router.post(
         }
     }
     */
-  guestCtrl.editGuest,
+  guestCtrl.editGuest
 );
 
 router.post(
@@ -120,10 +114,7 @@ router.post(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
-.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
     },
     #swagger.parameters['Guest'] = {
         in: 'body',
@@ -135,7 +126,7 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
         }
     }
   */
-  guestCtrl.deleteGuest,
+  guestCtrl.deleteGuest
 );
 
 router.post(
@@ -146,10 +137,7 @@ router.post(
       description: 'Token From Login.',
       required: true,
       name: 'access_token',
-      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYw
-MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
-.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
   },
   #swagger.parameters['guestList'] = {
       in: 'body',
@@ -167,7 +155,7 @@ MGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ
       ]
   }
   */
-  guestCtrl.assignTable,
+  guestCtrl.assignTable
 );
 
 module.exports = router;

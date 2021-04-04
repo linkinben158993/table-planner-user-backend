@@ -98,41 +98,53 @@ module.exports = {
     });
   },
 
-  sendQRCodeToGuests: async (receivers, event) => {
-    const data = {
-      eventId: event._id,
-    };
+  sendQRCodeToGuests: async (receivers, event, callBack) => {
+    const promises = [];
 
-    const emails = receivers.map((guestMail) => guestMail.email);
-    const stringData = JSON.stringify(data);
+    for (let i = 0; i < receivers.length; i += 1) {
+      const data = {
+        eventId: event._id,
+        guestId: receivers[i].id,
+      };
 
-    const result = await QRCode.toDataURL(stringData);
-    const mailOptions = {
-      from: `"My Table Planner" ${email}`,
-      to: emails,
-      subject: `Invite you attend ${event.name}`,
-      text: 'Please present qr code provided below for checking in event!',
-      attachDataUrls: true,
-      html: `
-                Invite you attend ${event.name} <br>
-                Please present qr code provided below for checking in event! <br>
-                <img src='${result}'>
-          `,
-    };
-    return new Promise((resolve) => {
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          resolve({
-            success: false,
-            error,
+      // Todo: DEEP LINK TO OPEN APP
+      const stringData = JSON.stringify(data);
+
+      // eslint-disable-next-line no-await-in-loop
+      const result = await QRCode.toDataURL(stringData);
+      const mailOptions = {
+        from: `"My Table Planner" ${email}`,
+        to: receivers[i].email,
+        subject: `Invite you attend ${event.name}`,
+        text: 'Please present qr code provided below for checking in event!',
+        attachDataUrls: true,
+        html: `
+                  Invite you attend ${event.name} <br>
+                  Please present qr code provided below for checking in event! <br>
+                  <a href = "table.planner://--/event?eventId=${event._id}" />
+                  <img src='${result}'>
+            `,
+      };
+
+      promises.push(
+        new Promise((resolve, reject) => {
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(info);
+            }
           });
-        } else {
-          resolve({
-            success: true,
-            info,
-          });
-        }
-      });
-    });
+        }),
+      );
+    }
+    Promise.all(promises).then(
+      (info) => {
+        callBack(null, info);
+      },
+      (err) => {
+        callBack(err);
+      },
+    );
   },
 };
