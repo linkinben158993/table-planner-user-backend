@@ -26,6 +26,16 @@ const EventSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  urls: [
+    {
+      url: {
+        type: String,
+      },
+      publicId: {
+        type: String,
+      },
+    },
+  ],
 });
 
 EventSchema.statics.getEventById = function (eventId, callBack) {
@@ -94,6 +104,26 @@ EventSchema.statics.editEvent = function (event, callBack) {
       callBack(null, document);
     }
   });
+};
+
+EventSchema.statics.removeImages = function (event, publicId, callBack) {
+  this.update(
+    { _id: event },
+    {
+      $pull: {
+        urls: {
+          publicId,
+        },
+      },
+    },
+    (err, document) => {
+      if (err) {
+        callBack(err);
+      } else {
+        callBack(null, document);
+      }
+    },
+  );
 };
 
 EventSchema.set('toObject', { getters: true });

@@ -32,4 +32,16 @@ module.exports = {
     });
     return res;
   },
+  removeImages: (publicId) => {
+    const res = new Promise((resolve, reject) => {
+      cloudinary.uploader.destroy(publicId, (result) => {
+        if (result.result !== 'ok') {
+          reject(result);
+        } else {
+          resolve(new Error('Something happened!'));
+        }
+      });
+    });
+    return res;
+  },
 };
