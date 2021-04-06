@@ -30,7 +30,7 @@ router.post('/event-remove', async (req, res) => {
                 msgBody: err.message,
                 msgError: true,
               },
-              trace: err,
+              trace: response,
             });
           } else {
             cloudinary
@@ -75,10 +75,10 @@ router.post('/events', async (req, res) => {
 
       // eslint-disable-next-line no-console
       console.log(files);
-      if (files.length > 5 || files.length < 2) {
+      if (files.length > 5 || files.length < 1) {
         res.status(200).json({
           message: {
-            msgBody: 'Should Not Above 5 Files Or Less Than 3 Files',
+            msgBody: 'Should Not Above 5 Files Or Less Than 1 Files',
             msgError: true,
           },
         });

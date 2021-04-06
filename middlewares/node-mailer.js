@@ -1,25 +1,34 @@
 const nodeMailer = require('nodemailer');
+const { google } = require('googleapis');
 const dotenv = require('dotenv');
 const QRCode = require('qrcode');
 
 dotenv.config();
 
 const email = process.env.nodeMailerEmail;
-const password = process.env.nodeMailerPassword;
+const oAuth2Client = new google.auth.OAuth2({
+  CLIENT_ID: process.env.nodeMailerClId,
+  ClIENT_SECRET: process.env.nodeMailerSecret,
+  REDIRECT_URI: 'https://developers.google.com/oauthplayground',
+});
+oAuth2Client.setCredentials({
+  refresh_token: process.env.nodeMailerRefreshToken,
+});
 
 const transporter = nodeMailer.createTransport({
-  host: 'smtp.gmail.com',
+  service: 'gmail',
   port: 465,
   secure: true, // true for 465, false for other ports
   pool: true,
   auth: {
+    type: 'OAuth2',
     user: email,
-    pass: password,
     // Get From Google Console OAuth Credential
     clientId: process.env.nodeMailerClId,
     clientSecret: process.env.nodeMailerSecret,
     // Get From Google Developer OAuth20 PlayGround
     refreshToken: process.env.nodeMailerRefreshToken,
+    access_token: async () => oAuth2Client.getAccessToken(),
   },
   tls: {
     rejectUnauthorized: false,
@@ -134,7 +143,6 @@ module.exports = {
             if (error) {
               reject(error);
             } else {
-              transporter.close();
               resolve(info);
             }
           });
