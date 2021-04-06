@@ -11,6 +11,7 @@ const transporter = nodeMailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
   secure: true, // true for 465, false for other ports
+  pool: true,
   auth: {
     user: email,
     pass: password,
@@ -120,9 +121,10 @@ module.exports = {
         attachDataUrls: true,
         html: `
                   Invite you attend ${event.name} <br>
-                  Please present qr code provided below for checking in event! <br>
-                  <a href = "table.planner://--/event?eventId=${event._id}" />
+                  Please present QR code provided below for checking in event! <br>
                   <img src='${result}'>
+                  <a href = " https://client-web-front-end.vercel.app/view-map/${event._id}">Click to open app</a>
+
             `,
       };
 
@@ -132,6 +134,7 @@ module.exports = {
             if (error) {
               reject(error);
             } else {
+              transporter.close();
               resolve(info);
             }
           });
