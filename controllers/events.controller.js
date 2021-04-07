@@ -72,7 +72,7 @@ module.exports = {
       if (!callBack) {
         res.status(403).json(CustomResponse.FORBIDDEN);
       } else {
-        const { name, description } = req.body;
+        const { name, description, startTime, endTime, location } = req.body;
         // Redefine host with passport jwt
         if (!name || !description) {
           res.status(400).json(CustomResponse.BAD_REQUEST);
@@ -81,6 +81,9 @@ module.exports = {
           const newEvent = {
             name,
             description,
+            startTime,
+            endTime,
+            location,
           };
           Events.addEvent(_id, newEvent, (err1, document) => {
             if (err1) {
