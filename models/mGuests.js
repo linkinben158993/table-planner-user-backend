@@ -186,6 +186,13 @@ GuestSchema.statics.checkin = function (guest, callBack) {
             msgError: true,
           },
         });
+      } else if (document.checkin === true) {
+        callBack({
+          message: {
+            msgBody: 'Guest checked in before!!!',
+            msgError: true,
+          },
+        });
       } else {
         document.set({
           checkin: true,
