@@ -39,6 +39,10 @@ const EventSchema = new mongoose.Schema({
       },
     },
   ],
+  reminded: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 EventSchema.statics.getEventById = function (eventId, callBack) {
@@ -69,6 +73,7 @@ EventSchema.statics.addEvent = function (userId, event, callBack) {
     startTime,
     endTime,
     location,
+    reminded: false,
   });
   Users.findOne({ _id: userId })
     .then((document) => {
@@ -130,6 +135,36 @@ EventSchema.statics.removeImages = function (event, publicId, callBack) {
       }
     },
   );
+};
+
+EventSchema.statics.getOneHourLeftEvents = function (callBack) {
+  const now = Date.now();
+  const dateTimeNow = new Date(now);
+  const dateTimeOneHourLater = new Date(now + 60 * 60 * 1000);
+  this.find({
+    $and: [
+      {
+        reminded: false,
+      },
+      {
+        $and: [
+          {
+            // Start time must be greater than current time
+            startTime: { $gte: dateTimeNow },
+            // Within one hour until event
+            // eslint-disable-next-line no-dupe-keys
+            startTime: { $lte: dateTimeOneHourLater },
+          },
+        ],
+      },
+    ],
+  })
+    .then((value) => {
+      callBack(null, value);
+    })
+    .catch((err) => {
+      callBack(err);
+    });
 };
 
 EventSchema.set('toObject', { getters: true });
