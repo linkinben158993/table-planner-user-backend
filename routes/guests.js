@@ -11,9 +11,7 @@ const router = express.Router();
 //         description: 'Token From Login.',
 //         required: true,
 //         name: 'access_token',
-//         schema: {
-//         $access_token: "<Get This From Login API>"
-//         }
+//         value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxNzgwNzEyNSwiZXhwIjoyODI3NDA3MTI1fQ.czOLRtuQe4hNKMV2pBVcf9ZeiL3h0zLpgzONz7J7QFw'
 //     },
 //     #swagger.parameters['newGuest'] = {
 //         in: 'body',
@@ -39,7 +37,7 @@ router.post(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxNzgwNzEyNSwiZXhwIjoyODI3NDA3MTI1fQ.czOLRtuQe4hNKMV2pBVcf9ZeiL3h0zLpgzONz7J7QFw'
     },
     #swagger.parameters['newGuest'] = {
         in: 'body',
@@ -71,8 +69,7 @@ router.get(
       description: 'Token From Login.',
       required: true,
       name: 'access_token',
-      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
-    }
+      value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxNzgwNzEyNSwiZXhwIjoyODI3NDA3MTI1fQ.czOLRtuQe4hNKMV2pBVcf9ZeiL3h0zLpgzONz7J7QFw'    }
 
   */
   guestCtrl.getGuestList
@@ -86,9 +83,7 @@ router.post(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        schema: {
-        $access_token: "<Get This From Login API>"
-        }
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxNzgwNzEyNSwiZXhwIjoyODI3NDA3MTI1fQ.czOLRtuQe4hNKMV2pBVcf9ZeiL3h0zLpgzONz7J7QFw'
     },
     #swagger.parameters['Guest'] = {
         in: 'body',
@@ -114,8 +109,7 @@ router.post(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
-    },
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxNzgwNzEyNSwiZXhwIjoyODI3NDA3MTI1fQ.czOLRtuQe4hNKMV2pBVcf9ZeiL3h0zLpgzONz7J7QFw'    },
     #swagger.parameters['Guest'] = {
         in: 'body',
         description: 'GuestId',
@@ -137,8 +131,7 @@ router.post(
       description: 'Token From Login.',
       required: true,
       name: 'access_token',
-      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNzI3NzY3MiwiZXhwIjoyODI2ODc3NjcyfQ.WJ9hb_l7FsUVkhlrHViRSKUViiNH0OJ4l5Zgf0EgAzc"
-  },
+      value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxNzgwNzEyNSwiZXhwIjoyODI3NDA3MTI1fQ.czOLRtuQe4hNKMV2pBVcf9ZeiL3h0zLpgzONz7J7QFw'  },
   #swagger.parameters['guestList'] = {
       in: 'body',
       description: 'Guest List With Guest Seats.',
@@ -158,4 +151,50 @@ router.post(
   guestCtrl.assignTable
 );
 
+router.patch(
+  '/setPriority',
+  /*
+    #swagger.parameters['loginUser'] = {
+        in: 'header',
+        description: 'Token From Login.',
+        required: true,
+        name: 'access_token',
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxNzgwNzEyNSwiZXhwIjoyODI3NDA3MTI1fQ.czOLRtuQe4hNKMV2pBVcf9ZeiL3h0zLpgzONz7J7QFw'
+    },
+    #swagger.parameters['Guest'] = {
+        in: 'body',
+        description: 'Token From Login.',
+        required: true,
+        id: 'guestId',
+        schema: {
+        $id: "606bd0276d84130d634b2848",
+        $priority: "0123456",
+        }
+    }
+    */
+  guestCtrl.setPriorityGuest
+);
+
+router.patch(
+  '/checkin',
+  /*
+    #swagger.parameters['loginUser'] = {
+        in: 'header',
+        description: 'Token From Login.',
+        required: true,
+        name: 'access_token',
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxNzgwNzEyNSwiZXhwIjoyODI3NDA3MTI1fQ.czOLRtuQe4hNKMV2pBVcf9ZeiL3h0zLpgzONz7J7QFw'
+    },
+    #swagger.parameters['Guest'] = {
+        in: 'body',
+        description: 'GuestID',
+        required: true,
+        id: 'guestId',
+        schema: {
+        $id: "606bd0276d84130d634b2848",
+        }
+    }
+    */
+  guestCtrl.checkin
+);
 module.exports = router;

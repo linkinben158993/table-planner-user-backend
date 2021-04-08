@@ -20,6 +20,10 @@ const GuestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  checkin: {
+    type: Boolean,
+    default: false,
+  },
   table: {
     id: {
       type: String,
@@ -143,6 +147,65 @@ GuestSchema.statics.assignGuestsToSeats = function (seats, callBack) {
     .catch((err) => {
       callBack(err);
     });
+};
+
+GuestSchema.statics.setPriority = function (guest, callBack) {
+  const { id, priority } = guest;
+  this.findOne({ _id: id })
+    .then((document) => {
+      if (!document) {
+        callBack({
+          message: {
+            msgBody: 'Can not found guest!',
+            msgError: true,
+          },
+        });
+      } else {
+        document.set({
+          priority,
+        });
+        document
+          .save()
+          .then((response) => {
+            callBack(null, response);
+          })
+          .catch((err) => callBack(err));
+      }
+    })
+    .catch((err) => callBack(err));
+};
+
+GuestSchema.statics.checkin = function (guest, callBack) {
+  const { id } = guest;
+  this.findOne({ _id: id })
+    .then((document) => {
+      if (!document) {
+        callBack({
+          message: {
+            msgBody: 'Can not found guest!',
+            msgError: true,
+          },
+        });
+      } else if (document.checkin === true) {
+        callBack({
+          message: {
+            msgBody: 'Guest checked in before!!!',
+            msgError: true,
+          },
+        });
+      } else {
+        document.set({
+          checkin: true,
+        });
+        document
+          .save()
+          .then((response) => {
+            callBack(null, response);
+          })
+          .catch((err) => callBack(err));
+      }
+    })
+    .catch((err) => callBack(err));
 };
 
 GuestSchema.set('toObject', { getters: true });

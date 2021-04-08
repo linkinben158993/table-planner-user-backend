@@ -177,4 +177,74 @@ module.exports = {
       }
     })(req, res);
   },
+
+  setPriorityGuest: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err1, callBack) => {
+      if (err1) {
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err1;
+        res.status(500).json(response);
+      }
+      if (!callBack) {
+        res.status(403).json(CustomResponse.FORBIDDEN);
+      } else {
+        const { id, priority } = req.body;
+        if (!id || !priority) {
+          res.status(400).json(CustomResponse.BAD_REQUEST);
+        } else {
+          const guest = { id, priority };
+          Guests.setPriority(guest, (err2, document) => {
+            if (err2) {
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = err2;
+              res.status(500).json(response);
+            } else {
+              res.status(200).json({
+                message: {
+                  msgBody: 'Set Guest Priority Successful!',
+                  msgError: false,
+                },
+                document,
+              });
+            }
+          });
+        }
+      }
+    })(req, res);
+  },
+
+  checkin: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err1, callBack) => {
+      if (err1) {
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err1;
+        res.status(500).json(response);
+      }
+      if (!callBack) {
+        res.status(403).json(CustomResponse.FORBIDDEN);
+      } else {
+        const { id } = req.body;
+        if (!id) {
+          res.status(400).json(CustomResponse.BAD_REQUEST);
+        } else {
+          const guest = { id };
+          Guests.checkin(guest, (err2, document) => {
+            if (err2) {
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = err2;
+              res.status(500).json(response);
+            } else {
+              res.status(200).json({
+                message: {
+                  msgBody: 'Checkin Successful!',
+                  msgError: false,
+                },
+                document,
+              });
+            }
+          });
+        }
+      }
+    })(req, res);
+  },
 };
