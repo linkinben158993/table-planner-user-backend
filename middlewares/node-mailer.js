@@ -117,7 +117,6 @@ module.exports = {
         guestId: receivers[i].id,
       };
 
-      // Todo: DEEP LINK TO OPEN APP
       const stringData = JSON.stringify(data);
 
       // eslint-disable-next-line no-await-in-loop
@@ -132,11 +131,61 @@ module.exports = {
                   Invite you attend ${event.name} <br>
                   Please present QR code provided below for checking in event! <br>
                   <img src='${result}'>
-                  <a href = " https://client-web-front-end.vercel.app/view-map/${event._id}">Click to open app</a>
+                  <a href = ' https://client-web-front-end.vercel.app/view-map/${event._id}'>Click to open app</a>
 
             `,
       };
 
+      promises.push(
+        new Promise((resolve, reject) => {
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(info);
+            }
+          });
+        }),
+      );
+    }
+    Promise.all(promises).then(
+      (info) => {
+        callBack(null, info);
+      },
+      (err) => {
+        callBack(err);
+      },
+    );
+  },
+  eventReminderHost: (receiver, event) => {
+    const mailOptions = {
+      from: `"My Table Planner" ${email}`,
+      to: `${receiver}`,
+      subject: `Hosting of event: ${event}`,
+      text: "It's almost time for your event, and don't forget you're the host.",
+    };
+    return new Promise((resolve) => {
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          resolve(error);
+        } else {
+          resolve(null, info);
+        }
+      });
+    });
+  },
+  eventReminderGuests: (receivers, event, callBack) => {
+    const promises = [];
+
+    for (let i = 0; i < receivers.length; i += 1) {
+      const mailOptions = {
+        from: `"My Table Planner" ${email}`,
+        to: receivers[i].email,
+        subject: `Reminder To Your Event: ${event.name}`,
+        attachDataUrls: true,
+        html: `We hope you have prepared yourself for our event, this is an automatic reminder for your upcoming event
+               <br>Please be on time for your event which is at: ${event.startTime}`,
+      };
       promises.push(
         new Promise((resolve, reject) => {
           transporter.sendMail(mailOptions, (error, info) => {
