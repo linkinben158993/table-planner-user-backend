@@ -138,9 +138,8 @@ EventSchema.statics.removeImages = function (event, publicId, callBack) {
 };
 
 EventSchema.statics.getOneHourLeftEvents = function (callBack) {
-  const now = Date.now();
-  const dateTimeNow = new Date(now);
-  const dateTimeOneHourLater = new Date(now + 60 * 60 * 1000);
+  const dateTimeNow = new Date().toISOString();
+  const dateTimeOneHourLater = new Date(Date.now() + 60 * 60 * 1000).toISOString();
   this.find({
     $and: [
       {
