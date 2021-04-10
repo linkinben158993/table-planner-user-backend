@@ -25,13 +25,36 @@ module.exports = {
               const response = CustomResponse.SERVER_ERROR;
               response.trace = err1;
               res.status(500).json(response);
-            } else {
-              res.status(200).json({
-                message: {
-                  msgBody: 'Get Event Successful!',
-                  msgError: false,
-                },
-                data: document,
+            } else if (document.elements) {
+              Guests.getGuestListHaveSeatInEvent(document._id, (err2, guests) => {
+                if (err2) {
+                  const response = CustomResponse.SERVER_ERROR;
+                  response.trace = err2;
+                  res.status(500).json(response);
+                }
+                const elements = JSON.parse(document.elements);
+                elements
+                  .filter((el) => el.data)
+                  .forEach((el) => {
+                    // eslint-disable-next-line no-param-reassign
+                    if (el.data.guestList.length > 0) el.data.guestList = [];
+                    guests.forEach((guest) => {
+                      if (guest.table) {
+                        if (guest.table.id === el.id) {
+                          el.data.guestList.push(guest);
+                        }
+                      }
+                    });
+                  });
+                // eslint-disable-next-line no-param-reassign
+                document.elements = JSON.stringify(elements);
+                res.status(200).json({
+                  message: {
+                    msgBody: 'Get Event Successful!',
+                    msgError: false,
+                  },
+                  data: document,
+                });
               });
             }
           });
@@ -117,6 +140,34 @@ module.exports = {
       } else if (!callBack) {
         res.status(403).json('Forbidden');
       } else {
+        if (data.elements) {
+          const elements = JSON.parse(data.elements);
+          const guests = [];
+          elements
+            .filter((el) => el.data)
+            .forEach((el) => {
+              if (el.data.guestList) {
+                el.data.guestList.forEach((guest, i) => {
+                  // eslint-disable-next-line no-param-reassign
+                  guest.table = {
+                    id: el.id,
+                    seat: i,
+                  };
+                  guests.push(guest);
+                });
+                // eslint-disable-next-line no-param-reassign
+                el.data.guestList = [];
+              }
+            });
+          data.elements = JSON.stringify(elements);
+          Guests.importGuestsToEvent(guests, (errGuest) => {
+            if (err) {
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = errGuest;
+              res.status(500).json(response);
+            }
+          });
+        }
         Events.editEvent(data, (err1, document) => {
           if (err1) {
             const response = CustomResponse.SERVER_ERROR;
