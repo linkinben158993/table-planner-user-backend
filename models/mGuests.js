@@ -29,7 +29,7 @@ const GuestSchema = new mongoose.Schema({
       type: String,
       default: null,
     },
-    seatNo: {
+    seat: {
       type: Number,
       default: null,
     },
@@ -67,6 +67,20 @@ GuestSchema.statics.editGuest = function (guest, callBack) {
 GuestSchema.statics.getGuestListInEvent = function (id, callBack) {
   return this.find({
     event: id,
+  })
+    .then((value) => {
+      if (value.length === 0) {
+        return callBack(null, 0);
+      }
+      return callBack(null, value);
+    })
+    .catch((err) => callBack(err));
+};
+
+GuestSchema.statics.getGuestListHaveSeatInEvent = function (id, callBack) {
+  return this.find({
+    event: id,
+    table: { $ne: null },
   })
     .then((value) => {
       if (value.length === 0) {
