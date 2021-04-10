@@ -56,6 +56,14 @@ module.exports = {
                   data: document,
                 });
               });
+            } else {
+              res.status(200).json({
+                message: {
+                  msgBody: 'Get Event Successful!',
+                  msgError: false,
+                },
+                data: document,
+              });
             }
           });
         }
