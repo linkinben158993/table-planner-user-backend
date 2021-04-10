@@ -68,6 +68,7 @@ mongoose
   .connect(process.env.URI || 'localhost:27017', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   })
   .then(() => {
     // Test hook before test case if possible
@@ -79,6 +80,10 @@ mongoose.connection.on('connected', () => {
   // Test hook before test case if possible
   app.emit('app_started');
 });
+
+const CronJob = require('./middlewares/node-cron');
+
+CronJob.eventReminder();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
