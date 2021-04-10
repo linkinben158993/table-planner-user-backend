@@ -9,6 +9,7 @@ module.exports = {
     CronJob.schedule(
       '* * * * *',
       async () => {
+        // eslint-disable-next-line no-console
         Events.getOneHourLeftEvents((err, document) => {
           if (err) {
             // eslint-disable-next-line no-console
