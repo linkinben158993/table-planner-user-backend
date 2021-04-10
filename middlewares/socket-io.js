@@ -1,8 +1,9 @@
 const socketIO = require('socket.io');
+const CronJob = require('./node-cron');
 const mEvent = require('../models/mEvents');
 
 module.exports = {
-  startSocketServer(server) {
+  startSocketServer: (server) => {
     const io = socketIO(server, {
       cors: true,
       origin: '*:*',
@@ -21,11 +22,13 @@ module.exports = {
         io.emit('reply-from-server', {
           message: {
             msgBody: 'Reply for previous',
-              msgError: true,
+            msgError: true,
           },
           data: request,
-        })
+        });
       });
+
+      CronJob.pushNotification(socket);
     });
   },
 };

@@ -27,7 +27,10 @@ module.exports = {
                   Events.findOneAndUpdate(
                     { _id: item._id },
                     { reminded: true },
-                    { new: true, returnOriginal: false },
+                    {
+                      new: true,
+                      returnOriginal: false,
+                    },
                     (err3) => {
                       if (err3) {
                         throw err3;
@@ -59,6 +62,24 @@ module.exports = {
             console.log(creatorSent);
           }
           // No event found will be here!
+        });
+      },
+      {
+        schedule: true,
+        timezone: 'Asia/Ho_Chi_Minh',
+      },
+    );
+  },
+  pushNotification: (socket) => {
+    CronJob.schedule(
+      '* * * * *',
+      () => {
+        socket.emit('test-cron-emit', {
+          message: {
+            msgBody: 'Hello from cron',
+            msgError: false,
+            now: Date.now(),
+          },
         });
       },
       {
