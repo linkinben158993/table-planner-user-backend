@@ -143,10 +143,10 @@ module.exports = {
         response.trace = err;
         res.status(500).json(response);
       }
-      if (!data.id) {
+      if (!data.id && !data.elements) {
         res.status(400).json(CustomResponse.BAD_REQUEST);
       } else if (!callBack) {
-        res.status(403).json('Forbidden');
+        res.status(403).json(CustomResponse.FORBIDDEN);
       } else {
         if (data.elements) {
           const elements = JSON.parse(data.elements);

@@ -4,9 +4,6 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
   const socket = io.connect('http://localhost:3000/');
-  socket.on('greeting', (request) => {
-    console.log('Got announcement:', request);
-  });
 
   socket.on('reply-from-server', (request) => {
     console.log('Got reply:', request);

@@ -84,7 +84,7 @@ GuestSchema.statics.getGuestListHaveSeatInEvent = function (id, callBack) {
   })
     .then((value) => {
       if (value.length === 0) {
-        return callBack(null, 0);
+        return callBack(null, []);
       }
       return callBack(null, value);
     })
