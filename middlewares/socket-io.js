@@ -1,9 +1,9 @@
 const socketIO = require('socket.io');
-const Events = require('../models/mEvents');
-const Guests = require('../models/mGuests');
+const CronJob = require('./node-cron');
+const mEvent = require('../models/mEvents');
 
 module.exports = {
-  startSocketServer(server) {
+  startSocketServer: (server) => {
     const io = socketIO(server, {
       cors: true,
       origin: '*:*',
@@ -28,10 +28,23 @@ module.exports = {
         });
       });
 
+      socket.on('get-event-status', (request) => {
+        console.log(request);
+        io.emit('reply-from-server', {
+          message: {
+            msgBody: 'Reply for previous',
+            msgError: true,
+          },
+          data: request,
+        });
+      });
+
       // socket disconnect
       socket.on('disconnect', () => {
         console.info(`[id=${socket.id}] disconnected`);
       });
+
+      CronJob.pushNotification(socket);
     });
   },
 };
