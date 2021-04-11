@@ -42,7 +42,7 @@ passport.use(
 // Local Strategy
 passport.use(
   'local',
-  new LocalStrategy((username, password, done) => {
+  new LocalStrategy({ passReqToCallback: true }, (req, username, password, done) => {
     Users.findOne({ email: username }, (err, user) => {
       // Something happened with database
       if (err) {
@@ -52,7 +52,10 @@ passport.use(
       if (!user) {
         // console.log('Passport: User not found!');
         return done({
-          message: { msgBody: 'Password/Username not match!', msgError: true },
+          message: {
+            msgBody: 'Password/Username not match!',
+            msgError: true,
+          },
           errCode: 'ERR_USER_NOT_FOUND',
         });
       }
@@ -60,7 +63,10 @@ passport.use(
       if (!user.activated) {
         // console.log('Passport: User has not been activated!');
         return done({
-          message: { msgBody: 'User has not been activated!', msgError: true },
+          message: {
+            msgBody: 'User has not been activated!',
+            msgError: true,
+          },
           errCode: 'ERR_USER_NOT_ACTIVATED',
         });
       }

@@ -10,6 +10,7 @@
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "eslint-config-airbnb": "^18.2.1",
+    "expo-server-sdk": "^3.6.0",
     "express": "~4.16.1",
     "express-session": "^1.17.1",
     "firebase-tools": "^9.8.0",
