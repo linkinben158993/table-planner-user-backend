@@ -34,7 +34,7 @@ module.exports = {
                 }
                 const elements = JSON.parse(document.elements);
                 elements
-                  .filter((el) => el.data)
+                  .filter((el) => el?.data?.guestList)
                   .forEach((el) => {
                     // eslint-disable-next-line no-param-reassign
                     if (el.data.guestList.length > 0) el.data.guestList = [];
@@ -152,7 +152,7 @@ module.exports = {
           const elements = JSON.parse(data.elements);
           const guests = [];
           elements
-            .filter((el) => el.data)
+            .filter((el) => el?.data?.guestList)
             .forEach((el) => {
               if (el.data.guestList) {
                 el.data.guestList.forEach((guest, i) => {
