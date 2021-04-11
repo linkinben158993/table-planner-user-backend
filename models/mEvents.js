@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Users = require('./mUsers');
+const Guests = require('./mGuests');
 
 const EventSchema = new mongoose.Schema({
   name: {
@@ -166,6 +167,21 @@ EventSchema.statics.getOneHourLeftEvents = function (remindedType, callBack) {
     })
     .catch((err) => {
       callBack(err);
+    });
+};
+
+EventSchema.statics.findMyAttendingEvent = function (email, callBack) {
+  Guests.find({ email })
+    .then((value) => {
+      const events = value.map((item) => item.event);
+      this.find({ _id: { $in: events } })
+        .then((value1) => callBack(null, value1))
+        .catch((reason) => {
+          callBack(reason);
+        });
+    })
+    .catch((reason) => {
+      callBack(reason);
     });
 };
 

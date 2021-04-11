@@ -34,7 +34,15 @@ module.exports = {
                 }
                 const elements = JSON.parse(document.elements);
                 elements
-                  .filter((el) => el.data)
+                  .filter((el) => {
+                    if (el.data) {
+                      if (el.data.guestList) {
+                        return true;
+                      }
+                      return false;
+                    }
+                    return false;
+                  })
                   .forEach((el) => {
                     // eslint-disable-next-line no-param-reassign
                     if (el.data.guestList.length > 0) el.data.guestList = [];
@@ -70,7 +78,6 @@ module.exports = {
       }
     })(req, res);
   },
-  // Currently hardcode for default user for convenience change immediately on applying passport
   getAllEvents: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {
       if (err) {
@@ -90,6 +97,70 @@ module.exports = {
             response.trace = err1;
             res.status(500).json(response);
           });
+      }
+    })(req, res);
+  },
+  getMyAttendingEvents: (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err, callBack) => {
+      if (err) {
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err;
+        res.status(500).json(response);
+      }
+      if (!callBack) {
+        res.status(403).json(CustomResponse.FORBIDDEN);
+      } else {
+        Events.findMyAttendingEvent(callBack.email, (err1, eventDocument) => {
+          if (err1) {
+            const response = CustomResponse.SERVER_ERROR;
+            response.trace = err1;
+            res.status(500).json(response);
+          } else if (eventDocument.length > 0) {
+            res.status(200).json({
+              message: {
+                msgBody: 'Get My Attending Event Successful!',
+                msgError: false,
+              },
+              data: eventDocument,
+            });
+          }
+        });
+      }
+    })(req, res);
+  },
+  getMyEventGuestId: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err, callBack) => {
+      if (err) {
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err;
+        res.status(500).json(response);
+      }
+      if (!callBack) {
+        res.status(403).json(CustomResponse.FORBIDDEN);
+      } else {
+        const { id } = req.params;
+        if (!id) {
+          res.status(400).json(CustomResponse.BAD_REQUEST);
+        } else {
+          Guests.findOne({
+            email: callBack.email,
+            event: id,
+          })
+            .then((value) => {
+              res.status(200).json({
+                message: {
+                  msgBody: 'Get My Attending Event Info Successfully',
+                  msgError: false,
+                },
+                data: value,
+              });
+            })
+            .catch((err1) => {
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = err1;
+              res.status(500).json(response);
+            });
+        }
       }
     })(req, res);
   },
@@ -152,7 +223,15 @@ module.exports = {
           const elements = JSON.parse(data.elements);
           const guests = [];
           elements
-            .filter((el) => el.data)
+            .filter((el) => {
+              if (el.data) {
+                if (el.data.guestList) {
+                  return true;
+                }
+                return false;
+              }
+              return false;
+            })
             .forEach((el) => {
               if (el.data.guestList) {
                 el.data.guestList.forEach((guest, i) => {
@@ -229,7 +308,10 @@ module.exports = {
                       res.status(500).json(response1);
                     } else {
                       res.status(200).json({
-                        msg: { msgBody: 'Send mail success!', msgError: false },
+                        msg: {
+                          msgBody: 'Send mail success!',
+                          msgError: false,
+                        },
                       });
                     }
                   });
