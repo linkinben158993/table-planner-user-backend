@@ -1,6 +1,7 @@
 const socketIO = require('socket.io');
 const CronJob = require('./node-cron');
 const mEvent = require('../models/mEvents');
+const Guests = require('../models/mGuests');
 
 module.exports = {
   startSocketServer: (server) => {
@@ -18,13 +19,17 @@ module.exports = {
         socket.join(eventId);
 
         socket.on('checkin', ({ guestId }) => {
-          Guests.checkin({ id: guestId }, (err, document) => {
-            if (err) {
-              socket.to(eventId).emit('checkin-error', err);
-            } else {
-              io.in(eventId).emit('update-map', { msg: 'force to reload map' });
-            }
-          });
+          if (guestId) {
+            Guests.checkin({ id: guestId }, (err, document) => {
+              if (err) {
+                socket.to(eventId).emit('checkin-error', err);
+              } else {
+                io.in(eventId).emit('update-map', {
+                  msg: 'force to reload map',
+                });
+              }
+            });
+          }
         });
       });
 
