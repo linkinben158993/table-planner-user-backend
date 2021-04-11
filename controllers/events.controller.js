@@ -36,10 +36,7 @@ module.exports = {
                 elements
                   .filter((el) => {
                     if (el.data) {
-                      if (el.data.guestList) {
-                        return true;
-                      }
-                      return false;
+                      return !!el.data.guestList;
                     }
                     return false;
                   })
@@ -225,10 +222,7 @@ module.exports = {
           elements
             .filter((el) => {
               if (el.data) {
-                if (el.data.guestList) {
-                  return true;
-                }
-                return false;
+                return !!el.data.guestList;
               }
               return false;
             })
