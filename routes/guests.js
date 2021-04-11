@@ -37,7 +37,7 @@ router.post(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxNzgwNzEyNSwiZXhwIjoyODI3NDA3MTI1fQ.czOLRtuQe4hNKMV2pBVcf9ZeiL3h0zLpgzONz7J7QFw'
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODExMjkzOSwiZXhwIjoyODI3NzEyOTM5fQ.58tCPQfLB6kypi9sB4QSrA7yfuuiBu79qEdepP_HUng'
     },
     #swagger.parameters['newGuest'] = {
         in: 'body',
@@ -83,7 +83,7 @@ router.post(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxNzgwNzEyNSwiZXhwIjoyODI3NDA3MTI1fQ.czOLRtuQe4hNKMV2pBVcf9ZeiL3h0zLpgzONz7J7QFw'
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODExMjkzOSwiZXhwIjoyODI3NzEyOTM5fQ.58tCPQfLB6kypi9sB4QSrA7yfuuiBu79qEdepP_HUng'
     },
     #swagger.parameters['Guest'] = {
         in: 'body',
@@ -151,7 +151,7 @@ router.post(
   guestCtrl.assignTable
 );
 
-router.patch(
+router.post(
   '/setPriority',
   /*
     #swagger.parameters['loginUser'] = {
@@ -159,7 +159,7 @@ router.patch(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxNzgwNzEyNSwiZXhwIjoyODI3NDA3MTI1fQ.czOLRtuQe4hNKMV2pBVcf9ZeiL3h0zLpgzONz7J7QFw'
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODExMjkzOSwiZXhwIjoyODI3NzEyOTM5fQ.58tCPQfLB6kypi9sB4QSrA7yfuuiBu79qEdepP_HUng'
     },
     #swagger.parameters['Guest'] = {
         in: 'body',
@@ -175,7 +175,7 @@ router.patch(
   guestCtrl.setPriorityGuest
 );
 
-router.patch(
+router.post(
   '/checkin',
   /*
     #swagger.parameters['loginUser'] = {
@@ -183,7 +183,7 @@ router.patch(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxNzgwNzEyNSwiZXhwIjoyODI3NDA3MTI1fQ.czOLRtuQe4hNKMV2pBVcf9ZeiL3h0zLpgzONz7J7QFw'
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODExMjkzOSwiZXhwIjoyODI3NzEyOTM5fQ.58tCPQfLB6kypi9sB4QSrA7yfuuiBu79qEdepP_HUng'
     },
     #swagger.parameters['Guest'] = {
         in: 'body',

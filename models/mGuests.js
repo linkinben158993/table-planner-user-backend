@@ -16,6 +16,10 @@ const GuestSchema = new mongoose.Schema({
     type: Number,
     default: -1,
   },
+  group: {
+    type: String,
+    default: '',
+  },
   event: {
     type: String,
     required: true,
@@ -37,8 +41,7 @@ const GuestSchema = new mongoose.Schema({
 });
 
 GuestSchema.statics.editGuest = function (guest, callBack) {
-  const { id, name, email, phoneNumber } = guest;
-  this.findOne({ _id: id })
+  this.findOne({ _id: guest.id })
     .then((document) => {
       if (!document) {
         callBack({
@@ -48,17 +51,13 @@ GuestSchema.statics.editGuest = function (guest, callBack) {
           },
         });
       } else {
-        document.set({
-          name,
-          email,
-          phoneNumber,
+        this.update({ _id: guest.id }, guest, (err, doc) => {
+          if (err) {
+            callBack(err);
+          } else {
+            callBack(null, doc);
+          }
         });
-        document
-          .save()
-          .then((response) => {
-            callBack(null, response);
-          })
-          .catch((err) => callBack(err));
       }
     })
     .catch((err) => callBack(err));
@@ -130,6 +129,7 @@ GuestSchema.statics.importGuestsToEvent = function (guests, callBack) {
           name: guest.name,
           priority: guest.priority,
           table: guest.table,
+          group: guest.group,
         },
         upsert: true,
       },

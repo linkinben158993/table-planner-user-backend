@@ -38,36 +38,33 @@ module.exports = {
   },
 
   editGuest: async (req, res) => {
-    passport.authenticate('jwt', { session: false }, (err1, callBack) => {
-      if (err1) {
+    passport.authenticate('jwt', { session: false }, (err, callBack) => {
+      const data = req.body;
+      if (err) {
         const response = CustomResponse.SERVER_ERROR;
-        response.trace = err1;
+        response.trace = err;
         res.status(500).json(response);
       }
-      if (!callBack) {
+      if (!data.id) {
+        res.status(400).json(CustomResponse.BAD_REQUEST);
+      } else if (!callBack) {
         res.status(403).json(CustomResponse.FORBIDDEN);
       } else {
-        const { id, name, email, phoneNumber } = req.body;
-        if (!name || !email || !id || !phoneNumber) {
-          res.status(400).json(CustomResponse.BAD_REQUEST);
-        } else {
-          const guest = { id, name, email, phoneNumber };
-          Guests.editGuest(guest, (err2, document) => {
-            if (err2) {
-              const response = CustomResponse.SERVER_ERROR;
-              response.trace = err2;
-              res.status(500).json(response);
-            } else {
-              res.status(200).json({
-                message: {
-                  msgBody: 'Edit Guest Successful!',
-                  msgError: false,
-                },
-                document,
-              });
-            }
-          });
-        }
+        Guests.editGuest(data, (err1, document) => {
+          if (err1) {
+            const response = CustomResponse.SERVER_ERROR;
+            response.trace = err1;
+            res.status(500).json(response);
+          } else {
+            res.status(200).json({
+              message: {
+                msgBody: 'Edit Guest Successful!',
+                msgError: false,
+              },
+              document,
+            });
+          }
+        });
       }
     })(req, res);
   },
@@ -119,14 +116,15 @@ module.exports = {
         const temp = req.body;
         const guests = [];
         temp.forEach((element) => {
-          const { name, email, phoneNumber, eventId, table } = element;
+          const { name, email, phoneNumber, priority, eventId, table, group } = element;
           const guest = {
             name,
             email,
             phoneNumber,
-            priority: '',
+            priority,
             event: eventId,
             table,
+            group,
           };
           guests.push(guest);
         });
