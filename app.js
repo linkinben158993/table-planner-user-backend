@@ -83,8 +83,7 @@ mongoose.connection.on('connected', () => {
 
 const CronJob = require('./middlewares/node-cron');
 
-CronJob.eventReminder({ reminded: false });
-CronJob.eventReminderApp({ remindedApp: false });
+CronJob.eventReminder();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
