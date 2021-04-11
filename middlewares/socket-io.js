@@ -24,9 +24,7 @@ module.exports = {
               if (err) {
                 socket.to(eventId).emit('checkin-error', err);
               } else {
-                io.in(eventId).emit('update-map', {
-                  msg: 'force to reload map',
-                });
+                io.in(eventId).emit('update-map', document);
               }
             });
           }
