@@ -25,8 +25,8 @@ const GuestSchema = new mongoose.Schema({
     required: true,
   },
   checkin: {
-    type: Boolean,
-    default: false,
+    type: Date,
+    default: null,
   },
   table: {
     id: {
@@ -200,7 +200,7 @@ GuestSchema.statics.checkin = function (guest, callBack) {
             msgError: true,
           },
         });
-      } else if (document.checkin === true) {
+      } else if (document.checkin) {
         callBack({
           message: {
             msgBody: 'Guest checked in before!!!',
@@ -209,7 +209,7 @@ GuestSchema.statics.checkin = function (guest, callBack) {
         });
       } else {
         document.set({
-          checkin: true,
+          checkin: new Date(),
         });
         document
           .save()
