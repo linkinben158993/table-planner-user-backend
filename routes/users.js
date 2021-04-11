@@ -90,7 +90,7 @@ router.post(
         description: 'Token From Login.',
         required: true,
         name: 'access_token',
-        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODExNzk1NiwiZXhwIjoyODI3NzE3OTU2fQ.W1t6lIDK6GzPBbq6VwQ5CzAuox54ZvhtJON5MwIbQjk'
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
     },
     #swagger.parameters['Expo Token To Update'] = {
         in: 'body',
