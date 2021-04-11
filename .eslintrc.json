@@ -20,7 +20,8 @@
     "*.yml",
     "*.hbs",
     "*-io.js",
-    "routes/*"
+    "routes/*",
+    "middlewares/node-cron.js"
   ],
   "rules": {
     "no-console": 2,

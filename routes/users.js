@@ -19,7 +19,7 @@ router.post(
         $password: "123456"
        }
 } */
-  userCtrl.login,
+  userCtrl.login
 );
 
 router.post(
@@ -34,7 +34,7 @@ router.post(
       $isNormalFlow: true
      }
 } */
-  userCtrl.register,
+  userCtrl.register
 );
 
 router.post(
@@ -48,7 +48,7 @@ router.post(
       $otp: "123456"
      }
 } */
-  userCtrl.activate,
+  userCtrl.activate
 );
 
 router.post(
@@ -61,7 +61,7 @@ router.post(
     $email: "an@gmail.com",
    }
 } */
-  userCtrl.forgetPassword,
+  userCtrl.forgetPassword
 );
 
 router.post(
@@ -77,9 +77,32 @@ router.post(
     $newPassword: "an@gmail.com",
    }
 } */
-  userCtrl.resetPassword,
+  userCtrl.resetPassword
 );
 
 router.get('/authenticated', userCtrl.authenticated);
+
+router.post(
+  '/expo-update',
+  /*
+     #swagger.parameters['loginUser'] = {
+        in: 'header',
+        description: 'Token From Login.',
+        required: true,
+        name: 'access_token',
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODExNzk1NiwiZXhwIjoyODI3NzE3OTU2fQ.W1t6lIDK6GzPBbq6VwQ5CzAuox54ZvhtJON5MwIbQjk'
+    },
+    #swagger.parameters['Expo Token To Update'] = {
+        in: 'body',
+        description: 'Expo Token To Update.',
+        required: true,
+        id: 'expoToken',
+        schema: {
+        $expoToken: "ExponentPushToken[iuXHV9KOGbMOiTRR56ABXL]",
+        }
+    }
+} */
+  userCtrl.updateExpoToken
+);
 
 module.exports = router;

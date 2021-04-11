@@ -9,6 +9,9 @@ const UserSchema = new mongoose.Schema({
     max: 50,
     unique: true,
   },
+  expoToken: {
+    type: String,
+  },
   password: {
     type: String,
     required: true,
@@ -276,6 +279,38 @@ UserSchema.statics.resetUserPassword = function (email, otp, oldPassword, newPas
     .catch((err) => {
       callBack(err);
     });
+};
+
+UserSchema.statics.updateExpoToken = function (id, expoToken, callBack) {
+  return this.findOne({ _id: id })
+    .then((value) => {
+      if (!value) {
+        callBack({
+          message: {
+            msgBody: 'No user found!',
+            msgError: true,
+          },
+        });
+      } else {
+        value.set({ expoToken });
+        value
+          .save()
+          .then((value1) => callBack(null, value1))
+          .catch((reason) => callBack(reason));
+      }
+    })
+    .catch((reason) => callBack(reason));
+};
+
+UserSchema.statics.findUserWithExpoTokenByEmail = function (emails, callBack) {
+  return this.find({ email: { $in: emails }, expoToken: { $ne: null } })
+    .then((value) => {
+      if (value.length > 0) {
+        return callBack(null, value);
+      }
+      return value;
+    })
+    .catch((reason) => callBack(reason));
 };
 
 UserSchema.set('toObject', { getters: true });

@@ -43,6 +43,10 @@ const EventSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  remindedApp: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 EventSchema.statics.getEventById = function (eventId, callBack) {
@@ -74,6 +78,7 @@ EventSchema.statics.addEvent = function (userId, event, callBack) {
     endTime,
     location,
     reminded: false,
+    remindedApp: false,
   });
   Users.findOne({ _id: userId })
     .then((document) => {
@@ -137,14 +142,12 @@ EventSchema.statics.removeImages = function (event, publicId, callBack) {
   );
 };
 
-EventSchema.statics.getOneHourLeftEvents = function (callBack) {
+EventSchema.statics.getOneHourLeftEvents = function (remindedType, callBack) {
   const dateTimeNow = new Date().toISOString();
   const dateTimeOneHourLater = new Date(Date.now() + 60 * 60 * 1000).toISOString();
   this.find({
     $and: [
-      {
-        reminded: false,
-      },
+      remindedType,
       {
         $and: [
           {

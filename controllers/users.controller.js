@@ -22,6 +22,37 @@ const signToken = (userID) => {
 const randOTP = () => Math.floor(Math.random() * 1000000);
 
 module.exports = {
+  updateExpoToken: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err, callBack) => {
+      if (err) {
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err;
+        res.status(500).json(response);
+      }
+      if (!callBack) {
+        res.status(403).json(CustomResponse.FORBIDDEN);
+      } else if (!req.body.expoToken) {
+        res.status(400).json(CustomResponse.BAD_REQUEST);
+      } else {
+        Users.updateExpoToken(callBack._id, req.body.expoToken, (err1, document) => {
+          if (err1) {
+            const response = CustomResponse.SERVER_ERROR;
+            response.trace = err1;
+            res.status(500).json(response);
+          } else {
+            res.status(200).json({
+              message: {
+                msgBody: 'Successfully update device info!',
+                msgError: false,
+              },
+              document,
+            });
+          }
+        });
+      }
+    })(req, res);
+  },
+
   login: async (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, callBack) => {
       if (err && !err.errCode) {

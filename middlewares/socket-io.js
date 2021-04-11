@@ -1,6 +1,6 @@
 const socketIO = require('socket.io');
 const CronJob = require('./node-cron');
-const mEvent = require('../models/mEvents');
+const Guests = require('../models/mGuests');
 
 module.exports = {
   startSocketServer: (server) => {
