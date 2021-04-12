@@ -30,23 +30,10 @@ module.exports = {
         });
       });
 
-      socket.on('get-event-status', (request) => {
-        console.log(request);
-        io.emit('reply-from-server', {
-          message: {
-            msgBody: 'Reply for previous',
-            msgError: true,
-          },
-          data: request,
-        });
-      });
-
       // socket disconnect
       socket.on('disconnect', () => {
         console.info(`[id=${socket.id}] disconnected`);
       });
-
-      CronJob.pushNotification(socket);
     });
   },
 };
