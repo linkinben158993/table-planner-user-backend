@@ -189,9 +189,9 @@ GuestSchema.statics.setPriority = function (guest, callBack) {
     .catch((err) => callBack(err));
 };
 
-GuestSchema.statics.checkin = function (guest, callBack) {
-  const { id } = guest;
-  this.findOne({ _id: id })
+GuestSchema.statics.checkin = function (data, callBack) {
+  const { id, eventId } = data;
+  this.findOne({ _id: id, event: eventId })
     .then((document) => {
       if (!document) {
         callBack({

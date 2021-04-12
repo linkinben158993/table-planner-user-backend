@@ -19,7 +19,7 @@ module.exports = {
 
         socket.on('checkin', ({ guestId }) => {
           if (guestId) {
-            Guests.checkin({ id: guestId }, (err, document) => {
+            Guests.checkin({ id: guestId, eventId }, (err, document) => {
               if (err) {
                 socket.to(eventId).emit('checkin-error', err);
               } else {
