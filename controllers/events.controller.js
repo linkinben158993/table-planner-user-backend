@@ -115,49 +115,21 @@ module.exports = {
           } else if (eventDocument.length > 0) {
             res.status(200).json({
               message: {
-                msgBody: 'Get My Attending Event Successful!',
+                msgBody: 'Get My Attending Event Info Successful!',
                 msgError: false,
               },
               data: eventDocument,
             });
+          } else {
+            res.status(200).json({
+              message: {
+                msgBody: "You Haven't Had Any Event!",
+                msgError: false,
+              },
+              data: [],
+            });
           }
         });
-      }
-    })(req, res);
-  },
-  getMyEventGuestId: async (req, res) => {
-    passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      if (err) {
-        const response = CustomResponse.SERVER_ERROR;
-        response.trace = err;
-        res.status(500).json(response);
-      }
-      if (!callBack) {
-        res.status(403).json(CustomResponse.FORBIDDEN);
-      } else {
-        const { id } = req.params;
-        if (!id) {
-          res.status(400).json(CustomResponse.BAD_REQUEST);
-        } else {
-          Guests.findOne({
-            email: callBack.email,
-            event: id,
-          })
-            .then((value) => {
-              res.status(200).json({
-                message: {
-                  msgBody: 'Get My Attending Event Info Successfully',
-                  msgError: false,
-                },
-                data: value,
-              });
-            })
-            .catch((err1) => {
-              const response = CustomResponse.SERVER_ERROR;
-              response.trace = err1;
-              res.status(500).json(response);
-            });
-        }
       }
     })(req, res);
   },

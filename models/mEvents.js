@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Users = require('./mUsers');
-const Guests = require('./mGuests');
 
 const EventSchema = new mongoose.Schema({
   name: {
@@ -166,14 +165,53 @@ EventSchema.statics.getOneHourLeftEvents = function (callBack) {
 };
 
 EventSchema.statics.findMyAttendingEvent = function (email, callBack) {
-  Guests.find({ email })
+  return this.aggregate([
+    {
+      $sort: {
+        startTime: -1,
+      },
+    },
+    {
+      $project: {
+        id: {
+          $toString: '$_id',
+        },
+        name: '$name',
+        location: '$location',
+        startTime: '$startTime',
+      },
+    },
+    {
+      $lookup: {
+        from: 'guests',
+        localField: 'id',
+        foreignField: 'event',
+        as: 'guestInfo',
+      },
+    },
+    { $unwind: '$guestInfo' },
+    { $match: { 'guestInfo.email': email } },
+    {
+      $project: {
+        _id: 0,
+        id: 1,
+        name: 1,
+        location: 1,
+        startTime: 1,
+        guestInfo: {
+          id: {
+            $toString: '$guestInfo._id',
+          },
+          email: 1,
+          priority: 1,
+          table: 1,
+          group: 1,
+        },
+      },
+    },
+  ])
     .then((value) => {
-      const events = value.map((item) => item.event);
-      this.find({ _id: { $in: events } })
-        .then((value1) => callBack(null, value1))
-        .catch((reason) => {
-          callBack(reason);
-        });
+      callBack(null, value);
     })
     .catch((reason) => {
       callBack(reason);

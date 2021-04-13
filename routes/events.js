@@ -42,19 +42,6 @@ router.get(
   eventCtrl.getMyAttendingEvents
 );
 
-router.get(
-  '/my-attending/:id',
-  /* #swagger.parameters['loginUser'] = {
-       in: 'header',
-       description: 'Token From Login.',
-       required: true,
-       name: 'access_token',
-       value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
-  }
- */
-  eventCtrl.getMyEventGuestId
-);
-
 router.post(
   '/add',
   /*
