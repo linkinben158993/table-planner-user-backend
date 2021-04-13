@@ -83,7 +83,8 @@ module.exports = {
         if (!guestId) {
           res.status(400).json(CustomResponse.BAD_REQUEST);
         } else {
-          Guests.deleteGuestById(guestId, (err2, document) => {
+          const { id } = guestId;
+          Guests.deleteGuestById(id, (err2, document) => {
             if (err2) {
               const response = CustomResponse.SERVER_ERROR;
               response.trace = err2;

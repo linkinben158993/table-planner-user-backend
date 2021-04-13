@@ -104,8 +104,7 @@ GuestSchema.statics.deleteGuestById = function (id, callBack) {
           null,
         );
       } else {
-        document
-          .deleteOne({ _id: id })
+        this.deleteOne({ _id: id })
           .then((response) => {
             callBack(null, response);
           })
