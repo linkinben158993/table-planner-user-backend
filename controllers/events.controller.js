@@ -46,10 +46,8 @@ module.exports = {
                     // eslint-disable-next-line no-param-reassign
                     if (el.data.guestList.length > 0) el.data.guestList = [];
                     guests.forEach((guest) => {
-                      if (guest.table) {
-                        if (guest.table.id === el.id) {
-                          el.data.guestList.push(guest);
-                        }
+                      if (guest.table.tableId === el.id) {
+                        el.data.guestList.push(guest);
                       }
                     });
                   });
@@ -192,6 +190,7 @@ module.exports = {
       } else {
         if (data.elements) {
           const elements = JSON.parse(data.elements);
+          // eslint-disable-next-line no-console
           const guests = [];
           elements
             .filter((el) => {
@@ -203,11 +202,13 @@ module.exports = {
             .forEach((el) => {
               if (el.data.guestList) {
                 el.data.guestList.forEach((guest, i) => {
+                  if (!guest.table.tableId) {
+                    guest.table = {
+                      tableId: el.id,
+                      seat: i,
+                    };
+                  }
                   // eslint-disable-next-line no-param-reassign
-                  guest.table = {
-                    id: el.id,
-                    seat: i,
-                  };
                   guests.push(guest);
                 });
                 // eslint-disable-next-line no-param-reassign
@@ -215,7 +216,7 @@ module.exports = {
               }
             });
           data.elements = JSON.stringify(elements);
-          Guests.importGuestsToEvent(guests, (errGuest) => {
+          Guests.updateGuestList(guests, (errGuest) => {
             if (err) {
               const response = CustomResponse.SERVER_ERROR;
               response.trace = errGuest;
