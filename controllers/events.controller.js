@@ -1,7 +1,9 @@
 const passport = require('passport');
 const Events = require('../models/mEvents');
 const Guests = require('../models/mGuests');
+const Users = require('../models/mUsers');
 const nodeMailer = require('../middlewares/node-mailer');
+const NotificationHelper = require('../middlewares/expo-notification');
 const CustomResponse = require('../constants/response.message');
 
 // an@gmail.com 123456
@@ -267,17 +269,39 @@ module.exports = {
                     },
                   });
                 } else {
-                  nodeMailer.sendQRCodeToGuests(mails, event, (err1) => {
+                  await nodeMailer.sendQRCodeToGuests(mails, event, (err1) => {
                     if (err1) {
                       const response1 = CustomResponse.SERVER_ERROR;
                       response1.trace = err1;
                       res.status(500).json(response1);
                     } else {
-                      res.status(200).json({
-                        msg: {
-                          msgBody: 'Send mail success!',
-                          msgError: false,
-                        },
+                      const userEmails = mails.map((item) => item.email);
+                      Users.findUserWithExpoTokenByEmail(userEmails, (err2, userDocument) => {
+                        if (err2) {
+                          const response2 = CustomResponse.SERVER_ERROR;
+                          response2.trace = err2;
+                          res.status(500).json(response2);
+                        } else {
+                          const pushNotificationUser = userDocument.map((item) => item.expoToken);
+                          NotificationHelper.reminderApplication(
+                            pushNotificationUser,
+                            `It is almost time for ${event.name}`,
+                            (err3) => {
+                              if (err3) {
+                                const response3 = CustomResponse.SERVER_ERROR;
+                                response3.trace = err3;
+                                res.status(500).json(response3);
+                              } else {
+                                res.status(200).json({
+                                  msg: {
+                                    msgBody: 'Send invitation success!',
+                                    msgError: false,
+                                  },
+                                });
+                              }
+                            },
+                          );
+                        }
                       });
                     }
                   });

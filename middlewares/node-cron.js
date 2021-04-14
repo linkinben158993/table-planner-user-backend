@@ -21,40 +21,42 @@ module.exports = {
                   if (err1) {
                     throw err1;
                   } else {
-                    await nodeMailer.eventReminderGuests(
-                      guestDocument,
-                      item,
-                      (err2) => {
-                        if (err2) {
-                          throw err2;
-                        }
-                      }
-                    );
-                    const emails = guestDocument.map(
-                      (guestEmails) => guestEmails.email
-                    );
-                    await Users.findUserWithExpoTokenByEmail(
-                      emails,
-                      async (err2, userDocument) => {
-                        if (err2) {
-                          console.log(err2);
-                        }
-                        const pushNotificationUser = userDocument.map(
-                          (userItem) => userItem.expoToken
-                        );
-                        await NotificationHelper.reminderApplication(
-                          pushNotificationUser,
-                          `It is almost time for ${item.name}`,
-                          (err3) => {
-                            if (err3) {
-                              throw err3;
-                            }
+                    if (guestDocument !== 0) {
+                      await nodeMailer.eventReminderGuests(
+                        guestDocument,
+                        item,
+                        (err2) => {
+                          if (err2) {
+                            throw err2;
                           }
-                        );
-                      }
-                    );
-                    item.set({ reminded: true });
-                    item.save().catch((reason) => console.log(reason));
+                        }
+                      );
+                      const emails = guestDocument.map(
+                        (guestEmails) => guestEmails.email
+                      );
+                      await Users.findUserWithExpoTokenByEmail(
+                        emails,
+                        async (err2, userDocument) => {
+                          if (err2) {
+                            console.log(err2);
+                          }
+                          const pushNotificationUser = userDocument.map(
+                            (userItem) => userItem.expoToken
+                          );
+                          await NotificationHelper.reminderApplication(
+                            pushNotificationUser,
+                            `It is almost time for ${item.name}`,
+                            (err3) => {
+                              if (err3) {
+                                throw err3;
+                              }
+                            }
+                          );
+                        }
+                      );
+                      item.set({ reminded: true });
+                      item.save().catch((reason) => console.log(reason));
+                    }
                   }
                 }
               );
