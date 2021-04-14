@@ -119,26 +119,51 @@ GuestSchema.statics.deleteGuestById = function (id, callBack) {
 };
 
 GuestSchema.statics.importGuestsToEvent = function (guests, callBack) {
-  const bulkOptions = guests.map((guest) => ({
-    updateOne: {
-      filter: { email: guest.email, event: guest.event },
-      update: {
-        $set: {
-          phoneNumber: guest.phoneNumber,
-          name: guest.name,
-          priority: guest.priority,
-          table: guest.table,
-          group: guest.group,
-        },
-        upsert: true,
-      },
-      upsert: true,
-    },
-  }));
-
-  this.bulkWrite(bulkOptions)
-    .then((response) => {
-      callBack(null, response);
+  // const bulkOptions = guests.map((guest) => ({
+  //   updateOne: {
+  //     filter: { email: guest.email, event: guest.event },
+  //     update: {
+  //       $set: {
+  //         phoneNumber: guest.phoneNumber,
+  //         name: guest.name,
+  //         priority: guest.priority,
+  //         table: guest.table,
+  //         group: guest.group,
+  //       },
+  //       upsert: true,
+  //     },
+  //     upsert: true,
+  //   },
+  // }));
+  //
+  // this.bulkWrite(bulkOptions)
+  //   .then((response) => {
+  //     callBack(null, response);
+  //   })
+  //   .catch((err) => {
+  //     callBack(err);
+  //   });
+  const emails = guests.map((guest) => guest.email);
+  this.find({ email: { $in: emails }, event: guests[0].event })
+    .select('email')
+    .then((results) => {
+      if (results.length > 0) {
+        callBack({
+          message: {
+            msgBody: 'Duplicate email',
+            msgError: true,
+            body: results,
+          },
+        });
+      } else {
+        this.insertMany(guests)
+          .then((guestsAdded) => {
+            callBack(null, guestsAdded);
+          })
+          .catch((err) => {
+            callBack(err);
+          });
+      }
     })
     .catch((err) => {
       callBack(err);
