@@ -29,7 +29,7 @@ const GuestSchema = new mongoose.Schema({
     default: null,
   },
   table: {
-    id: {
+    tableId: {
       type: String,
       default: null,
     },
@@ -79,7 +79,7 @@ GuestSchema.statics.getGuestListInEvent = function (id, callBack) {
 GuestSchema.statics.getGuestListHaveSeatInEvent = function (id, callBack) {
   return this.find({
     event: id,
-    table: { $ne: null },
+    'table.tableId': { $ne: null },
   })
     .then((value) => {
       if (value.length === 0) {
@@ -119,30 +119,6 @@ GuestSchema.statics.deleteGuestById = function (id, callBack) {
 };
 
 GuestSchema.statics.importGuestsToEvent = function (guests, callBack) {
-  // const bulkOptions = guests.map((guest) => ({
-  //   updateOne: {
-  //     filter: { email: guest.email, event: guest.event },
-  //     update: {
-  //       $set: {
-  //         phoneNumber: guest.phoneNumber,
-  //         name: guest.name,
-  //         priority: guest.priority,
-  //         table: guest.table,
-  //         group: guest.group,
-  //       },
-  //       upsert: true,
-  //     },
-  //     upsert: true,
-  //   },
-  // }));
-  //
-  // this.bulkWrite(bulkOptions)
-  //   .then((response) => {
-  //     callBack(null, response);
-  //   })
-  //   .catch((err) => {
-  //     callBack(err);
-  //   });
   const emails = guests.map((guest) => guest.email);
   this.find({ email: { $in: emails }, event: guests[0].event })
     .select('email')
@@ -164,6 +140,33 @@ GuestSchema.statics.importGuestsToEvent = function (guests, callBack) {
             callBack(err);
           });
       }
+    })
+    .catch((err) => {
+      callBack(err);
+    });
+};
+
+GuestSchema.statics.updateGuestList = function (guests, callBack) {
+  const bulkOptions = guests.map((guest) => ({
+    updateOne: {
+      filter: { email: guest.email, event: guest.event },
+      update: {
+        $set: {
+          phoneNumber: guest.phoneNumber,
+          name: guest.name,
+          priority: guest.priority,
+          table: guest.table,
+          group: guest.group,
+        },
+        upsert: true,
+      },
+      upsert: true,
+    },
+  }));
+
+  this.bulkWrite(bulkOptions)
+    .then((response) => {
+      callBack(null, response);
     })
     .catch((err) => {
       callBack(err);
