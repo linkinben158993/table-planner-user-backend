@@ -129,11 +129,16 @@ module.exports = {
           };
           guests.push(guest);
         });
+        // eslint-disable-next-line consistent-return
         Guests.importGuestsToEvent(guests, (err, response) => {
           if (err) {
-            const response1 = CustomResponse.SERVER_ERROR;
-            response1.trace = err;
-            res.status(500).json(response1);
+            if (err.message.msgBody === 'Duplicate email') {
+              res.status(400).json(err);
+            } else {
+              const response1 = CustomResponse.SERVER_ERROR;
+              response1.trace = err;
+              res.status(500).json(response1);
+            }
           } else {
             res.status(200).json({
               message: {
