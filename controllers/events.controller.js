@@ -283,7 +283,7 @@ module.exports = {
                           const pushNotificationUser = userDocument.map((item) => item.expoToken);
                           NotificationHelper.reminderApplication(
                             pushNotificationUser,
-                            `It is almost time for ${event.name}`,
+                            `You have been invited for ${event.name}`,
                             (err3) => {
                               if (err3) {
                                 const response3 = CustomResponse.SERVER_ERROR;
