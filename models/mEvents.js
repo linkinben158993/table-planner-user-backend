@@ -108,13 +108,36 @@ EventSchema.statics.addEvent = function (userId, event, callBack) {
 };
 
 EventSchema.statics.editEvent = function (event, callBack) {
-  this.update({ _id: event.id }, event, (err, document) => {
-    if (err) {
-      callBack(err);
-    } else {
-      callBack(null, document);
-    }
-  });
+  this.findOne({ _id: event.id })
+    .then((value) => {
+      if (!value) {
+        callBack({
+          message: {
+            msgBody: 'No document found!',
+            msgError: true,
+          },
+        });
+      } else {
+        if (value.urls.length !== 0 && event.urls) {
+          const { urls } = value;
+          const urlsUpdate = urls.map((item) => ({
+            url: item.url,
+            publicId: item.publicId,
+          }));
+          event.urls = event.urls.concat(urlsUpdate);
+        }
+        this.update({ _id: event.id }, event, (err, document) => {
+          if (err) {
+            callBack(err);
+          } else {
+            callBack(null, document);
+          }
+        });
+      }
+    })
+    .catch((reason) => {
+      callBack(reason);
+    });
 };
 
 EventSchema.statics.removeImages = function (event, publicId, callBack) {

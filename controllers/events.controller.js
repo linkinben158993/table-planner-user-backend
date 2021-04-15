@@ -43,7 +43,6 @@ module.exports = {
                     return false;
                   })
                   .forEach((el) => {
-                    // eslint-disable-next-line no-param-reassign
                     if (el.data.guestList.length > 0) el.data.guestList = [];
                     guests.forEach((guest) => {
                       if (guest.table.tableId === el.id) {
@@ -51,7 +50,6 @@ module.exports = {
                       }
                     });
                   });
-                // eslint-disable-next-line no-param-reassign
                 document.elements = JSON.stringify(elements);
                 res.status(200).json({
                   message: {
@@ -190,7 +188,6 @@ module.exports = {
       } else {
         if (data.elements) {
           const elements = JSON.parse(data.elements);
-          // eslint-disable-next-line no-console
           const guests = [];
           elements
             .filter((el) => {
