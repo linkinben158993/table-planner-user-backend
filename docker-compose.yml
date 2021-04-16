@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  table-planing-admin:
+    image: tankietxm/table-planner-user-backend:prod
+    build:
+      context: .
+    container_name: table-planner-user-backend
+    restart: always
+    volumes:
+      - .:/app
+    ports:
+      - "80:3000"
