@@ -43,6 +43,10 @@ const EventSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  remindedHost: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 EventSchema.statics.getEventById = function (eventId, callBack) {
@@ -74,6 +78,7 @@ EventSchema.statics.addEvent = function (userId, event, callBack) {
     endTime,
     location,
     reminded: false,
+    remindedHost: false,
   });
   Users.findOne({ _id: userId })
     .then((document) => {
@@ -165,7 +170,14 @@ EventSchema.statics.getOneHourLeftEvents = function (callBack) {
   const dateTimeOneHourLater = new Date(Date.now() + 60 * 60 * 1000).toISOString();
   this.find({
     $and: [
-      { reminded: false },
+      {
+        $or: [
+          {
+            reminded: false,
+            remindedHost: false,
+          },
+        ],
+      },
       {
         $and: [
           {

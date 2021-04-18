@@ -21,6 +21,7 @@ module.exports = {
                   if (err1) {
                     throw err1;
                   } else {
+                    // Remind guest
                     if (guestDocument !== 0) {
                       await nodeMailer.eventReminderGuests(
                         guestDocument,
@@ -60,42 +61,47 @@ module.exports = {
                   }
                 }
               );
+
+              // Remind host
+              if (!item.remindedHost) {
+                Users.findOne({ _id: item.creator }).then(async (value) => {
+                  nodeMailer.eventReminderHost(
+                    value.email,
+                    item.name,
+                    (error, info) => {
+                      if (error) {
+                        throw error;
+                      } else {
+                        return info;
+                      }
+                    }
+                  );
+                  // Remind host application
+                  if (value.expoToken) {
+                    await NotificationHelper.reminderApplication(
+                      [value.expoToken],
+                      `Your hosting event ${item.name} is coming soon.`,
+                      (err3) => {
+                        if (err3) {
+                          throw err3;
+                        }
+                      }
+                    );
+                  }
+                });
+
+                item.set({ remindedHost: true });
+                item.save().catch((reason) => console.log(reason));
+              }
+
               return {
                 name: item.name,
                 eventId: item._id,
                 creator: item.creator,
               };
             });
-            const creatorSent = availableEvent.map((item) => {
-              Users.findOne({ _id: item.creator }).then(async (value) => {
-                nodeMailer.eventReminderHost(
-                  value.email,
-                  item.name,
-                  (error, info) => {
-                    if (error) {
-                      throw error;
-                    } else {
-                      return info;
-                    }
-                  }
-                );
-                // Remind host application
-                if (value.expoToken) {
-                  await NotificationHelper.reminderApplication(
-                    [value.expoToken],
-                    `Your hosting event ${item.name} is coming soon.`,
-                    (err3) => {
-                      if (err3) {
-                        throw err3;
-                      }
-                    }
-                  );
-                }
-              });
-              return item.creator;
-            });
 
-            console.log(creatorSent);
+            console.log(availableEvent);
           }
           // No event found will be here!
         });
