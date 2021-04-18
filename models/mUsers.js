@@ -44,12 +44,6 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  myEvents: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Events',
-    },
-  ],
 });
 
 UserSchema.pre('save', function (next) {
