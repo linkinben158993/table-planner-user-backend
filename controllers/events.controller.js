@@ -274,14 +274,26 @@ module.exports = {
                       res.status(500).json(response1);
                     } else {
                       const userEmails = mails.map((item) => item.email);
-                      Users.findUserWithExpoTokenByEmail(userEmails, (err2, userDocument) => {
+                      Users.findUserWithExpoTokenByEmail(userEmails, async (err2, userDocument) => {
                         if (err2) {
                           const response2 = CustomResponse.SERVER_ERROR;
                           response2.trace = err2;
                           res.status(500).json(response2);
                         } else {
                           const pushNotificationUser = userDocument.map((item) => item.expoToken);
-                          NotificationHelper.reminderApplication(
+                          if (pushNotificationUser.length === 0) {
+                            res.status(200).json({
+                              message: {
+                                msgBody: 'Send invitation success!',
+                                msgError: false,
+                              },
+                              trace: {
+                                msgBody: 'No guest using application found!',
+                                msgError: false,
+                              },
+                            });
+                          }
+                          await NotificationHelper.reminderApplication(
                             pushNotificationUser,
                             `You have been invited for ${event.name}`,
                             (err3) => {
@@ -290,12 +302,13 @@ module.exports = {
                                 response3.trace = err3;
                                 res.status(500).json(response3);
                               } else {
-                                res.status(200).json({
-                                  msg: {
+                                const successResponse = {
+                                  message: {
                                     msgBody: 'Send invitation success!',
                                     msgError: false,
                                   },
-                                });
+                                };
+                                res.status(200).json(successResponse);
                               }
                             },
                           );
