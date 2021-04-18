@@ -22,7 +22,7 @@ module.exports = {
                     throw err1;
                   } else {
                     // Remind guest
-                    if (guestDocument !== 0) {
+                    if (guestDocument !== 0 && !item.reminded) {
                       await nodeMailer.eventReminderGuests(
                         guestDocument,
                         item,

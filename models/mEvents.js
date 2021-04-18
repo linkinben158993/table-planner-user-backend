@@ -166,6 +166,8 @@ EventSchema.statics.getOneHourLeftEvents = function (callBack) {
         $or: [
           {
             reminded: false,
+          },
+          {
             remindedHost: false,
           },
         ],
