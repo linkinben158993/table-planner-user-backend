@@ -6,9 +6,6 @@ const nodeMailer = require('../middlewares/node-mailer');
 const NotificationHelper = require('../middlewares/expo-notification');
 const CustomResponse = require('../constants/response.message');
 
-// an@gmail.com 123456
-// const host = '600ea488f70da93fde2b3acc';
-
 module.exports = {
   getEventByID: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {
@@ -281,6 +278,19 @@ module.exports = {
                           res.status(500).json(response2);
                         } else {
                           const pushNotificationUser = userDocument.map((item) => item.expoToken);
+                          Users.findOne({ _id: event.creator }).then((host) => {
+                            if (host.expoToken) {
+                              NotificationHelper.reminderApplication(
+                                [host.expoToken],
+                                `You have just invited your guests in ${event.name}`,
+                                (err3) => {
+                                  if (err3) {
+                                    throw err3;
+                                  }
+                                },
+                              );
+                            }
+                          });
                           if (pushNotificationUser.length === 0) {
                             res.status(200).json({
                               message: {
@@ -296,10 +306,10 @@ module.exports = {
                           await NotificationHelper.reminderApplication(
                             pushNotificationUser,
                             `You have been invited for ${event.name}`,
-                            (err3) => {
-                              if (err3) {
+                            (err4) => {
+                              if (err4) {
                                 const response3 = CustomResponse.SERVER_ERROR;
-                                response3.trace = err3;
+                                response3.trace = err4;
                                 res.status(500).json(response3);
                               } else {
                                 const successResponse = {
