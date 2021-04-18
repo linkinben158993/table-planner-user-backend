@@ -299,10 +299,10 @@ UserSchema.statics.updateExpoToken = function (id, expoToken, callBack) {
 UserSchema.statics.findUserWithExpoTokenByEmail = function (emails, callBack) {
   return this.find({ email: { $in: emails }, expoToken: { $ne: null } })
     .then((value) => {
-      if (value.length > 0) {
-        return callBack(null, value);
+      if (value.length === 0) {
+        return callBack(null, []);
       }
-      return value;
+      return callBack(null, value);
     })
     .catch((reason) => callBack(reason));
 };

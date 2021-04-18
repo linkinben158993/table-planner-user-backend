@@ -67,7 +67,7 @@ module.exports = {
               };
             });
             const creatorSent = availableEvent.map((item) => {
-              Users.findOne({ _id: item.creator }).then((value) => {
+              Users.findOne({ _id: item.creator }).then(async (value) => {
                 nodeMailer.eventReminderHost(
                   value.email,
                   item.name,
@@ -79,6 +79,18 @@ module.exports = {
                     }
                   }
                 );
+                // Remind host application
+                if (value.expoToken) {
+                  await NotificationHelper.reminderApplication(
+                    [value.expoToken],
+                    `Your hosting event ${item.name} is coming soon.`,
+                    (err3) => {
+                      if (err3) {
+                        throw err3;
+                      }
+                    }
+                  );
+                }
               });
               return item.creator;
             });
