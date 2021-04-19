@@ -47,6 +47,7 @@ module.exports = {
                           await NotificationHelper.reminderApplication(
                             pushNotificationUser,
                             `It is almost time for ${item.name}`,
+                            { eventId: item._id },
                             (err3) => {
                               if (err3) {
                                 throw err3;
@@ -65,7 +66,7 @@ module.exports = {
               // Remind host
               if (!item.remindedHost) {
                 Users.findOne({ _id: item.creator }).then(async (value) => {
-                  nodeMailer.eventReminderHost(
+                  await nodeMailer.eventReminderHost(
                     value.email,
                     item.name,
                     (error, info) => {
@@ -81,6 +82,7 @@ module.exports = {
                     await NotificationHelper.reminderApplication(
                       [value.expoToken],
                       `Your hosting event ${item.name} is coming soon.`,
+                      { eventId: item._id },
                       (err3) => {
                         if (err3) {
                           throw err3;

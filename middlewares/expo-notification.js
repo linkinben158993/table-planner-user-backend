@@ -6,7 +6,7 @@ const expoServer = new Expo({ accessToken: process.env.expoToken });
 const isPushToken = (pushToken) => Expo.isExpoPushToken(pushToken);
 
 module.exports = {
-  reminderApplication: async (tokens, reminder, callBack) => {
+  reminderApplication: async (tokens, reminder, data, callBack) => {
     const messages = [];
     tokens.forEach((item) => {
       if (isPushToken(item)) {
@@ -14,7 +14,7 @@ module.exports = {
           to: item,
           sound: 'default',
           body: reminder,
-          // data: { withSome: 'data' },
+          data,
         });
       }
     });

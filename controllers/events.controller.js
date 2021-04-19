@@ -283,6 +283,7 @@ module.exports = {
                               NotificationHelper.reminderApplication(
                                 [host.expoToken],
                                 `You have just invited your guests in ${event.name}`,
+                                { eventId: id },
                                 (err3) => {
                                   if (err3) {
                                     throw err3;
@@ -306,6 +307,7 @@ module.exports = {
                           await NotificationHelper.reminderApplication(
                             pushNotificationUser,
                             `You have been invited for ${event.name}`,
+                            { eventId: id },
                             (err4) => {
                               if (err4) {
                                 const response3 = CustomResponse.SERVER_ERROR;
