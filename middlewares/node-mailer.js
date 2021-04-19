@@ -131,7 +131,7 @@ module.exports = {
                   Invite you attend ${event.name} <br>
                   Please present QR code provided below for checking in event! <br>
                   <img src='${result}'>
-                  <a href = ' https://client-web-front-end.vercel.app/view-map/${event._id}'>Click to open app</a>
+                  <a href = ' https://client-web-front-end.vercel.app/information/${event._id}'>Click to open app</a>
 
             `,
       };
