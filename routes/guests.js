@@ -51,14 +51,46 @@ router.post(
             "phoneNumber": "Test Event Table Type",
             "eventId": "6048529d3a797826f6920062",
             "table": {
-              "id": "1",
-              "seatNo": 1,
+              "tableId": "1",
+              "seat": 1,
             }
           }
         ]
     }
     */
   guestCtrl.importGuests
+);
+
+router.post(
+  '/update',
+  /*
+    #swagger.parameters['loginUser'] = {
+        in: 'header',
+        description: 'Token From Login.',
+        required: true,
+        name: 'access_token',
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
+    },
+    #swagger.parameters['newGuest'] = {
+        in: 'body',
+        description: 'New Guests Array For Import.',
+        required: true,
+        name: 'newGuest',
+        schema: [
+          {
+            "name": "Test 1",
+            "email": "Test Guest With JWT Protection And De-reference stuff From Swagger",
+            "phoneNumber": "Test Event Table Type",
+            "eventId": "6048529d3a797826f6920062",
+            "table": {
+              "tableId": "1",
+              "seat": 1,
+            }
+          }
+        ]
+    }
+    */
+  guestCtrl.updateGuestList
 );
 
 router.get(

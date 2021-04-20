@@ -146,6 +146,49 @@ module.exports = {
       }
     })(req, res);
   },
+  updateGuestList: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, async (err1, callBack) => {
+      if (err1) {
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err1;
+        res.status(500).json(response);
+      }
+      if (!callBack) {
+        res.status(403).json(CustomResponse.FORBIDDEN);
+      } else {
+        //
+        const temp = req.body;
+        const guests = temp.map((element) => ({
+          name: element.name,
+          email: element.email,
+          phoneNumber: element.phoneNumber,
+          priority: element.priority,
+          event: element.eventId,
+          table: element.table,
+          group: element.group,
+        }));
+        Guests.updateGuestList(guests, (err, response) => {
+          if (err) {
+            if (err.message.msgBody === 'Duplicate email') {
+              res.status(400).json(err);
+            } else {
+              const response1 = CustomResponse.SERVER_ERROR;
+              response1.trace = err;
+              res.status(500).json(response1);
+            }
+          } else {
+            res.status(200).json({
+              message: {
+                msgBody: 'Update Guest List Successful!',
+                msgError: false,
+              },
+              response,
+            });
+          }
+        });
+      }
+    })(req, res);
+  },
   assignTable: async (req, res) => {
     passport.authenticate('jwt', { session: false }, async (err1, callBack) => {
       if (err1) {
