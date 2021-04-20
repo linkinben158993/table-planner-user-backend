@@ -81,7 +81,7 @@ router.post(
             "name": "Test 1",
             "email": "Test Guest With JWT Protection And De-reference stuff From Swagger",
             "phoneNumber": "Test Event Table Type",
-            "eventId": "6048529d3a797826f6920062",
+            "event": "6048529d3a797826f6920062",
             "table": {
               "tableId": "1",
               "seat": 1,
