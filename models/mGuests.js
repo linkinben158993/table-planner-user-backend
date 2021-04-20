@@ -120,7 +120,7 @@ GuestSchema.statics.deleteGuestById = function (id, callBack) {
 
 GuestSchema.statics.importGuestsToEvent = function (guests, callBack) {
   const emails = guests.map((guest) => guest.email);
-  this.find({ email: { $in: emails }, event: guests[0].event })
+  this.find({ email: { $in: emails }, event: guests[0]?.event })
     .select('email')
     .then((results) => {
       if (results.length > 0) {
