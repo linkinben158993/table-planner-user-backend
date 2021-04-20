@@ -115,20 +115,15 @@ module.exports = {
       } else {
         //
         const temp = req.body;
-        const guests = [];
-        temp.forEach((element) => {
-          const { name, email, phoneNumber, priority, eventId, table, group } = element;
-          const guest = {
-            name,
-            email,
-            phoneNumber,
-            priority,
-            event: eventId,
-            table,
-            group,
-          };
-          guests.push(guest);
-        });
+        const guests = temp.map((element) => ({
+          name: element.name,
+          email: element.email,
+          phoneNumber: element.phoneNumber,
+          priority: element.priority,
+          event: element.eventId,
+          table: element.table,
+          group: element.group,
+        }));
         Guests.importGuestsToEvent(guests, (err, response) => {
           if (err) {
             if (err.message.msgBody === 'Duplicate email') {
