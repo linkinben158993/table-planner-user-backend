@@ -35,7 +35,7 @@ module.exports = {
                       const emails = guestDocument.map(
                         (guestEmails) => guestEmails.email
                       );
-                      await Users.findUserWithExpoTokenByEmail(
+                      await Users.findExpoTokenByEmail(
                         emails,
                         async (err2, userDocument) => {
                           if (err2) {
