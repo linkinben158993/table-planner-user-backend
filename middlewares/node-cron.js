@@ -56,9 +56,9 @@ module.exports = {
                           );
                         }
                       );
-                      item.set({ reminded: true });
-                      item.save().catch((reason) => console.log(reason));
                     }
+                    item.set({ reminded: true });
+                    item.save().catch((reason) => console.log(reason));
                   }
                 }
               );

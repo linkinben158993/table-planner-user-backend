@@ -156,9 +156,7 @@ module.exports = {
     } else {
       Users.activateAccount(email, otp, (err, document) => {
         if (err) {
-          const response = CustomResponse.SERVER_ERROR;
-          response.trace = err;
-          res.status(400).json(response);
+          res.status(400).json(err);
         } else {
           res.status(200).json({
             message: {
