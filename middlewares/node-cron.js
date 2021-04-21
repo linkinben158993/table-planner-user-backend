@@ -57,8 +57,12 @@ module.exports = {
                         }
                       );
                     }
-                    item.set({ reminded: true });
-                    item.save().catch((reason) => console.log(reason));
+                    Events.findOneAndUpdate(
+                      { _id: item._id },
+                      { reminded: true }
+                    ).catch((reason) => {
+                      console.log(reason);
+                    });
                   }
                 }
               );
@@ -91,9 +95,12 @@ module.exports = {
                     );
                   }
                 });
-
-                item.set({ remindedHost: true });
-                item.save().catch((reason) => console.log(reason));
+                Events.findOneAndUpdate(
+                  { _id: item._id },
+                  { remindedHost: true }
+                ).catch((reason2) => {
+                  console.log(reason2);
+                });
               }
 
               return {

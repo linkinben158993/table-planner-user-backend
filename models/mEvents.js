@@ -175,7 +175,6 @@ EventSchema.statics.getOneHourLeftEvents = function (callBack) {
         $and: [
           // Start time must be less than one hour later of current time
           {
-            // eslint-disable-next-line no-dupe-keys
             startTime: { $lte: dateTimeOneHourFromNow },
           },
         ],

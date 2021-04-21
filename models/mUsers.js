@@ -183,7 +183,7 @@ UserSchema.statics.activateAccount = function (email, otp, callBack) {
     .catch((err) => {
       callBack({
         message: {
-          msgBody: 'OTP Not Correct!',
+          msgBody: 'Something happened!',
           msgError: true,
         },
         trace: err,
