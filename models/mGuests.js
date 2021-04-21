@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Users = require('./mUsers');
 
 const GuestSchema = new mongoose.Schema({
   name: {
@@ -67,17 +68,58 @@ GuestSchema.statics.editGuest = function (guest, callBack) {
     .catch((err) => callBack(err));
 };
 
-GuestSchema.statics.getGuestListInEvent = function (id, callBack) {
+GuestSchema.statics.getGuestListInEvent = function (eventId, callBack) {
   return this.find({
-    event: id,
+    event: eventId,
   })
-    .then((value) => {
-      if (value.length === 0) {
+    .then((guestValue) => {
+      if (guestValue.length === 0) {
         return callBack(null, 0);
       }
-      return callBack(null, value);
+      const emails = guestValue.map((item) => item.email);
+      return Users.find({ email: { $in: emails } })
+        .then((users) => {
+          if (users.length === 0) {
+            return callBack(null, guestValue);
+          }
+          const userEmails = users.map((userItem) => userItem.email);
+          const guestWithAvt = guestValue.map((guestItem) => {
+            const userIndex = userEmails.indexOf(guestItem.email);
+            const { id, email, event, name, checkin, group, priority, table } = guestItem;
+            if (userIndex !== -1) {
+              return {
+                id,
+                email,
+                event,
+                name,
+                checkin,
+                group,
+                priority,
+                table,
+                avatar: users[userIndex].avatar,
+              };
+            }
+            return {
+              id,
+              email,
+              event,
+              name,
+              checkin,
+              group,
+              priority,
+              table,
+              avatar: '',
+            };
+          });
+          return callBack(null, guestWithAvt);
+        })
+        .catch((err) => {
+          callBack(err);
+        });
     })
-    .catch((err) => callBack(err));
+    .catch((err) => {
+      callBack(err);
+    });
 };
 
 GuestSchema.statics.getGuestListHaveSeatInEvent = function (id, callBack) {

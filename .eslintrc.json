@@ -41,6 +41,7 @@
     "object-curly-newline": "off",
     "comma-dangle": ["warn", "always-multiline"],
     "no-param-reassign": "off",
+    "max-len": ["error", { "code": 120 }],
     "prettier/prettier": [
       "warn",
       {
