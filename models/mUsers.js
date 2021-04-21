@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema({
   avatar: {
     type: String,
     require: false,
-    default: 'https://toppng.com/uploads/preview/hackerman-11556286446gid8lfj2ce.png',
+    default: 'https://iupac.org/wp-content/uploads/2018/05/default-avatar.png',
   },
   role: {
     type: Number,
