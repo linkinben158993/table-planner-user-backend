@@ -7,7 +7,7 @@ const NotificationHelper = require('../middlewares/expo-notification');
 const CustomResponse = require('../constants/response.message');
 
 module.exports = {
-  getEventByID: async (req, res) => {
+  getEventByID_Guest: async (req, res) => {
     passport.authenticate('jwt', { session: false }, (err, callBack) => {
       if (err) {
         res.status(500).json(err);
@@ -24,6 +24,72 @@ module.exports = {
               const response = CustomResponse.SERVER_ERROR;
               response.trace = err1;
               res.status(500).json(response);
+            } else if (document.elements) {
+              Guests.getGuestListHaveSeatInEvent(document._id, (err2, guests) => {
+                if (err2) {
+                  const response = CustomResponse.SERVER_ERROR;
+                  response.trace = err2;
+                  res.status(500).json(response);
+                }
+                const elements = JSON.parse(document.elements);
+                elements
+                  .filter((el) => {
+                    if (el.data) {
+                      return !!el.data.guestList;
+                    }
+                    return false;
+                  })
+                  .forEach((el) => {
+                    if (el.data.guestList.length > 0) el.data.guestList = [];
+                    guests.forEach((guest) => {
+                      if (guest.table.tableId === el.id) {
+                        el.data.guestList.push(guest);
+                      }
+                    });
+                  });
+                document.elements = JSON.stringify(elements);
+                res.status(200).json({
+                  message: {
+                    msgBody: 'Get Event Successful!',
+                    msgError: false,
+                  },
+                  data: document,
+                });
+              });
+            } else {
+              res.status(200).json({
+                message: {
+                  msgBody: 'Get Event Successful!',
+                  msgError: false,
+                },
+                data: document,
+              });
+            }
+          });
+        }
+      }
+    })(req, res);
+  },
+  getEventByID_Host: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err, callBack) => {
+      if (err) {
+        res.status(500).json(err);
+      }
+      if (!callBack) {
+        res.status(403).json('Forbidden');
+      } else {
+        const { id } = req.params;
+        if (!id) {
+          res.status(400).json(CustomResponse.BAD_REQUEST);
+        } else {
+          Events.getEventById(id, (err1, document) => {
+            if (err1) {
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = err1;
+              res.status(500).json(response);
+            } else if (!(String(document.creator) === String(callBack._id))) {
+              const response = CustomResponse.ACCESS_DENIED;
+              res.status(401).json(response);
             } else if (document.elements) {
               Guests.getGuestListHaveSeatInEvent(document._id, (err2, guests) => {
                 if (err2) {
@@ -183,53 +249,64 @@ module.exports = {
       } else if (!callBack) {
         res.status(403).json(CustomResponse.FORBIDDEN);
       } else {
-        if (data.elements) {
-          const elements = JSON.parse(data.elements);
-          const guests = [];
-          elements
-            .filter((el) => {
-              if (el.data) {
-                return !!el.data.guestList;
-              }
-              return false;
-            })
-            .forEach((el) => {
-              if (el.data.guestList) {
-                el.data.guestList.forEach((guest, i) => {
-                  if (!guest.table.tableId) {
-                    guest.table = {
-                      tableId: el.id,
-                      seat: i,
-                    };
-                  }
-                  // eslint-disable-next-line no-param-reassign
-                  guests.push(guest);
-                });
-                // eslint-disable-next-line no-param-reassign
-                el.data.guestList = [];
-              }
-            });
-          data.elements = JSON.stringify(elements);
-          Guests.updateGuestList(guests, (errGuest) => {
-            if (err) {
-              const response = CustomResponse.SERVER_ERROR;
-              response.trace = errGuest;
-              res.status(500).json(response);
-            }
-          });
-        }
-        Events.editEvent(data, (err1, document) => {
+        Events.getEventById(data.id, (err1, document) => {
           if (err1) {
             const response = CustomResponse.SERVER_ERROR;
             response.trace = err1;
             res.status(500).json(response);
+          } else if (document && !(String(document.creator) === String(callBack._id))) {
+            const response = CustomResponse.ACCESS_DENIED;
+            res.status(401).json(response);
           } else {
-            res.status(200).json({
-              message: {
-                msgBody: 'Edit Event Successful!',
-                msgError: false,
-              },
-              document,
+            if (data.elements) {
+              const elements = JSON.parse(data.elements);
+              const guests = [];
+              elements
+                .filter((el) => {
+                  if (el.data) {
+                    return !!el.data.guestList;
+                  }
+                  return false;
+                })
+                .forEach((el) => {
+                  if (el.data.guestList) {
+                    el.data.guestList.forEach((guest, i) => {
+                      if (!guest.table.tableId) {
+                        guest.table = {
+                          tableId: el.id,
+                          seat: i,
+                        };
+                      }
+                      // eslint-disable-next-line no-param-reassign
+                      guests.push(guest);
+                    });
+                    // eslint-disable-next-line no-param-reassign
+                    el.data.guestList = [];
+                  }
+                });
+              data.elements = JSON.stringify(elements);
+              Guests.updateGuestList(guests, (errGuest) => {
+                if (err) {
+                  const response = CustomResponse.SERVER_ERROR;
+                  response.trace = errGuest;
+                  res.status(500).json(response);
+                }
+              });
+            }
+            Events.editEvent(data, (err2, eventDocument) => {
+              if (err2) {
+                const response = CustomResponse.SERVER_ERROR;
+                response.trace = err2;
+                res.status(500).json(response);
+              } else {
+                res.status(200).json({
+                  message: {
+                    msgBody: 'Edit Event Successful!',
+                    msgError: false,
+                  },
+                  eventDocument,
+                });
+              }
             });
           }
         });
@@ -249,92 +326,106 @@ module.exports = {
       } else if (!callBack) {
         res.status(403).json(CustomResponse.FORBIDDEN);
       } else {
-        Events.findOne({ _id: id }, 'name description startTime creator')
+        Events.findOne({ _id: id, creator: callBack._id }, 'name description startTime creator')
           .populate('creator')
           .then((event) => {
             // Get all guest's emails of event
-            Guests.find({ event: id })
-              .select('email _id')
-              .then(async (mails) => {
-                if (mails.length === 0) {
-                  res.status(400).json({
-                    message: {
-                      msgBody: 'No guests found!',
-                      msgError: true,
-                    },
-                  });
-                } else {
-                  await nodeMailer.sendQRCodeToGuests(mails, event, (err1) => {
-                    if (err1) {
-                      const response1 = CustomResponse.SERVER_ERROR;
-                      response1.trace = err1;
-                      res.status(500).json(response1);
-                    } else {
-                      const userEmails = mails.map((item) => item.email);
-                      Users.findUserWithExpoTokenByEmail(userEmails, async (err2, userDocument) => {
-                        if (err2) {
-                          const response2 = CustomResponse.SERVER_ERROR;
-                          response2.trace = err2;
-                          res.status(500).json(response2);
-                        } else {
-                          const pushNotificationUser = userDocument.map((item) => item.expoToken);
-                          Users.findOne({ _id: event.creator }).then((host) => {
-                            if (host.expoToken) {
-                              NotificationHelper.reminderApplication(
-                                [host.expoToken],
-                                `You have just invited your guests in ${event.name}`,
-                                { eventId: id },
-                                (err3) => {
-                                  if (err3) {
-                                    throw err3;
-                                  }
-                                },
-                              );
-                            }
-                          });
-                          if (pushNotificationUser.length === 0) {
-                            res.status(200).json({
-                              message: {
-                                msgBody: 'Send invitation success!',
-                                msgError: false,
-                              },
-                              trace: {
-                                msgBody: 'No guest using application found!',
-                                msgError: false,
-                              },
-                            });
-                          }
-                          await NotificationHelper.reminderApplication(
-                            pushNotificationUser,
-                            `You have been invited for ${event.name}`,
-                            { eventId: id },
-                            (err4) => {
-                              if (err4) {
+            if (event !== null) {
+              Guests.find({ event: id, invited: false })
+                .select('email _id event')
+                .then(async (mails) => {
+                  if (mails.length === 0) {
+                    res.status(400).json({
+                      message: {
+                        msgBody: 'No guests found!',
+                        msgError: true,
+                      },
+                    });
+                  } else {
+                    await nodeMailer.sendQRCodeToGuests(mails, event, (err1) => {
+                      if (err1) {
+                        const response1 = CustomResponse.SERVER_ERROR;
+                        response1.trace = err1;
+                        res.status(500).json(response1);
+                      } else {
+                        const userEmails = mails.map((item) => item.email);
+                        Guests.updateInvitationStatus(mails, (err2) => {
+                          if (err2) {
+                            const response2 = CustomResponse.SERVER_ERROR;
+                            response2.trace = err2;
+                            res.status(500).json(response2);
+                          } else {
+                            Users.findExpoTokenByEmail(userEmails, async (err3, userExpo) => {
+                              if (err3) {
                                 const response3 = CustomResponse.SERVER_ERROR;
-                                response3.trace = err4;
+                                response3.trace = err3;
                                 res.status(500).json(response3);
                               } else {
-                                const successResponse = {
-                                  message: {
-                                    msgBody: 'Send invitation success!',
-                                    msgError: false,
+                                const userNotifications = userExpo.map((item) => item.expoToken);
+                                Users.findOne({ _id: event.creator }).then((host) => {
+                                  if (host.expoToken) {
+                                    NotificationHelper.reminderApplication(
+                                      [host.expoToken],
+                                      `You have just invited your guests in ${event.name}`,
+                                      { eventId: id },
+                                      (err4) => {
+                                        if (err4) {
+                                          throw err4;
+                                        }
+                                      },
+                                    );
+                                  }
+                                });
+                                if (userNotifications.length === 0) {
+                                  res.status(200).json({
+                                    message: {
+                                      msgBody: 'Send invitation success!',
+                                      msgError: false,
+                                    },
+                                    trace: {
+                                      msgBody: 'No guest using application found!',
+                                      msgError: false,
+                                    },
+                                  });
+                                }
+                                await NotificationHelper.reminderApplication(
+                                  userNotifications,
+                                  `You have been invited for ${event.name}`,
+                                  { eventId: id },
+                                  (err5) => {
+                                    if (err5) {
+                                      const response4 = CustomResponse.SERVER_ERROR;
+                                      response4.trace = err5;
+                                      res.status(500).json(response4);
+                                    } else {
+                                      // Update guests' status to invited
+                                      const successResponse = {
+                                        message: {
+                                          msgBody: 'Send invitation success!',
+                                          msgError: false,
+                                        },
+                                      };
+                                      res.status(200).json(successResponse);
+                                    }
                                   },
-                                };
-                                res.status(200).json(successResponse);
+                                );
                               }
-                            },
-                          );
-                        }
-                      });
-                    }
-                  });
-                }
-              })
-              .catch((err1) => {
-                const response = CustomResponse.SERVER_ERROR;
-                response.trace = err1;
-                res.status(500).json(response);
-              });
+                            });
+                          }
+                        });
+                      }
+                    });
+                  }
+                })
+                .catch((err1) => {
+                  const response = CustomResponse.SERVER_ERROR;
+                  response.trace = err1;
+                  res.status(500).json(response);
+                });
+            } else {
+              const response = CustomResponse.BAD_REQUEST;
+              res.status(400).json(response);
+            }
           })
           .catch((err1) => {
             const response = CustomResponse.SERVER_ERROR;

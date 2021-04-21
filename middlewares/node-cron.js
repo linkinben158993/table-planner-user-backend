@@ -15,7 +15,7 @@ module.exports = {
             throw err;
           } else if (document.length !== 0) {
             const availableEvent = document.map((item) => {
-              Guests.getGuestListInEvent(
+              Guests.getInvitedGuestListInEvent(
                 item._id,
                 async (err1, guestDocument) => {
                   if (err1) {
@@ -35,7 +35,7 @@ module.exports = {
                       const emails = guestDocument.map(
                         (guestEmails) => guestEmails.email
                       );
-                      await Users.findUserWithExpoTokenByEmail(
+                      await Users.findExpoTokenByEmail(
                         emails,
                         async (err2, userDocument) => {
                           if (err2) {
@@ -56,9 +56,13 @@ module.exports = {
                           );
                         }
                       );
-                      item.set({ reminded: true });
-                      item.save().catch((reason) => console.log(reason));
                     }
+                    Events.findOneAndUpdate(
+                      { _id: item._id },
+                      { reminded: true }
+                    ).catch((reason) => {
+                      console.log(reason);
+                    });
                   }
                 }
               );
@@ -91,9 +95,12 @@ module.exports = {
                     );
                   }
                 });
-
-                item.set({ remindedHost: true });
-                item.save().catch((reason) => console.log(reason));
+                Events.findOneAndUpdate(
+                  { _id: item._id },
+                  { remindedHost: true }
+                ).catch((reason2) => {
+                  console.log(reason2);
+                });
               }
 
               return {

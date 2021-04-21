@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema({
   avatar: {
     type: String,
     require: false,
-    default: 'https://toppng.com/uploads/preview/hackerman-11556286446gid8lfj2ce.png',
+    default: 'https://iupac.org/wp-content/uploads/2018/05/default-avatar.png',
   },
   role: {
     type: Number,
@@ -182,7 +182,13 @@ UserSchema.statics.activateAccount = function (email, otp, callBack) {
       }
     })
     .catch((err) => {
-      callBack(err);
+      callBack({
+        message: {
+          msgBody: 'Something happened!',
+          msgError: true,
+        },
+        trace: err,
+      });
     });
 };
 
@@ -297,7 +303,7 @@ UserSchema.statics.updateExpoToken = function (id, expoToken, callBack) {
     .catch((reason) => callBack(reason));
 };
 
-UserSchema.statics.findUserWithExpoTokenByEmail = function (emails, callBack) {
+UserSchema.statics.findExpoTokenByEmail = function (emails, callBack) {
   return this.find({ email: { $in: emails }, expoToken: { $ne: null } })
     .then((value) => {
       if (value.length === 0) {

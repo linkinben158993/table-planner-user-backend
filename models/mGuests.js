@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Users = require('./mUsers');
 
 const GuestSchema = new mongoose.Schema({
   name: {
@@ -23,6 +24,10 @@ const GuestSchema = new mongoose.Schema({
   event: {
     type: String,
     required: true,
+  },
+  invited: {
+    type: Boolean,
+    default: false,
   },
   checkin: {
     type: Date,
@@ -63,17 +68,58 @@ GuestSchema.statics.editGuest = function (guest, callBack) {
     .catch((err) => callBack(err));
 };
 
-GuestSchema.statics.getGuestListInEvent = function (id, callBack) {
+GuestSchema.statics.getGuestListInEvent = function (eventId, callBack) {
   return this.find({
-    event: id,
+    event: eventId,
   })
-    .then((value) => {
-      if (value.length === 0) {
+    .then((guestValue) => {
+      if (guestValue.length === 0) {
         return callBack(null, 0);
       }
-      return callBack(null, value);
+      const emails = guestValue.map((item) => item.email);
+      return Users.find({ email: { $in: emails } })
+        .then((users) => {
+          if (users.length === 0) {
+            return callBack(null, guestValue);
+          }
+          const userEmails = users.map((userItem) => userItem.email);
+          const guestWithAvt = guestValue.map((guestItem) => {
+            const userIndex = userEmails.indexOf(guestItem.email);
+            const { id, email, event, name, checkin, group, priority, table } = guestItem;
+            if (userIndex !== -1) {
+              return {
+                id,
+                email,
+                event,
+                name,
+                checkin,
+                group,
+                priority,
+                table,
+                avatar: users[userIndex].avatar,
+              };
+            }
+            return {
+              id,
+              email,
+              event,
+              name,
+              checkin,
+              group,
+              priority,
+              table,
+              avatar: '',
+            };
+          });
+          return callBack(null, guestWithAvt);
+        })
+        .catch((err) => {
+          callBack(err);
+        });
     })
-    .catch((err) => callBack(err));
+    .catch((err) => {
+      callBack(err);
+    });
 };
 
 GuestSchema.statics.getGuestListHaveSeatInEvent = function (id, callBack) {
@@ -84,6 +130,20 @@ GuestSchema.statics.getGuestListHaveSeatInEvent = function (id, callBack) {
     .then((value) => {
       if (value.length === 0) {
         return callBack(null, []);
+      }
+      return callBack(null, value);
+    })
+    .catch((err) => callBack(err));
+};
+
+GuestSchema.statics.getInvitedGuestListInEvent = function (id, callBack) {
+  return this.find({
+    event: id,
+    invited: true,
+  })
+    .then((value) => {
+      if (value.length === 0) {
+        return callBack(null, 0);
       }
       return callBack(null, value);
     })
@@ -246,6 +306,26 @@ GuestSchema.statics.checkin = function (data, callBack) {
           })
           .catch((err) => callBack(err));
       }
+    })
+    .catch((err) => callBack(err));
+};
+
+GuestSchema.statics.updateInvitationStatus = function (guests, callBack) {
+  const bulkOptions = guests.map((guest) => ({
+    updateOne: {
+      filter: { email: guest.email, event: guest.event },
+      update: {
+        $set: {
+          invited: true,
+        },
+        upsert: true,
+      },
+      upsert: true,
+    },
+  }));
+  this.bulkWrite(bulkOptions)
+    .then((response) => {
+      callBack(null, response);
     })
     .catch((err) => callBack(err));
 };
