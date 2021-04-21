@@ -158,8 +158,7 @@ EventSchema.statics.removeImages = function (event, publicId, callBack) {
 };
 
 EventSchema.statics.getOneHourLeftEvents = function (callBack) {
-  const dateTimeNow = new Date().toISOString();
-  const dateTimeOneHourLater = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+  const dateTimeOneHourFromNow = new Date(Date.now() + 60 * 60 * 1000).toISOString();
   this.find({
     $and: [
       {
@@ -174,13 +173,10 @@ EventSchema.statics.getOneHourLeftEvents = function (callBack) {
       },
       {
         $and: [
-          {
-            // Start time must be greater than current time
-            startTime: { $gte: dateTimeNow },
-          },
+          // Start time must be less than one hour later of current time
           {
             // eslint-disable-next-line no-dupe-keys
-            startTime: { $lte: dateTimeOneHourLater },
+            startTime: { $lte: dateTimeOneHourFromNow },
           },
         ],
       },
