@@ -293,7 +293,7 @@ module.exports = {
                 }
               });
             }
-            Events.editEvent(data, (err2, document) => {
+            Events.editEvent(data, (err2, eventDocument) => {
               if (err2) {
                 const response = CustomResponse.SERVER_ERROR;
                 response.trace = err2;
@@ -304,7 +304,7 @@ module.exports = {
                     msgBody: 'Edit Event Successful!',
                     msgError: false,
                   },
-                  document,
+                  eventDocument,
                 });
               }
             });
@@ -334,12 +334,13 @@ module.exports = {
               .select('email _id')
               .then(async (mails) => {
                 if (mails.length === 0) {
-                  res.status(400).json({
+                  const errorResponse = {
                     message: {
                       msgBody: 'No guests found!',
                       msgError: true,
                     },
-                  });
+                  };
+                  res.status(400).json(errorResponse);
                 } else {
                   await nodeMailer.sendQRCodeToGuests(mails, event, (err1) => {
                     if (err1) {
@@ -354,7 +355,7 @@ module.exports = {
                           response2.trace = err2;
                           res.status(500).json(response2);
                         } else {
-                          const pushNotificationUser = userDocument.map((item) => item.expoToken);
+                          // Remind host application
                           Users.findOne({ _id: event.creator }).then((host) => {
                             if (host.expoToken) {
                               NotificationHelper.reminderApplication(
@@ -369,6 +370,7 @@ module.exports = {
                               );
                             }
                           });
+                          const pushNotificationUser = userDocument.map((item) => item.expoToken);
                           if (pushNotificationUser.length === 0) {
                             res.status(200).json({
                               message: {
@@ -377,7 +379,7 @@ module.exports = {
                               },
                               trace: {
                                 msgBody: 'No guest using application found!',
-                                msgError: false,
+                                msgError: true,
                               },
                             });
                           }
