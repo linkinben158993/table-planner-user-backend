@@ -249,92 +249,106 @@ module.exports = {
       } else if (!callBack) {
         res.status(403).json(CustomResponse.FORBIDDEN);
       } else {
-        Events.findOne({ _id: id }, 'name description startTime creator')
+        Events.findOne({ _id: id, creator: callBack._id }, 'name description startTime creator')
           .populate('creator')
           .then((event) => {
             // Get all guest's emails of event
-            Guests.find({ event: id })
-              .select('email _id')
-              .then(async (mails) => {
-                if (mails.length === 0) {
-                  res.status(400).json({
-                    message: {
-                      msgBody: 'No guests found!',
-                      msgError: true,
-                    },
-                  });
-                } else {
-                  await nodeMailer.sendQRCodeToGuests(mails, event, (err1) => {
-                    if (err1) {
-                      const response1 = CustomResponse.SERVER_ERROR;
-                      response1.trace = err1;
-                      res.status(500).json(response1);
-                    } else {
-                      const userEmails = mails.map((item) => item.email);
-                      Users.findUserWithExpoTokenByEmail(userEmails, async (err2, userDocument) => {
-                        if (err2) {
-                          const response2 = CustomResponse.SERVER_ERROR;
-                          response2.trace = err2;
-                          res.status(500).json(response2);
-                        } else {
-                          const pushNotificationUser = userDocument.map((item) => item.expoToken);
-                          Users.findOne({ _id: event.creator }).then((host) => {
-                            if (host.expoToken) {
-                              NotificationHelper.reminderApplication(
-                                [host.expoToken],
-                                `You have just invited your guests in ${event.name}`,
-                                { eventId: id },
-                                (err3) => {
-                                  if (err3) {
-                                    throw err3;
-                                  }
-                                },
-                              );
-                            }
-                          });
-                          if (pushNotificationUser.length === 0) {
-                            res.status(200).json({
-                              message: {
-                                msgBody: 'Send invitation success!',
-                                msgError: false,
-                              },
-                              trace: {
-                                msgBody: 'No guest using application found!',
-                                msgError: false,
-                              },
-                            });
-                          }
-                          await NotificationHelper.reminderApplication(
-                            pushNotificationUser,
-                            `You have been invited for ${event.name}`,
-                            { eventId: id },
-                            (err4) => {
-                              if (err4) {
+            if (event !== null) {
+              Guests.find({ event: id, invited: false })
+                .select('email _id event')
+                .then(async (mails) => {
+                  if (mails.length === 0) {
+                    res.status(400).json({
+                      message: {
+                        msgBody: 'No guests found!',
+                        msgError: true,
+                      },
+                    });
+                  } else {
+                    await nodeMailer.sendQRCodeToGuests(mails, event, (err1) => {
+                      if (err1) {
+                        const response1 = CustomResponse.SERVER_ERROR;
+                        response1.trace = err1;
+                        res.status(500).json(response1);
+                      } else {
+                        const userEmails = mails.map((item) => item.email);
+                        Guests.updateInvitationStatus(mails, (err2) => {
+                          if (err2) {
+                            const response2 = CustomResponse.SERVER_ERROR;
+                            response2.trace = err2;
+                            res.status(500).json(response2);
+                          } else {
+                            Users.findExpoTokenByEmail(userEmails, async (err3, userExpo) => {
+                              if (err3) {
                                 const response3 = CustomResponse.SERVER_ERROR;
-                                response3.trace = err4;
+                                response3.trace = err3;
                                 res.status(500).json(response3);
                               } else {
-                                const successResponse = {
-                                  message: {
-                                    msgBody: 'Send invitation success!',
-                                    msgError: false,
+                                const userNotifications = userExpo.map((item) => item.expoToken);
+                                Users.findOne({ _id: event.creator }).then((host) => {
+                                  if (host.expoToken) {
+                                    NotificationHelper.reminderApplication(
+                                      [host.expoToken],
+                                      `You have just invited your guests in ${event.name}`,
+                                      { eventId: id },
+                                      (err4) => {
+                                        if (err4) {
+                                          throw err4;
+                                        }
+                                      },
+                                    );
+                                  }
+                                });
+                                if (userNotifications.length === 0) {
+                                  res.status(200).json({
+                                    message: {
+                                      msgBody: 'Send invitation success!',
+                                      msgError: false,
+                                    },
+                                    trace: {
+                                      msgBody: 'No guest using application found!',
+                                      msgError: false,
+                                    },
+                                  });
+                                }
+                                await NotificationHelper.reminderApplication(
+                                  userNotifications,
+                                  `You have been invited for ${event.name}`,
+                                  { eventId: id },
+                                  (err5) => {
+                                    if (err5) {
+                                      const response4 = CustomResponse.SERVER_ERROR;
+                                      response4.trace = err5;
+                                      res.status(500).json(response4);
+                                    } else {
+                                      // Update guests' status to invited
+                                      const successResponse = {
+                                        message: {
+                                          msgBody: 'Send invitation success!',
+                                          msgError: false,
+                                        },
+                                      };
+                                      res.status(200).json(successResponse);
+                                    }
                                   },
-                                };
-                                res.status(200).json(successResponse);
+                                );
                               }
-                            },
-                          );
-                        }
-                      });
-                    }
-                  });
-                }
-              })
-              .catch((err1) => {
-                const response = CustomResponse.SERVER_ERROR;
-                response.trace = err1;
-                res.status(500).json(response);
-              });
+                            });
+                          }
+                        });
+                      }
+                    });
+                  }
+                })
+                .catch((err1) => {
+                  const response = CustomResponse.SERVER_ERROR;
+                  response.trace = err1;
+                  res.status(500).json(response);
+                });
+            } else {
+              const response = CustomResponse.BAD_REQUEST;
+              res.status(400).json(response);
+            }
           })
           .catch((err1) => {
             const response = CustomResponse.SERVER_ERROR;

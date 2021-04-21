@@ -177,7 +177,8 @@ EventSchema.statics.getOneHourLeftEvents = function (callBack) {
           {
             // Start time must be greater than current time
             startTime: { $gte: dateTimeNow },
-            // Within one hour until event
+          },
+          {
             // eslint-disable-next-line no-dupe-keys
             startTime: { $lte: dateTimeOneHourLater },
           },

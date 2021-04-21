@@ -15,7 +15,7 @@ module.exports = {
             throw err;
           } else if (document.length !== 0) {
             const availableEvent = document.map((item) => {
-              Guests.getGuestListInEvent(
+              Guests.getInvitedGuestListInEvent(
                 item._id,
                 async (err1, guestDocument) => {
                   if (err1) {

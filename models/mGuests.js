@@ -24,6 +24,10 @@ const GuestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  invited: {
+    type: Boolean,
+    default: false,
+  },
   checkin: {
     type: Date,
     default: null,
@@ -84,6 +88,20 @@ GuestSchema.statics.getGuestListHaveSeatInEvent = function (id, callBack) {
     .then((value) => {
       if (value.length === 0) {
         return callBack(null, []);
+      }
+      return callBack(null, value);
+    })
+    .catch((err) => callBack(err));
+};
+
+GuestSchema.statics.getInvitedGuestListInEvent = function (id, callBack) {
+  return this.find({
+    event: id,
+    invited: true,
+  })
+    .then((value) => {
+      if (value.length === 0) {
+        return callBack(null, 0);
       }
       return callBack(null, value);
     })
@@ -246,6 +264,26 @@ GuestSchema.statics.checkin = function (data, callBack) {
           })
           .catch((err) => callBack(err));
       }
+    })
+    .catch((err) => callBack(err));
+};
+
+GuestSchema.statics.updateInvitationStatus = function (guests, callBack) {
+  const bulkOptions = guests.map((guest) => ({
+    updateOne: {
+      filter: { email: guest.email, event: guest.event },
+      update: {
+        $set: {
+          invited: true,
+        },
+        upsert: true,
+      },
+      upsert: true,
+    },
+  }));
+  this.bulkWrite(bulkOptions)
+    .then((response) => {
+      callBack(null, response);
     })
     .catch((err) => callBack(err));
 };

@@ -120,6 +120,7 @@ module.exports = {
           email: element.email,
           phoneNumber: element.phoneNumber,
           priority: element.priority,
+          invited: false,
           event: element.eventId,
           table: element.table,
           group: element.group,
