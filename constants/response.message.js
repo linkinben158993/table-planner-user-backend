@@ -17,4 +17,10 @@ module.exports = {
       msgError: true,
     },
   },
+  ACCESS_DENIED: {
+    message: {
+      msgBody: 'Access denied!',
+      msgError: true,
+    },
+  },
 };
