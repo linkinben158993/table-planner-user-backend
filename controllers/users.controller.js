@@ -172,46 +172,61 @@ module.exports = {
     if (!req.body.email) {
       res.status(400).json(CustomResponse.BAD_REQUEST);
     } else {
-      const newOTP = randOTP();
-      const result = await nodeMailer.resetPassword(req.body.email, newOTP);
-      if (result.success) {
-        Users.resetOTP(req.body.email, newOTP, (err, document) => {
-          if (err) {
-            const response = CustomResponse.SERVER_ERROR;
-            response.trace = err;
-            res.status(500).json(response);
-          } else {
-            res.status(200).json({
-              message: {
-                msgBody: `Please Check Your Email For OTP To Reset Your Password For: ${document.email}`,
-                msgError: false,
-              },
+      Users.findOne({ email: req.body.email }, async (err, userDocument) => {
+        if (err) {
+          const response = CustomResponse.SERVER_ERROR;
+          response.trace = err;
+          res.status(500).json(response);
+        } else if (!userDocument) {
+          res.status(400).json({
+            message: {
+              msgBody: 'User not exist!',
+              msgError: true,
+            },
+            errCode: 'ERR_USER_NOT_FOUND',
+          });
+        } else {
+          const newOTP = randOTP();
+          // 3 days
+          const otpReset = {
+            otp: newOTP,
+            expires: new Date(+new Date() + 3 * 24 * 60 * 60 * 1000),
+          };
+          const result = await nodeMailer.resetPassword(req.body.email, newOTP);
+          if (result.success) {
+            Users.resetOTP(req.body.email, otpReset, (err1, document) => {
+              if (err1) {
+                const response = CustomResponse.SERVER_ERROR;
+                response.trace = err1;
+                res.status(500).json(response);
+              } else {
+                res.status(200).json({
+                  message: {
+                    msgBody: `Please Check Your Email For OTP To Reset Your Password For: ${document.email}`,
+                    msgError: false,
+                  },
+                });
+              }
             });
+          } else {
+            res.status(500).json(CustomResponse.SERVER_ERROR);
           }
-        });
-      } else {
-        res.status(500).json(CustomResponse.SERVER_ERROR);
-      }
+        }
+      });
     }
   },
   resetPassword: async (req, res) => {
-    if (!req.body.email || !req.body.otp || !req.body.oldPassword || !req.body.newPassword) {
+    if (!req.body.email || !req.body.otp || !req.body.newPassword) {
       res.status(400).json(CustomResponse.BAD_REQUEST);
     } else {
       const { email, otp, oldPassword, newPassword } = req.body;
-      Users.resetUserPassword(email, otp, oldPassword, newPassword, (err, document) => {
+      Users.resetUserPassword(email, otp, oldPassword, newPassword, (err, successResponse) => {
         if (err) {
           const response = CustomResponse.SERVER_ERROR;
           response.trace = err;
           res.status(500).json(response);
         } else {
-          const response = {
-            message: {
-              msgBody: `Change password successfully for ${document.email}`,
-              msgError: false,
-            },
-          };
-          res.status(200).json(response);
+          res.status(200).json(successResponse);
         }
       });
     }
