@@ -63,13 +63,14 @@ module.exports = {
         res.status(400).json(err);
       } else {
         const token = signToken(callBack._id);
-        const { email, role, fullName } = callBack;
+        const { email, role, fullName, id } = callBack;
         res.status(200).json({
           isAuthenticated: true,
           user: {
             email,
             role,
             fullName,
+            id,
           },
           access_token: token,
         });
