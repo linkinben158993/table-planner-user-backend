@@ -204,6 +204,7 @@ EventSchema.statics.findMyAttendingEvent = function (email, callBack) {
         name: '$name',
         location: '$location',
         startTime: '$startTime',
+        endTime: '$endTime',
       },
     },
     {
@@ -223,6 +224,7 @@ EventSchema.statics.findMyAttendingEvent = function (email, callBack) {
         name: 1,
         location: 1,
         startTime: 1,
+        endTime: 1,
         guestInfo: {
           id: {
             $toString: '$guestInfo._id',

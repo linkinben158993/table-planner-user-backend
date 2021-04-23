@@ -117,8 +117,8 @@ UserSchema.methods.changePassword = function (user, oldPassword, newPassword, ca
   });
 };
 
-UserSchema.statics.createUserWithOTP = function (email, password, otp, callBack) {
-  this.findOne({ email }, (err, user) => {
+UserSchema.statics.createUserWithOTP = function (userInfo, otp, callBack) {
+  this.findOne({ email: userInfo.email }, (err, user) => {
     if (err) {
       return callBack(err);
     }
@@ -137,8 +137,9 @@ UserSchema.statics.createUserWithOTP = function (email, password, otp, callBack)
     }
 
     const newUser = new this({
-      email,
-      password,
+      email: userInfo.email,
+      password: userInfo.password,
+      fullName: userInfo.fullName,
       role: 0,
       otp,
       activated: false,

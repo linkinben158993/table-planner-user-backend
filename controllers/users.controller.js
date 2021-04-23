@@ -63,13 +63,14 @@ module.exports = {
         res.status(400).json(err);
       } else {
         const token = signToken(callBack._id);
-        const { email, role, fullName } = callBack;
+        const { email, role, fullName, id } = callBack;
         res.status(200).json({
           isAuthenticated: true,
           user: {
             email,
             role,
             fullName,
+            id,
           },
           access_token: token,
         });
@@ -101,7 +102,7 @@ module.exports = {
   },
   register: async (req, res) => {
     const otp = randOTP();
-    const { username, password, isNormalFlow } = req.body;
+    const { username, password, fullName, isNormalFlow } = req.body;
     // Should ensures isNormalFlow and username from clients, password can be based on isNormalFlow
     if (isNormalFlow === undefined || !username) {
       res.status(400).json(CustomResponse.BAD_REQUEST);
@@ -110,7 +111,7 @@ module.exports = {
       if (result.success) {
         // Password should be sent when isNormalFlow is true
         if (isNormalFlow) {
-          Users.createUserWithOTP(username, password, otp, (err, document) => {
+          Users.createUserWithOTP({ email: username, password, fullName }, otp, (err, document) => {
             if (err && !err.errCode) {
               const response = CustomResponse.SERVER_ERROR;
               response.trace = err;
@@ -128,21 +129,29 @@ module.exports = {
             }
           });
         } else {
-          Users.createUserWithOTP(username, 'SUPER-HARD-TO-REMEMBER-PASSWORD', otp, (err, document) => {
-            if (err) {
-              const response = CustomResponse.SERVER_ERROR;
-              response.trace = err;
-              res.status(500).json(response);
-            } else {
-              res.status(201).json({
-                message: {
-                  msgBody: `Mail should be sent to ${username}`,
-                  msgError: false,
-                },
-                trace: document,
-              });
-            }
-          });
+          Users.createUserWithOTP(
+            {
+              email: username,
+              password: 'SUPER-HARD-TO-REMEMBER-PASSWORD',
+              fullName: "User's name",
+            },
+            otp,
+            (err, document) => {
+              if (err) {
+                const response = CustomResponse.SERVER_ERROR;
+                response.trace = err;
+                res.status(500).json(response);
+              } else {
+                res.status(201).json({
+                  message: {
+                    msgBody: `Mail should be sent to ${username}`,
+                    msgError: false,
+                  },
+                  trace: document,
+                });
+              }
+            },
+          );
         }
       } else {
         res.status(500).json(CustomResponse.SERVER_ERROR);
