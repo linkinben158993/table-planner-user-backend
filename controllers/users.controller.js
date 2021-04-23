@@ -180,7 +180,7 @@ module.exports = {
         } else if (!userDocument) {
           res.status(400).json({
             message: {
-              msgBody: 'User not exist!',
+              msgBody: 'User does not exist!',
               msgError: true,
             },
             errCode: 'ERR_USER_NOT_FOUND',
@@ -202,9 +202,10 @@ module.exports = {
               } else {
                 res.status(200).json({
                   message: {
-                    msgBody: `Please Check Your Email For OTP To Reset Your Password For: ${document.email}`,
+                    msgBody: `OTP Has Been Sent To: ${document.email}`,
                     msgError: false,
                   },
+                  data: document.email,
                 });
               }
             });
@@ -216,15 +217,16 @@ module.exports = {
     }
   },
   resetPassword: async (req, res) => {
-    if (!req.body.email || !req.body.otp || !req.body.newPassword) {
+    if (!req.body.email || !req.body.otp || !req.body.password) {
       res.status(400).json(CustomResponse.BAD_REQUEST);
     } else {
-      const { email, otp, oldPassword, newPassword } = req.body;
-      Users.resetUserPassword(email, otp, oldPassword, newPassword, (err, successResponse) => {
+      const { email, otp, password, confirmPassword } = req.body;
+      if (password !== confirmPassword) {
+        res.status(400).json(CustomResponse.BAD_REQUEST);
+      }
+      Users.resetUserPassword(email, otp, password, confirmPassword, (err, successResponse) => {
         if (err) {
-          const response = CustomResponse.SERVER_ERROR;
-          response.trace = err;
-          res.status(500).json(response);
+          res.status(500).json(err);
         } else {
           res.status(200).json(successResponse);
         }

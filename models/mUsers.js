@@ -252,7 +252,7 @@ UserSchema.statics.resetOTP = function (email, otpReset, callBack) {
     .catch((err) => callBack(err));
 };
 
-UserSchema.statics.resetUserPassword = function (email, otp, oldPassword, newPassword, callBack) {
+UserSchema.statics.resetUserPassword = function (email, otp, password, confirmPassword, callBack) {
   return this.findOne({
     email,
     activated: { $ne: false },
@@ -266,6 +266,7 @@ UserSchema.statics.resetUserPassword = function (email, otp, oldPassword, newPas
             msgBody: 'No user found!',
             msgError: true,
           },
+          errCode: 'ERR_USER_NOT_FOUND',
         });
       } else if (now > expires || value.otpReset.otp !== otp) {
         callBack({
@@ -273,29 +274,50 @@ UserSchema.statics.resetUserPassword = function (email, otp, oldPassword, newPas
             msgBody: 'OTP Not Correct Or Expires! Please Register New OTP',
             msgError: true,
           },
+          errCode: 'ERR_OTP_EXPIRES',
         });
       } else {
-        value.password = newPassword;
-        value.otpReset = undefined;
-        value
-          .save()
-          .then(
-            callBack(null, {
-              message: {
-                msgBody: 'Reset password successful!',
-                msgError: false,
-              },
-            }),
-          )
-          .catch((reason) => {
+        value.checkPassword(password, (err, isMatch) => {
+          if (err && !err.errCode) {
             callBack({
               message: {
                 msgBody: 'Reset password fail!',
                 msgError: true,
               },
-              trace: reason,
+              trace: err,
             });
-          });
+          } else if (isMatch) {
+            callBack({
+              message: {
+                msgBody: 'New password should be different from old!',
+                msgError: true,
+              },
+              errCode: 'ERR_RESET_TO_OLD',
+            });
+          } else {
+            value.password = password;
+            value.otpReset = undefined;
+            value
+              .save()
+              .then(
+                callBack(null, {
+                  message: {
+                    msgBody: 'Reset password successful!',
+                    msgError: false,
+                  },
+                }),
+              )
+              .catch((reason) => {
+                callBack({
+                  message: {
+                    msgBody: 'Reset password fail!',
+                    msgError: true,
+                  },
+                  trace: reason,
+                });
+              });
+          }
+        });
       }
     })
     .catch((err) => {

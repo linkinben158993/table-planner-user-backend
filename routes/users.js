@@ -73,7 +73,8 @@ router.post(
    schema: {
     $otp: 123456,
     $email: "an@gmail.com",
-    $newPassword: "an@gmail.com",
+    $password: "an@gmail.com",
+    $confirmPassword: "an@gmail.com",
    }
 } */
   userCtrl.resetPassword
