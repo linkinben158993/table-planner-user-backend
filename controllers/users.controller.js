@@ -117,6 +117,58 @@ module.exports = {
       }
     })(req, res);
   },
+  changePassword: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err, callBack) => {
+      if (err) {
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err;
+        res.status(500).json(response);
+      }
+      if (!callBack) {
+        res.status(403).json(CustomResponse.FORBIDDEN);
+      } else {
+        const { currentPassword, newPassword } = req.body;
+        if (!currentPassword || !newPassword) {
+          res.status(400).json(CustomResponse.BAD_REQUEST);
+        } else {
+          Users.findOne({ _id: callBack._id })
+            .then((value) => {
+              if (!value) {
+                res.status(400).json({
+                  message: {
+                    msgBody: 'User not found or deleted!',
+                    msgError: true,
+                  },
+                });
+              } else {
+                value.changePassword(value, currentPassword, newPassword, (err1, document) => {
+                  if (err1 && !err1.errCode) {
+                    const response = CustomResponse.SERVER_ERROR;
+                    response.trace = err1;
+                    res.status(500).json(response);
+                  } else if (err1 && err1.errCode) {
+                    res.status(400).json(err1);
+                  } else {
+                    res.status(200).json({
+                      message: {
+                        msgBody: 'Change password successfully!',
+                        msgError: false,
+                      },
+                      trace: document,
+                    });
+                  }
+                });
+              }
+            })
+            .catch((reason) => {
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = reason;
+              res.status(500).json(response);
+            });
+        }
+      }
+    })(req, res);
+  },
   login: async (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, callBack) => {
       if (err && !err.errCode) {
@@ -305,5 +357,32 @@ module.exports = {
         }
       });
     }
+  },
+  getUserInfo: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err, callBack) => {
+      if (err) {
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err;
+        res.status(500).json(response);
+      }
+      if (!callBack) {
+        res.status(403).json(CustomResponse.FORBIDDEN);
+      } else {
+        const { email, fullName, phoneNumber, description, avatar } = callBack;
+        res.status(200).json({
+          message: {
+            msgBody: 'Get user info successfully!',
+            msgError: false,
+          },
+          data: {
+            email,
+            fullName,
+            phoneNumber,
+            description,
+            avatar,
+          },
+        });
+      }
+    })(req, res);
   },
 };

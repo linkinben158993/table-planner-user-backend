@@ -99,6 +99,7 @@ UserSchema.methods.changePassword = function (user, oldPassword, newPassword, ca
         msgBody: 'New Password Should Be Different From Old Password!',
         msgError: true,
       },
+      errCode: 'ERR_RESET_TO_OLD',
     });
   }
   user.checkPassword(oldPassword, (err, isMatch) => {
@@ -110,7 +111,7 @@ UserSchema.methods.changePassword = function (user, oldPassword, newPassword, ca
       user
         .set({
           password: newPassword,
-          otp: -1,
+          otp: undefined,
         })
         .save()
         .then((value) => {

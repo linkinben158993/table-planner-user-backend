@@ -128,6 +128,20 @@ router.post(
   userCtrl.updateAvt
 );
 
+router.get(
+  '/info',
+  /*
+   #swagger.parameters['loginUser'] = {
+      in: 'header',
+      description: 'Token From Login.',
+      required: true,
+      name: 'access_token',
+      value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
+  },
+*/
+  userCtrl.getUserInfo
+);
+
 router.post(
   '/update-info',
   /*
@@ -152,6 +166,30 @@ router.post(
     }
 } */
   userCtrl.updateUserInfo
+);
+
+router.post(
+  '/change-password',
+  /*
+     #swagger.parameters['loginUser'] = {
+        in: 'header',
+        description: 'Token From Login.',
+        required: true,
+        name: 'access_token',
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
+    },
+    #swagger.parameters['userInfo'] = {
+        in: 'body',
+        description: 'User Information.',
+        required: true,
+        id: 'userInfo',
+        schema: {
+          $currentPassword: "123456",
+          $newPassword: "654321",
+        }
+    }
+} */
+  userCtrl.changePassword
 );
 
 module.exports = router;
