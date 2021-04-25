@@ -24,6 +24,12 @@ const UserSchema = new mongoose.Schema({
     // Should not be empty
     default: "User's Name",
   },
+  description: {
+    type: String,
+  },
+  phoneNumber: {
+    type: String,
+  },
   avatar: {
     type: String,
     require: false,
@@ -93,6 +99,7 @@ UserSchema.methods.changePassword = function (user, oldPassword, newPassword, ca
         msgBody: 'New Password Should Be Different From Old Password!',
         msgError: true,
       },
+      errCode: 'ERR_RESET_TO_OLD',
     });
   }
   user.checkPassword(oldPassword, (err, isMatch) => {
@@ -104,7 +111,7 @@ UserSchema.methods.changePassword = function (user, oldPassword, newPassword, ca
       user
         .set({
           password: newPassword,
-          otp: -1,
+          otp: undefined,
         })
         .save()
         .then((value) => {
@@ -359,6 +366,26 @@ UserSchema.statics.findExpoTokenByEmail = function (emails, callBack) {
       return callBack(null, value);
     })
     .catch((reason) => callBack(reason));
+};
+
+UserSchema.statics.updateUserInfo = function (userId, userInfo, callBack) {
+  this.update({ _id: userId }, userInfo)
+    .then((response) => {
+      callBack(null, response);
+    })
+    .catch((reason) => {
+      callBack(reason);
+    });
+};
+
+UserSchema.statics.updateAvatar = function (id, url, callBack) {
+  this.updateOne({ _id: id }, { avatar: url }, (err, document) => {
+    if (err) {
+      callBack(err);
+    } else {
+      callBack(null, document);
+    }
+  });
 };
 
 UserSchema.set('toObject', { getters: true });

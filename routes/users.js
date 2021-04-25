@@ -92,7 +92,7 @@ router.post(
         name: 'access_token',
         value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
     },
-    #swagger.parameters['Expo Token To Update'] = {
+    #swagger.parameters['expoToken'] = {
         in: 'body',
         description: 'Expo Token To Update.',
         required: true,
@@ -103,6 +103,93 @@ router.post(
     }
 } */
   userCtrl.updateExpoToken
+);
+
+router.post(
+  '/avatar-update',
+  /*
+     #swagger.parameters['loginUser'] = {
+        in: 'header',
+        description: 'Token From Login.',
+        required: true,
+        name: 'access_token',
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
+    },
+    #swagger.parameters['avtUrl'] = {
+        in: 'body',
+        description: 'Avt Url To Update.',
+        required: true,
+        id: 'avatar',
+        schema: {
+        $avatar: "http://res.cloudinary.com/hungkhaankiettuan/image/upload/v1619326598/Profiles/zj2ygd9zqa9mz3mhgrcu.png",
+        }
+    }
+} */
+  userCtrl.updateAvt
+);
+
+router.get(
+  '/info',
+  /*
+   #swagger.parameters['loginUser'] = {
+      in: 'header',
+      description: 'Token From Login.',
+      required: true,
+      name: 'access_token',
+      value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
+  },
+*/
+  userCtrl.getUserInfo
+);
+
+router.post(
+  '/update-info',
+  /*
+     #swagger.parameters['loginUser'] = {
+        in: 'header',
+        description: 'Token From Login.',
+        required: true,
+        name: 'access_token',
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
+    },
+    #swagger.parameters['userInfo'] = {
+        in: 'body',
+        description: 'User Information.',
+        required: true,
+        id: 'userInfo',
+        schema: {
+        user: {
+                $fullName: "Nguyễn Hoàng Thiên Ân",
+                $description: "HCMUS Boi",
+              }
+        }
+    }
+} */
+  userCtrl.updateUserInfo
+);
+
+router.post(
+  '/change-password',
+  /*
+     #swagger.parameters['loginUser'] = {
+        in: 'header',
+        description: 'Token From Login.',
+        required: true,
+        name: 'access_token',
+        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
+    },
+    #swagger.parameters['userInfo'] = {
+        in: 'body',
+        description: 'User Information.',
+        required: true,
+        id: 'userInfo',
+        schema: {
+          $currentPassword: "123456",
+          $newPassword: "654321",
+        }
+    }
+} */
+  userCtrl.changePassword
 );
 
 module.exports = router;
