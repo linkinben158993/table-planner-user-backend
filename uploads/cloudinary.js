@@ -38,7 +38,7 @@ module.exports = {
         if (result.result !== 'ok') {
           reject(result);
         } else {
-          resolve(new Error('Something happened!'));
+          resolve({ success: true, result });
         }
       });
     });

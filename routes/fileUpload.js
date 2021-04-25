@@ -6,6 +6,7 @@ const CustomResponse = require('../constants/response.message');
 const upload = require('../uploads/multer');
 
 const uploadMultiple = upload.array('image', 5);
+const uploadOne = upload.array('profile', 1);
 
 const router = express.Router();
 
@@ -76,7 +77,7 @@ router.post('/events', async (req, res) => {
       // eslint-disable-next-line no-console
       console.log(files);
       if (files.length > 5 || files.length < 1) {
-        res.status(200).json({
+        res.status(400).json({
           message: {
             msgBody: 'Should Not Above 5 Files Or Less Than 1 Files',
             msgError: true,
@@ -97,6 +98,42 @@ router.post('/events', async (req, res) => {
             msgError: false,
           },
           data: urls,
+        });
+      }
+    }
+  });
+});
+
+router.post('/profile', async (req, res) => {
+  uploadOne(req, res, async (err) => {
+    if (err) {
+      res.status(500).json({
+        message: {
+          msgBody: err.message,
+          msgError: true,
+        },
+      });
+    } else {
+      const { files } = req;
+
+      if (files.length != 1) {
+        res.status(400).json({
+          message: {
+            msgBody: 'Profile picture should only be one file',
+            msgError: true,
+          },
+        });
+      } else {
+        const { path } = files[0];
+        const newPath = await cloudinary.uploadsImages(path, 'Profiles');
+        fs.unlinkSync(path);
+        const url = newPath;
+        res.status(200).json({
+          message: {
+            msgBody: 'Image Uploaded Successfully!',
+            msgError: false,
+          },
+          data: url,
         });
       }
     }

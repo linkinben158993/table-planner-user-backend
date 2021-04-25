@@ -52,7 +52,71 @@ module.exports = {
       }
     })(req, res);
   },
-
+  updateAvt: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err, callBack) => {
+      if (err) {
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err;
+        res.status(500).json(response);
+      }
+      if (!callBack) {
+        res.status(403).json(CustomResponse.FORBIDDEN);
+      } else if (!req.body.avatar) {
+        res.status(403).json(CustomResponse.BAD_REQUEST);
+      } else {
+        Users.updateAvatar(callBack._id, req.body.avatar, (err1, document) => {
+          if (err1) {
+            const response = CustomResponse.SERVER_ERROR;
+            response.trace = err;
+            res.status(500).json(response);
+          } else {
+            res.status(200).json({
+              message: {
+                msgBody: 'Successfully update user avatar info!',
+                msgError: false,
+              },
+              trace: {
+                document,
+              },
+            });
+          }
+        });
+      }
+    })(req, res);
+  },
+  updateUserInfo: async (req, res) => {
+    passport.authenticate('jwt', { session: false }, (err, callBack) => {
+      if (err) {
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err;
+        res.status(500).json(response);
+      }
+      if (!callBack) {
+        res.status(403).json(CustomResponse.FORBIDDEN);
+      } else {
+        const { user } = req.body;
+        if (!user) {
+          res.status(400).json(CustomResponse.BAD_REQUEST);
+        } else {
+          Users.updateUserInfo(callBack._id, user, (err1, document) => {
+            if (err1) {
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = err1;
+              res.status(500).json(response);
+            } else {
+              res.status(200).json({
+                message: {
+                  msgBody: 'Successfully update user info!',
+                  msgError: true,
+                },
+                document,
+              });
+            }
+          });
+        }
+      }
+    })(req, res);
+  },
   login: async (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, callBack) => {
       if (err && !err.errCode) {
