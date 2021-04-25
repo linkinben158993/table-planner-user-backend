@@ -45,7 +45,7 @@ router.post(
      required: true,
      schema: {
       $email: "an@gmail.com",
-      $otp: "123456"
+      $otp: 123456
      }
 } */
   userCtrl.activate
@@ -71,10 +71,10 @@ router.post(
    description: 'Info for resetting account password.',
    required: true,
    schema: {
-    $otp: "123456",
+    $otp: 123456,
     $email: "an@gmail.com",
-    $oldPassword: "an@gmail.com",
-    $newPassword: "an@gmail.com",
+    $password: "an@gmail.com",
+    $confirmPassword: "an@gmail.com",
    }
 } */
   userCtrl.resetPassword

@@ -88,8 +88,9 @@ module.exports = {
     const mailOptions = {
       from: `"My Table Planner" ${email}`,
       to: `${receiverEmail}`,
-      subject: 'Resend OTP For Resetting Password',
-      text: `Provide Following OTP To Activate Reset Your Password Your Password: ${otp} \n If this is not you, ignore this email!`,
+      subject: 'OTP For Resetting Password',
+      text: `Provide Following OTP To Activate Reset Your Password Your Password: ${otp} 
+      \n If this is not you, ignore this email!`,
     };
     return new Promise((resolve) => {
       transporter.sendMail(mailOptions, (error, info) => {

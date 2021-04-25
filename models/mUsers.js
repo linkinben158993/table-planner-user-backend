@@ -37,6 +37,12 @@ const UserSchema = new mongoose.Schema({
   otp: {
     type: Number,
   },
+  otpReset: {
+    otp: { type: Number },
+    expires: {
+      type: Date,
+    },
+  },
   activated: {
     type: Boolean,
   },
@@ -169,7 +175,7 @@ UserSchema.statics.activateAccount = function (email, otp, callBack) {
       } else {
         value
           .set({
-            otp: -1,
+            otp: undefined,
             activated: true,
           })
           .save()
@@ -233,11 +239,11 @@ UserSchema.statics.setBlockStatus = function (userId, callBack) {
     .catch((err) => callBack(err));
 };
 
-UserSchema.statics.resetOTP = function (email, otp, callBack) {
+UserSchema.statics.resetOTP = function (email, otpReset, callBack) {
   return this.findOne({ email })
     .then((value) => {
       value
-        .set({ otp })
+        .set({ otpReset })
         .save()
         .then((value1) => {
           callBack(null, value1);
@@ -247,32 +253,70 @@ UserSchema.statics.resetOTP = function (email, otp, callBack) {
     .catch((err) => callBack(err));
 };
 
-UserSchema.statics.resetUserPassword = function (email, otp, oldPassword, newPassword, callBack) {
+UserSchema.statics.resetUserPassword = function (email, otp, password, confirmPassword, callBack) {
   return this.findOne({
     email,
     activated: { $ne: false },
   })
     .then((value) => {
+      const expires = new Date(value.otpReset.expires.toLocaleString()).getTime();
+      const now = new Date().getTime();
       if (!value) {
         callBack({
           message: {
             msgBody: 'No user found!',
             msgError: true,
           },
+          errCode: 'ERR_USER_NOT_FOUND',
         });
-      } else if (value.otp !== otp) {
+      } else if (now > expires || value.otpReset.otp !== otp) {
         callBack({
           message: {
-            msgBody: 'OTP Not Correct!',
+            msgBody: 'OTP Not Correct Or Expires! Please Register New OTP',
             msgError: true,
           },
+          errCode: 'ERR_OTP_EXPIRES',
         });
       } else {
-        value.changePassword(value, oldPassword, newPassword, (err, isMatch) => {
-          if (err) {
-            callBack(err);
+        value.checkPassword(password, (err, isMatch) => {
+          if (err && !err.errCode) {
+            callBack({
+              message: {
+                msgBody: 'Reset password fail!',
+                msgError: true,
+              },
+              trace: err,
+            });
+          } else if (isMatch) {
+            callBack({
+              message: {
+                msgBody: 'New password should be different from old!',
+                msgError: true,
+              },
+              errCode: 'ERR_RESET_TO_OLD',
+            });
           } else {
-            callBack(null, isMatch);
+            value.password = password;
+            value.otpReset = undefined;
+            value
+              .save()
+              .then(
+                callBack(null, {
+                  message: {
+                    msgBody: 'Reset password successful!',
+                    msgError: false,
+                  },
+                }),
+              )
+              .catch((reason) => {
+                callBack({
+                  message: {
+                    msgBody: 'Reset password fail!',
+                    msgError: true,
+                  },
+                  trace: reason,
+                });
+              });
           }
         });
       }
@@ -304,7 +348,10 @@ UserSchema.statics.updateExpoToken = function (id, expoToken, callBack) {
 };
 
 UserSchema.statics.findExpoTokenByEmail = function (emails, callBack) {
-  return this.find({ email: { $in: emails }, expoToken: { $ne: null } })
+  return this.find({
+    email: { $in: emails },
+    expoToken: { $ne: null },
+  })
     .then((value) => {
       if (value.length === 0) {
         return callBack(null, []);
