@@ -189,13 +189,8 @@ EventSchema.statics.getOneHourLeftEvents = function (callBack) {
     });
 };
 
-EventSchema.statics.findMyAttendingEvent = function (email, callBack) {
-  return this.aggregate([
-    {
-      $sort: {
-        startTime: -1,
-      },
-    },
+EventSchema.statics.findMyAttendingEvent = function (email, queryParams, callBack) {
+  const criteria = [
     {
       $project: {
         id: {
@@ -216,7 +211,6 @@ EventSchema.statics.findMyAttendingEvent = function (email, callBack) {
       },
     },
     { $unwind: '$guestInfo' },
-    { $match: { 'guestInfo.email': email } },
     {
       $project: {
         _id: 0,
@@ -236,7 +230,37 @@ EventSchema.statics.findMyAttendingEvent = function (email, callBack) {
         },
       },
     },
-  ])
+  ];
+  if (queryParams) {
+    const { start, end, sort, order, q } = queryParams;
+    criteria.push(
+      {
+        $match: {
+          $and: [
+            { 'guestInfo.email': email },
+            {
+              $or: [{ name: { $regex: q, $options: 'i' } }, { location: { $regex: q, $options: 'i' } }],
+            },
+          ],
+        },
+      },
+      {
+        $sort: { [sort]: order === 'ASC' ? 1 : -1 },
+      },
+      { $skip: +start },
+      { $limit: +end - +start },
+    );
+  } else {
+    criteria.push(
+      {
+        $match: { 'guestInfo.email': email },
+      },
+      {
+        $sort: { startTime: -1 },
+      },
+    );
+  }
+  return this.aggregate(criteria)
     .then((value) => {
       callBack(null, value);
     })
