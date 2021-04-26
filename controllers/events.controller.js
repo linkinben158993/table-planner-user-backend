@@ -168,11 +168,40 @@ module.exports = {
       if (!callBack) {
         res.status(403).json(CustomResponse.FORBIDDEN);
       } else {
-        Events.findMyAttendingEvent(callBack.email, (err1, eventDocument) => {
+        let queryParams = null;
+        if (req.query._start && req.query._end && req.query._sort && req.query._order && req.query.q) {
+          queryParams = {
+            start: req.query._start,
+            end: req.query._end,
+            sort: req.query._sort,
+            order: req.query._order,
+            q: req.query.q,
+          };
+        }
+        Events.findMyAttendingEvent(callBack.email, queryParams, (err1, eventDocument) => {
           if (err1) {
             const response = CustomResponse.SERVER_ERROR;
             response.trace = err1;
             res.status(500).json(response);
+          } else if (queryParams) {
+            Guests.countDocuments({ email: callBack.email }, (err2, count) => {
+              if (err2) {
+                const response = CustomResponse.SERVER_ERROR;
+                response.trace = err2;
+                res.status(500).json(response);
+              } else {
+                res.status(200).json({
+                  message: {
+                    msgBody: 'Get My Attending Event Info Successful!',
+                    msgError: false,
+                  },
+                  data: {
+                    events: eventDocument,
+                    totalCount: count,
+                  },
+                });
+              }
+            });
           } else if (eventDocument.length > 0) {
             res.status(200).json({
               message: {
