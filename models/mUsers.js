@@ -101,27 +101,28 @@ UserSchema.methods.changePassword = function (user, oldPassword, newPassword, ca
       },
       errCode: 'ERR_RESET_TO_OLD',
     });
-  }
-  user.checkPassword(oldPassword, (err, isMatch) => {
-    if (err) {
-      callBack(err);
-    }
+  } else {
+    user.checkPassword(oldPassword, (err, isMatch) => {
+      if (err) {
+        callBack(err);
+      }
 
-    if (isMatch) {
-      user
-        .set({
-          password: newPassword,
-          otp: undefined,
-        })
-        .save()
-        .then((value) => {
-          callBack(null, value);
-        })
-        .catch((err1) => {
-          callBack(err1);
-        });
-    }
-  });
+      if (isMatch) {
+        user
+          .set({
+            password: newPassword,
+            otp: undefined,
+          })
+          .save()
+          .then((value) => {
+            callBack(null, value);
+          })
+          .catch((err1) => {
+            callBack(err1);
+          });
+      }
+    });
+  }
 };
 
 UserSchema.statics.createUserWithOTP = function (userInfo, otp, callBack) {

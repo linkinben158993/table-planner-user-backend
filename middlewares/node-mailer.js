@@ -84,7 +84,7 @@ module.exports = {
     });
   },
 
-  resetPassword: (receiverEmail, otp) => {
+  resetPassword: async (receiverEmail, otp) => {
     const mailOptions = {
       from: `"My Table Planner" ${email}`,
       to: `${receiverEmail}`,
