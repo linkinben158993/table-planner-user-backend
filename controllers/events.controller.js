@@ -146,15 +146,67 @@ module.exports = {
       if (!callBack) {
         res.status(403).json(CustomResponse.FORBIDDEN);
       } else {
-        Events.find({ creator: callBack._id })
-          .then((document) => {
-            res.status(200).json({ document });
+        let queryParams = null;
+        if (req.query._start && req.query._end && req.query._sort && req.query._order && req.query.q) {
+          queryParams = {
+            start: req.query._start,
+            end: req.query._end,
+            sort: req.query._sort,
+            order: req.query._order,
+            q: req.query.q,
+          };
+        }
+        if (queryParams) {
+          Events.find({
+            $and: [
+              { creator: callBack._id },
+              {
+                $or: [
+                  { name: { $regex: queryParams.q, $options: 'i' } },
+                  { location: { $regex: queryParams.q, $options: 'i' } },
+                ],
+              },
+            ],
           })
-          .catch((err1) => {
-            const response = CustomResponse.SERVER_ERROR;
-            response.trace = err1;
-            res.status(500).json(response);
-          });
+            .sort({ [queryParams.sort]: queryParams.order === 'ASC' ? 1 : -1 })
+            .skip(+queryParams.start)
+            .limit(+queryParams.end - +queryParams.start)
+            .then((eventDocument) => {
+              Events.countDocuments({ creator: callBack._id }, (err2, count) => {
+                if (err2) {
+                  const response = CustomResponse.SERVER_ERROR;
+                  response.trace = err2;
+                  res.status(500).json(response);
+                }
+                res.header('Access-Control-Expose-Headers', 'X-Total-Count');
+                res.header('X-Total-Count', count);
+                res.status(200).json({
+                  message: {
+                    msgBody: 'Get My Attending Event Info Successful!',
+                    msgError: false,
+                  },
+                  data: {
+                    events: eventDocument,
+                  },
+                });
+              });
+            })
+            .catch((err1) => {
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = err1;
+              res.status(500).json(response);
+            });
+        } else {
+          Events.find({ creator: callBack._id })
+            .then((document) => {
+              res.status(200).json({ document });
+            })
+            .catch((err1) => {
+              const response = CustomResponse.SERVER_ERROR;
+              response.trace = err1;
+              res.status(500).json(response);
+            });
+        }
       }
     })(req, res);
   },
@@ -190,6 +242,8 @@ module.exports = {
                 response.trace = err2;
                 res.status(500).json(response);
               } else {
+                res.header('Access-Control-Expose-Headers', 'X-Total-Count');
+                res.header('X-Total-Count', count);
                 res.status(200).json({
                   message: {
                     msgBody: 'Get My Attending Event Info Successful!',
@@ -197,7 +251,6 @@ module.exports = {
                   },
                   data: {
                     events: eventDocument,
-                    totalCount: count,
                   },
                 });
               }
@@ -389,56 +442,55 @@ module.exports = {
                                 const response3 = CustomResponse.SERVER_ERROR;
                                 response3.trace = err3;
                                 res.status(500).json(response3);
-                              } else {
-                                const userNotifications = userExpo.map((item) => item.expoToken);
-                                Users.findOne({ _id: event.creator }).then((host) => {
-                                  if (host.expoToken) {
-                                    NotificationHelper.reminderApplication(
-                                      [host.expoToken],
-                                      `You have just invited your guests in ${event.name}`,
-                                      { eventId: id },
-                                      (err4) => {
-                                        if (err4) {
-                                          throw err4;
-                                        }
-                                      },
-                                    );
-                                  }
-                                });
-                                if (userNotifications.length === 0) {
-                                  res.status(200).json({
-                                    message: {
-                                      msgBody: 'Send invitation success!',
-                                      msgError: false,
-                                    },
-                                    trace: {
-                                      msgBody: 'No guest using application found!',
-                                      msgError: false,
-                                    },
-                                  });
-                                }
-                                await NotificationHelper.reminderApplication(
-                                  userNotifications,
-                                  `You have been invited for ${event.name}`,
-                                  { eventId: id },
-                                  (err5) => {
-                                    if (err5) {
-                                      const response4 = CustomResponse.SERVER_ERROR;
-                                      response4.trace = err5;
-                                      res.status(500).json(response4);
-                                    } else {
-                                      // Update guests' status to invited
-                                      const successResponse = {
-                                        message: {
-                                          msgBody: 'Send invitation success!',
-                                          msgError: false,
-                                        },
-                                      };
-                                      res.status(200).json(successResponse);
-                                    }
-                                  },
-                                );
                               }
+                              const userNotifications = userExpo.map((item) => item.expoToken);
+                              Users.findOne({ _id: event.creator }).then((host) => {
+                                if (host.expoToken) {
+                                  NotificationHelper.reminderApplication(
+                                    [host.expoToken],
+                                    `You have just invited your guests in ${event.name}`,
+                                    { eventId: id },
+                                    (err4) => {
+                                      if (err4) {
+                                        throw err4;
+                                      }
+                                    },
+                                  );
+                                }
+                              });
+                              if (userNotifications.length === 0) {
+                                res.status(200).json({
+                                  message: {
+                                    msgBody: 'Send invitation success!',
+                                    msgError: false,
+                                  },
+                                  trace: {
+                                    msgBody: 'No guest using application found!',
+                                    msgError: false,
+                                  },
+                                });
+                              }
+                              await NotificationHelper.reminderApplication(
+                                userNotifications,
+                                `You have been invited for ${event.name}`,
+                                { eventId: id },
+                                (err5) => {
+                                  if (err5) {
+                                    const response4 = CustomResponse.SERVER_ERROR;
+                                    response4.trace = err5;
+                                    res.status(500).json(response4);
+                                  } else {
+                                    // Update guests' status to invited
+                                    const successResponse = {
+                                      message: {
+                                        msgBody: 'Send invitation success!',
+                                        msgError: false,
+                                      },
+                                    };
+                                    res.status(200).json(successResponse);
+                                  }
+                                },
+                              );
                             });
                           }
                         });
