@@ -105,29 +105,6 @@ router.post(
   userCtrl.updateExpoToken
 );
 
-router.post(
-  '/avatar-update',
-  /*
-     #swagger.parameters['loginUser'] = {
-        in: 'header',
-        description: 'Token From Login.',
-        required: true,
-        name: 'access_token',
-        value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
-    },
-    #swagger.parameters['avtUrl'] = {
-        in: 'body',
-        description: 'Avt Url To Update.',
-        required: true,
-        id: 'avatar',
-        schema: {
-        $avatar: "http://res.cloudinary.com/hungkhaankiettuan/image/upload/v1619326598/Profiles/zj2ygd9zqa9mz3mhgrcu.png",
-        }
-    }
-} */
-  userCtrl.updateAvt
-);
-
 router.get(
   '/info',
   /*
