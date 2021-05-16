@@ -236,7 +236,7 @@ module.exports = {
             response.trace = err1;
             res.status(500).json(response);
           } else if (queryParams) {
-            Guests.countDocuments({ email: callBack.email }, (err2, count) => {
+            Guests.countDocuments({ email: callBack.email, invited: true }, (err2, count) => {
               if (err2) {
                 const response = CustomResponse.SERVER_ERROR;
                 response.trace = err2;
