@@ -17,7 +17,17 @@ module.exports = {
         if (!eventId) {
           res.status(400).json(CustomResponse.BAD_REQUEST);
         } else {
-          Guests.getGuestListInEvent(eventId, (err2, document) => {
+          let queryParams = null;
+          if (req.query._start && req.query._end && req.query._sort && req.query._order && req.query.q) {
+            queryParams = {
+              start: req.query._start,
+              end: req.query._end,
+              sort: req.query._sort,
+              order: req.query._order,
+              q: req.query.q,
+            };
+          }
+          Guests.getGuestListInEvent(eventId, queryParams, (err2, document) => {
             if (err2) {
               const response = CustomResponse.SERVER_ERROR;
               response.trace = err2;

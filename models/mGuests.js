@@ -68,55 +68,75 @@ GuestSchema.statics.editGuest = function (guest, callBack) {
     .catch((err) => callBack(err));
 };
 
-GuestSchema.statics.getGuestListInEvent = function (eventId, callBack) {
-  return this.find({
-    event: eventId,
-  })
-    .then((guestValue) => {
-      if (guestValue.length === 0) {
-        return callBack(null, 0);
+const mappingUsersGuests = (guestValue, callBack) => {
+  if (guestValue.length === 0) {
+    return callBack(null, 0);
+  }
+  const emails = guestValue.map((item) => item.email);
+  return Users.find({ email: { $in: emails } })
+    .then((users) => {
+      if (users.length === 0) {
+        return callBack(null, guestValue);
       }
-      const emails = guestValue.map((item) => item.email);
-      return Users.find({ email: { $in: emails } })
-        .then((users) => {
-          if (users.length === 0) {
-            return callBack(null, guestValue);
-          }
-          const userEmails = users.map((userItem) => userItem.email);
-          const guestWithAvt = guestValue.map((guestItem) => {
-            const userIndex = userEmails.indexOf(guestItem.email);
-            const { id, email, event, name, checkin, group, priority, table } = guestItem;
-            if (userIndex !== -1) {
-              return {
-                id,
-                email,
-                event,
-                name,
-                checkin,
-                group,
-                priority,
-                table,
-                avatar: users[userIndex].avatar,
-              };
-            }
-            return {
-              id,
-              email,
-              event,
-              name,
-              checkin,
-              group,
-              priority,
-              table,
-              avatar: '',
-            };
-          });
-          return callBack(null, guestWithAvt);
-        })
-        .catch((err) => {
-          callBack(err);
-        });
+      const userEmails = users.map((userItem) => userItem.email);
+      const guestWithAvt = guestValue.map((guestItem) => {
+        const userIndex = userEmails.indexOf(guestItem.email);
+        const { id, email, event, name, checkin, group, priority, table } = guestItem;
+        if (userIndex !== -1) {
+          return {
+            id,
+            email,
+            event,
+            name,
+            checkin,
+            group,
+            priority,
+            table,
+            avatar: users[userIndex].avatar,
+          };
+        }
+        return {
+          id,
+          email,
+          event,
+          name,
+          checkin,
+          group,
+          priority,
+          table,
+          avatar: '',
+        };
+      });
+      return callBack(null, guestWithAvt);
     })
+    .catch((err) => {
+      callBack(err);
+    });
+};
+
+GuestSchema.statics.getGuestListInEvent = function (eventId, queryParams, callBack) {
+  if (queryParams === null) {
+    return this.find({
+      event: eventId,
+    })
+      .then((guestValue) => mappingUsersGuests(guestValue, callBack))
+      .catch((err) => {
+        callBack(err);
+      });
+  }
+  const { start, end, sort, order, q } = queryParams;
+  return this.find({
+    $and: [
+      { event: eventId },
+      {
+        $or: [{ name: { $regex: q, $options: 'i' } }, { email: { $regex: q, $options: 'i' } }],
+      },
+    ],
+  })
+    .sort({ [sort]: order === 'ASC' ? 1 : -1 })
+    .skip(+start)
+    .limit(+end - +start)
+    .then((guestValue) => mappingUsersGuests(guestValue, callBack))
     .catch((err) => {
       callBack(err);
     });

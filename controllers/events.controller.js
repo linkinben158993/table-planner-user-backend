@@ -419,7 +419,7 @@ module.exports = {
                   if (mails.length === 0) {
                     res.status(400).json({
                       message: {
-                        msgBody: 'No guests found!',
+                        msgBody: 'No uninvited guests found!',
                         msgError: true,
                       },
                     });
