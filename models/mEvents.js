@@ -224,6 +224,7 @@ EventSchema.statics.findMyAttendingEvent = function (email, queryParams, callBac
             $toString: '$guestInfo._id',
           },
           email: 1,
+          invited: 1,
           priority: 1,
           table: 1,
           group: 1,
@@ -237,9 +238,16 @@ EventSchema.statics.findMyAttendingEvent = function (email, queryParams, callBac
       {
         $match: {
           $and: [
-            { 'guestInfo.email': email },
             {
-              $or: [{ name: { $regex: q, $options: 'i' } }, { location: { $regex: q, $options: 'i' } }],
+              'guestInfo.invited': true,
+            },
+            {
+              $and: [
+                { 'guestInfo.email': email },
+                {
+                  $or: [{ name: { $regex: q, $options: 'i' } }, { location: { $regex: q, $options: 'i' } }],
+                },
+              ],
             },
           ],
         },
@@ -253,7 +261,9 @@ EventSchema.statics.findMyAttendingEvent = function (email, queryParams, callBac
   } else {
     criteria.push(
       {
-        $match: { 'guestInfo.email': email },
+        $match: {
+          $and: [{ 'guestInfo.email': email }, { 'guestInfo.invited': true }],
+        },
       },
       {
         $sort: { startTime: -1 },
