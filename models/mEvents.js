@@ -279,6 +279,59 @@ EventSchema.statics.findMyAttendingEvent = function (email, queryParams, callBac
     });
 };
 
+EventSchema.statics.countMyAttendingEvent = function (email, queryParams, callBack) {
+  const { q } = queryParams;
+  const criteria = [
+    {
+      $project: {
+        id: {
+          $toString: '$_id',
+        },
+        name: '$name',
+        location: '$location',
+        startTime: '$startTime',
+        endTime: '$endTime',
+      },
+    },
+    {
+      $lookup: {
+        from: 'guests',
+        localField: 'id',
+        foreignField: 'event',
+        as: 'guestInfo',
+      },
+    },
+    { $unwind: '$guestInfo' },
+    {
+      $match: {
+        $and: [
+          {
+            'guestInfo.invited': true,
+          },
+          {
+            $and: [
+              { 'guestInfo.email': email },
+              {
+                $or: [{ name: { $regex: q, $options: 'i' } }, { location: { $regex: q, $options: 'i' } }],
+              },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      $count: 'attending_event',
+    },
+  ];
+  return this.aggregate(criteria)
+    .then((value) => {
+      callBack(null, value);
+    })
+    .catch((reason) => {
+      callBack(reason);
+    });
+};
+
 EventSchema.set('toObject', { getters: true });
 EventSchema.set('toJSON', { getters: true });
 

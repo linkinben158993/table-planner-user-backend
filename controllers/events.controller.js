@@ -172,24 +172,37 @@ module.exports = {
             .skip(+queryParams.start)
             .limit(+queryParams.end - +queryParams.start)
             .then((eventDocument) => {
-              Events.countDocuments({ creator: callBack._id }, (err2, count) => {
-                if (err2) {
-                  const response = CustomResponse.SERVER_ERROR;
-                  response.trace = err2;
-                  res.status(500).json(response);
-                }
-                res.header('Access-Control-Expose-Headers', 'X-Total-Count');
-                res.header('X-Total-Count', count);
-                res.status(200).json({
-                  message: {
-                    msgBody: 'Get My Attending Event Info Successful!',
-                    msgError: false,
-                  },
-                  data: {
-                    events: eventDocument,
-                  },
-                });
-              });
+              Events.countDocuments(
+                {
+                  $and: [
+                    { creator: callBack._id },
+                    {
+                      $or: [
+                        { name: { $regex: queryParams.q, $options: 'i' } },
+                        { location: { $regex: queryParams.q, $options: 'i' } },
+                      ],
+                    },
+                  ],
+                },
+                (err2, count) => {
+                  if (err2) {
+                    const response = CustomResponse.SERVER_ERROR;
+                    response.trace = err2;
+                    res.status(500).json(response);
+                  }
+                  res.header('Access-Control-Expose-Headers', 'X-Total-Count');
+                  res.header('X-Total-Count', count);
+                  res.status(200).json({
+                    message: {
+                      msgBody: 'Get My Attending Event Info Successful!',
+                      msgError: false,
+                    },
+                    data: {
+                      events: eventDocument,
+                    },
+                  });
+                },
+              );
             })
             .catch((err1) => {
               const response = CustomResponse.SERVER_ERROR;
@@ -236,14 +249,14 @@ module.exports = {
             response.trace = err1;
             res.status(500).json(response);
           } else if (queryParams) {
-            Guests.countDocuments({ email: callBack.email, invited: true }, (err2, count) => {
+            Events.countMyAttendingEvent(callBack.email, queryParams, (err2, countObj) => {
               if (err2) {
                 const response = CustomResponse.SERVER_ERROR;
                 response.trace = err2;
                 res.status(500).json(response);
               } else {
                 res.header('Access-Control-Expose-Headers', 'X-Total-Count');
-                res.header('X-Total-Count', count);
+                res.header('X-Total-Count', countObj[0].attending_event);
                 res.status(200).json({
                   message: {
                     msgBody: 'Get My Attending Event Info Successful!',
