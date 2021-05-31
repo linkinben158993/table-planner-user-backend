@@ -1,5 +1,6 @@
 const express = require('express');
 const guestCtrl = require('../controllers/guests.controller');
+const passport = require('../middlewares/passport');
 
 const router = express.Router();
 
@@ -58,6 +59,7 @@ router.post(
         ]
     }
     */
+  passport.jwtStrategy,
   guestCtrl.importGuests
 );
 
@@ -90,6 +92,7 @@ router.post(
         ]
     }
     */
+  passport.jwtStrategy,
   guestCtrl.updateGuestList
 );
 
@@ -104,6 +107,7 @@ router.get(
       value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
       }
   */
+  passport.jwtStrategy,
   guestCtrl.getGuestList
 );
 
@@ -130,6 +134,7 @@ router.post(
         }
     }
     */
+  passport.jwtStrategy,
   guestCtrl.editGuest
 );
 
@@ -153,6 +158,7 @@ router.post(
         }
     }
   */
+  passport.jwtStrategy,
   guestCtrl.deleteGuest
 );
 
@@ -182,6 +188,7 @@ router.post(
       ]
   }
   */
+  passport.jwtStrategy,
   guestCtrl.assignTable
 );
 
@@ -206,6 +213,7 @@ router.post(
         }
     }
     */
+  passport.jwtStrategy,
   guestCtrl.setPriorityGuest
 );
 
@@ -229,6 +237,7 @@ router.post(
         }
     }
     */
+  passport.jwtStrategy,
   guestCtrl.checkin
 );
 module.exports = router;

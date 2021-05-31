@@ -3,6 +3,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const JWTStrategy = require('passport-jwt').Strategy;
 const dotenv = require('dotenv');
 const Users = require('../models/mUsers');
+const CustomResponse = require('../constants/response.message');
 
 dotenv.config();
 const cookieExtractor = (req) => {
@@ -86,3 +87,21 @@ passport.use(
     });
   }),
 );
+
+module.exports = {
+  jwtStrategy: async (req, res, next) => {
+    passport.authenticate('jwt', { session: false }, (err, callBack) => {
+      if (err) {
+        const response = CustomResponse.SERVER_ERROR;
+        response.trace = err;
+        res.status(500).json(response);
+      }
+      if (!callBack) {
+        res.status(403).json(CustomResponse.FORBIDDEN);
+      } else {
+        req.user = callBack;
+        next();
+      }
+    })(req, res, next);
+  },
+};

@@ -1,5 +1,6 @@
 const express = require('express');
 const eventCtrl = require('../controllers/events.controller');
+const passport = require('../middlewares/passport');
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.get(
      value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
   }
   */
+  passport.jwtStrategy,
   eventCtrl.getEventByID_Guest
 );
 router.get(
@@ -25,6 +27,7 @@ router.get(
      value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
   }
   */
+  passport.jwtStrategy,
   eventCtrl.getEventByID_Host
 );
 
@@ -38,6 +41,7 @@ router.get(
        value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
   }
  */
+  passport.jwtStrategy,
   eventCtrl.getAllEvents
 );
 
@@ -51,6 +55,7 @@ router.get(
        value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwMGVhNDg4ZjcwZGE5M2ZkZTJiM2FjYyIsImlhdCI6MTYxNjIxMTA4MCwiZXhwIjoyODI1ODExMDgwfQ.jXQDy9JOVP7yPaoHRAC2fn6wDkXZzZJrLzISPlyu1iI'
   }
  */
+  passport.jwtStrategy,
   eventCtrl.getMyAttendingEvents
 );
 
@@ -75,6 +80,7 @@ router.post(
     }
   }
 */
+  passport.jwtStrategy,
   eventCtrl.addNewEvent
 );
 
@@ -101,6 +107,7 @@ router.post(
       }
     }
 */
+  passport.jwtStrategy,
   eventCtrl.editEvent
 );
 
@@ -124,6 +131,7 @@ router.post(
     }
   }
 */
+  passport.jwtStrategy,
   eventCtrl.sendMailToAllGuest
 );
 

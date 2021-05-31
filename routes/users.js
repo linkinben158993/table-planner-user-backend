@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('../middlewares/passport');
 const userCtrl = require('../controllers/users.controller');
 
 const router = express.Router();
@@ -80,7 +81,20 @@ router.post(
   userCtrl.resetPassword
 );
 
-router.get('/authenticated', userCtrl.authenticated);
+router.get(
+  '/authenticated',
+  /*
+   #swagger.parameters['loginUser'] = {
+      in: 'header',
+      description: 'Token From Login.',
+      required: true,
+      name: 'access_token',
+      value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
+  },
+  */
+  passport.jwtStrategy,
+  userCtrl.authenticated
+);
 
 router.post(
   '/expo-update',
@@ -101,7 +115,8 @@ router.post(
         $expoToken: "ExponentPushToken[iuXHV9KOGbMOiTRR56ABXL]",
         }
     }
-} */
+  } */
+  passport.jwtStrategy,
   userCtrl.updateExpoToken
 );
 
@@ -116,6 +131,7 @@ router.get(
       value : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
   },
 */
+  passport.jwtStrategy,
   userCtrl.getUserInfo
 );
 
@@ -142,6 +158,7 @@ router.post(
         }
     }
 } */
+  passport.jwtStrategy,
   userCtrl.updateUserInfo
 );
 
@@ -166,6 +183,7 @@ router.post(
         }
     }
 } */
+  passport.jwtStrategy,
   userCtrl.changePassword
 );
 

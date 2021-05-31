@@ -23,119 +23,88 @@ const randOTP = () => Math.floor(Math.random() * 1000000);
 
 module.exports = {
   updateExpoToken: async (req, res) => {
-    passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      if (err) {
-        const response = CustomResponse.SERVER_ERROR;
-        response.trace = err;
-        res.status(500).json(response);
-      }
-      if (!callBack) {
-        res.status(403).json(CustomResponse.FORBIDDEN);
-      } else if (!req.body.expoToken) {
-        res.status(400).json(CustomResponse.BAD_REQUEST);
-      } else {
-        Users.updateExpoToken(callBack._id, req.body.expoToken, (err1, document) => {
-          if (err1) {
-            const response = CustomResponse.SERVER_ERROR;
-            response.trace = err1;
-            res.status(500).json(response);
-          } else {
-            res.status(200).json({
-              message: {
-                msgBody: 'Successfully update device info!',
-                msgError: false,
-              },
-              document,
-            });
-          }
-        });
-      }
-    })(req, res);
-  },
-  updateUserInfo: async (req, res) => {
-    passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      if (err) {
-        const response = CustomResponse.SERVER_ERROR;
-        response.trace = err;
-        res.status(500).json(response);
-      }
-      if (!callBack) {
-        res.status(403).json(CustomResponse.FORBIDDEN);
-      } else {
-        const { user } = req.body;
-        if (!user) {
-          res.status(400).json(CustomResponse.BAD_REQUEST);
+    if (!req.body.expoToken) {
+      res.status(400).json(CustomResponse.BAD_REQUEST);
+    } else {
+      await Users.updateExpoToken(req.user._id, req.body.expoToken, (err1, document) => {
+        if (err1) {
+          const response = CustomResponse.SERVER_ERROR;
+          response.trace = err1;
+          res.status(500).json(response);
         } else {
-          Users.updateUserInfo(callBack._id, user, (err1, document) => {
-            if (err1) {
-              const response = CustomResponse.SERVER_ERROR;
-              response.trace = err1;
-              res.status(500).json(response);
-            } else {
-              res.status(200).json({
-                message: {
-                  msgBody: 'Successfully update user info!',
-                  msgError: true,
-                },
-                document,
-              });
-            }
+          res.status(200).json({
+            message: {
+              msgBody: 'Successfully update device info!',
+              msgError: false,
+            },
+            document,
           });
         }
-      }
-    })(req, res);
+      });
+    }
+  },
+  updateUserInfo: async (req, res) => {
+    const { user } = req.body;
+    if (!user) {
+      res.status(400).json(CustomResponse.BAD_REQUEST);
+    } else {
+      await Users.updateUserInfo(req.user._id, user, (err1, document) => {
+        if (err1) {
+          const response = CustomResponse.SERVER_ERROR;
+          response.trace = err1;
+          res.status(500).json(response);
+        } else {
+          res.status(200).json({
+            message: {
+              msgBody: 'Successfully update user info!',
+              msgError: true,
+            },
+            document,
+          });
+        }
+      });
+    }
   },
   changePassword: async (req, res) => {
-    passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      if (err) {
-        const response = CustomResponse.SERVER_ERROR;
-        response.trace = err;
-        res.status(500).json(response);
-      }
-      if (!callBack) {
-        res.status(403).json(CustomResponse.FORBIDDEN);
-      } else {
-        const { currentPassword, newPassword } = req.body;
-        if (!currentPassword || !newPassword) {
-          res.status(400).json(CustomResponse.BAD_REQUEST);
-        } else {
-          Users.findOne({ _id: callBack._id })
-            .then((value) => {
-              if (!value) {
-                res.status(400).json({
-                  message: {
-                    msgBody: 'User not found or deleted!',
-                    msgError: true,
-                  },
-                });
+    const { currentPassword, newPassword } = req.body;
+    if (!currentPassword || !newPassword) {
+      res.status(400).json(CustomResponse.BAD_REQUEST);
+    } else {
+      Users.findOne({ _id: req.user._id })
+        .then((value) => {
+          if (!value) {
+            res.status(400).json({
+              message: {
+                msgBody: 'User not found or deleted!',
+                msgError: true,
+              },
+            });
+          } else {
+            value.changePassword(value, currentPassword, newPassword, (err1, document) => {
+              if (err1 && !err1.errCode) {
+                const response = CustomResponse.SERVER_ERROR;
+                response.trace = err1;
+                res.status(500).json(response);
+              } else if (err1 && err1.errCode) {
+                res.status(400).json(err1);
               } else {
-                value.changePassword(value, currentPassword, newPassword, (err1, document) => {
-                  if (err1 && !err1.errCode) {
-                    const response = CustomResponse.SERVER_ERROR;
-                    response.trace = err1;
-                    res.status(500).json(response);
-                  } else if (err1 && err1.errCode) {
-                    res.status(400).json(err1);
-                  } else {
-                    res.status(200).json({
-                      message: {
-                        msgBody: 'Change password successfully!',
-                        msgError: false,
-                      },
-                      trace: document,
-                    });
-                  }
+                res.status(200).json({
+                  message: {
+                    msgBody: 'Change password successfully!',
+                    msgError: false,
+                  },
+                  trace: document,
                 });
               }
-            })
-            .catch((reason) => {
-              const response = CustomResponse.SERVER_ERROR;
-              response.trace = reason;
-              res.status(500).json(response);
             });
-        }
-      }
-    })(req, res);
+          }
+        })
+        .catch((reason) => {
+          const response = CustomResponse.SERVER_ERROR;
+          response.trace = reason;
+          res.status(500).json(response);
+        });
+    }
   },
   login: async (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, callBack) => {
@@ -162,27 +131,17 @@ module.exports = {
     })(req, res, next);
   },
   // Refresh token here
-  authenticated: async (req, res, next) => {
-    passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      if (err) {
-        res.status(500).json({
-          isAuthenticated: false,
-          user: null,
-          access_token: null,
-        });
-      } else {
-        const { email, role, fullName } = callBack;
-        res.status(200).json({
-          isAuthenticated: true,
-          user: {
-            email,
-            role,
-            fullName,
-          },
-          access_token: req.headers.access_token,
-        });
-      }
-    })(req, res, next);
+  authenticated: async (req, res) => {
+    const { email, role, fullName } = req.user;
+    res.status(200).json({
+      isAuthenticated: true,
+      user: {
+        email,
+        role,
+        fullName,
+      },
+      access_token: req.headers.access_token,
+    });
   },
   register: async (req, res) => {
     const otp = randOTP();
@@ -195,23 +154,31 @@ module.exports = {
       if (result.success) {
         // Password should be sent when isNormalFlow is true
         if (isNormalFlow) {
-          Users.createUserWithOTP({ email: username, password, fullName }, otp, (err, document) => {
-            if (err && !err.errCode) {
-              const response = CustomResponse.SERVER_ERROR;
-              response.trace = err;
-              res.status(500).json(response);
-            } else if (err && err.errCode) {
-              res.status(400).json(err);
-            } else {
-              res.status(201).json({
-                message: {
-                  msgBody: `Mail should be sent to ${username}`,
-                  msgError: false,
-                },
-                trace: document,
-              });
-            }
-          });
+          Users.createUserWithOTP(
+            {
+              email: username,
+              password,
+              fullName,
+            },
+            otp,
+            (err, document) => {
+              if (err && !err.errCode) {
+                const response = CustomResponse.SERVER_ERROR;
+                response.trace = err;
+                res.status(500).json(response);
+              } else if (err && err.errCode) {
+                res.status(400).json(err);
+              } else {
+                res.status(201).json({
+                  message: {
+                    msgBody: `Mail should be sent to ${username}`,
+                    msgError: false,
+                  },
+                  trace: document,
+                });
+              }
+            },
+          );
         } else {
           Users.createUserWithOTP(
             {
@@ -327,30 +294,19 @@ module.exports = {
     }
   },
   getUserInfo: async (req, res) => {
-    passport.authenticate('jwt', { session: false }, (err, callBack) => {
-      if (err) {
-        const response = CustomResponse.SERVER_ERROR;
-        response.trace = err;
-        res.status(500).json(response);
-      }
-      if (!callBack) {
-        res.status(403).json(CustomResponse.FORBIDDEN);
-      } else {
-        const { email, fullName, phoneNumber, description, avatar } = callBack;
-        res.status(200).json({
-          message: {
-            msgBody: 'Get user info successfully!',
-            msgError: false,
-          },
-          data: {
-            email,
-            fullName,
-            phoneNumber,
-            description,
-            avatar,
-          },
-        });
-      }
-    })(req, res);
+    const { email, fullName, phoneNumber, description, avatar } = req.user;
+    res.status(200).json({
+      message: {
+        msgBody: 'Get user info successfully!',
+        msgError: false,
+      },
+      data: {
+        email,
+        fullName,
+        phoneNumber,
+        description,
+        avatar,
+      },
+    });
   },
 };
