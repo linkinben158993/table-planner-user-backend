@@ -2,6 +2,8 @@ const nodeMailer = require('nodemailer');
 const { google } = require('googleapis');
 const dotenv = require('dotenv');
 const QRCode = require('qrcode');
+const hbs = require('nodemailer-express-handlebars');
+const path = require('path');
 
 dotenv.config();
 
@@ -35,6 +37,19 @@ const transporter = nodeMailer.createTransport({
   },
 });
 
+transporter.use(
+  'compile',
+  hbs({
+    viewEngine: {
+      extName: '.hbs',
+      partialDir: './views/',
+      defaultLayout: false,
+    },
+    viewPath: './views/',
+    extName: '.hbs',
+  }),
+);
+
 module.exports = {
   registerByMail: (receiverEmail, otp) => {
     const mailOptions = {
@@ -42,6 +57,18 @@ module.exports = {
       to: `${receiverEmail}`,
       subject: 'Activate Your Account Via Google',
       text: `Provide Following OTP To Activate Your Account: ${otp} \n Please do not provide this OTP for anyone else!`,
+      template: 'register',
+      attachments: [
+        {
+          filename: 'Logo.png',
+          path: path.join(__dirname, '../', '/public/images/Logo.png'),
+          cid: 'logo',
+        },
+      ],
+      context: {
+        otp,
+        host: process.env.host || '',
+      },
     };
     return new Promise((resolve) => {
       transporter.sendMail(mailOptions, (error, info) => {

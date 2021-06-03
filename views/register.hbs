@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    body {
+      {{#if host}}
+        background: #10151b url("https://table-planner-user-bitbucket.herokuapp.com/images/Logo.png") no-repeat fixed center center;
+      {{else}}
+        background: #10151b url("http://localhost:3000/images/Logo.png") no-repeat fixed center center;
+      {{/if}}
+
+      background-size: cover;
+      font-family: "Oswald", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      font-smoothing: antialiased;
+    }
+
+    h1 {
+      line-height: .95;
+      color: #66fcf1;
+      font-weight: 900;
+      font-size: 30px;
+      text-transform: uppercase;
+    }
+
+    .center {
+      position: absolute;
+      margin: auto;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 581px;
+      height: 50%;
+    }
+
+    .content{
+      line-height: .95;
+      color: #66fcf1;
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    .highlight {
+      text-decoration: none;
+      color: indigo;
+      padding: 1px 0 0 0;
+      box-shadow: inset 0 -2px 0 indigo;
+      background: 0 0;
+      transition: box-shadow .2s;
+    }
+
+    .highlight:hover {
+      box-shadow: inset 0 -1.1em 0 #36B0FF;
+    }
+  </style>
+</head>
+<body>
+<div class="center">
+  <h1>Welcome To Table Planner</h1>
+  <div class="content">
+    Here is your OTP to activate your account:
+    <span class="highlight">
+      {{otp}}
+    </span>
+  </div>
+</div>
+</body>
+</html>
