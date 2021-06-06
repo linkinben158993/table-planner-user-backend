@@ -57,6 +57,7 @@ module.exports = {
       to: `${receiverEmail}`,
       subject: 'Activate Your Account Via Google',
       text: `Provide Following OTP To Activate Your Account: ${otp} \n Please do not provide this OTP for anyone else!`,
+      attachDataUrls: true,
       template: 'register',
       attachments: [
         {
@@ -118,6 +119,21 @@ module.exports = {
       subject: 'OTP For Resetting Password',
       text: `Provide Following OTP To Activate Reset Your Password Your Password: ${otp} 
       \n If this is not you, ignore this email!`,
+      attachDataUrls: true,
+      template: 'forget-password',
+      attachments: [
+        {
+          filename: 'Logo.png',
+          path: path.join(__dirname, '../', '/public/images/Logo.png'),
+          cid: 'logo',
+        },
+      ],
+      context: {
+        msgBody: 'Provide Following OTP To Activate Reset Your Password Your Password',
+        sideNote: 'If this is not you, ignore this email!',
+        otp,
+        host: process.env.host || '',
+      },
     };
     return new Promise((resolve) => {
       transporter.sendMail(mailOptions, (error, info) => {
@@ -148,20 +164,35 @@ module.exports = {
       const stringData = JSON.stringify(data);
 
       // eslint-disable-next-line no-await-in-loop
-      const result = await QRCode.toDataURL(stringData);
+      const result = await QRCode.toDataURL(stringData, {
+        width: 400,
+        height: 400,
+      });
       const mailOptions = {
         from: `"My Table Planner" ${email}`,
         to: receivers[i].email,
         subject: `Invite you attend ${event.name}`,
         text: 'Please present qr code provided below for checking in event!',
         attachDataUrls: true,
-        html: `
-                  Invite you attend ${event.name} <br>
-                  Please present QR code provided below for checking in event! <br>
-                  <img src='${result}'>
-                  <a href = ' https://client-web-front-end.vercel.app/information/${event._id}'>Click to open app</a>
-
-            `,
+        template: 'invite-qr',
+        attachments: [
+          {
+            filename: 'Logo.png',
+            path: path.join(__dirname, '../', '/public/images/Logo.png'),
+            cid: 'logo',
+          },
+          {
+            filename: 'QRCode.png',
+            content: result.split('base64,')[1],
+            encoding: 'base64',
+          },
+        ],
+        context: {
+          msgBody: `Invite you attend ${event.name} `,
+          sideNote: 'Please present QR code provided below for checking in event!',
+          result,
+          host: process.env.host || '',
+        },
       };
 
       promises.push(

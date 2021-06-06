@@ -76,21 +76,19 @@
   <tr class='content'>
     <td class='intro'>
       <h1>
-        Welcome To Table Planner
+        Table Planner
       </h1>
       <h3>
-        Enter OPT For Below For Account Activation
+        {{msgBody}}
       </h3>
+      <h4>
+        {{sideNote}}
+      </h4>
     </td>
   </tr>
   <td class='content'>
-    <section>
-      <a class="highlight">
-        {{otp}}
-      </a>
-    </section>
     <section class='section-content'>
-      <a class='highlight' href="https://client-web-front-end.vercel.app">Click Here To View Home Page</a>
+      <a class='highlight' href='https://client-web-front-end.vercel.app/information/${event._id}'>Click to open app</a>
     </section>
   </td>
 </table>
