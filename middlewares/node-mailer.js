@@ -42,13 +42,15 @@ transporter.use(
   hbs({
     viewEngine: {
       extName: '.hbs',
-      partialDir: './views/',
+      partialDir: './views/emails/',
       defaultLayout: false,
     },
-    viewPath: './views/',
+    viewPath: './views/emails/',
     extName: '.hbs',
   }),
 );
+
+const defaultUrl = 'https://res.cloudinary.com/hungkhaankiettuan/image/upload/v1622980399/Logo/Logo_bw33oc.png';
 
 module.exports = {
   registerByMail: (receiverEmail, otp) => {
@@ -174,7 +176,7 @@ module.exports = {
         subject: `Invite you attend ${event.name}`,
         text: 'Please present qr code provided below for checking in event!',
         attachDataUrls: true,
-        template: 'invite-qr',
+        template: 'invite',
         attachments: [
           {
             filename: 'Logo.png',
@@ -188,6 +190,7 @@ module.exports = {
           },
         ],
         context: {
+          event: event._id,
           msgBody: `Invite you attend ${event.name} `,
           sideNote: 'Please present QR code provided below for checking in event!',
           result,
@@ -220,8 +223,24 @@ module.exports = {
     const mailOptions = {
       from: `"My Table Planner" ${email}`,
       to: `${receiver}`,
-      subject: `Hosting of event: ${event}`,
+      subject: `Hosting of event: ${event.name}`,
       text: "It's almost time for your event, and don't forget you're the host.",
+      attachDataUrls: true,
+      template: 'reminder',
+      attachments: [
+        {
+          filename: 'Logo.png',
+          path: path.join(__dirname, '../', '/public/images/Logo.png'),
+          cid: 'logo',
+        },
+      ],
+      context: {
+        id: event._id,
+        firstImage: event.urls.length === 0 ? defaultUrl : event.urls[0].url,
+        msgHeader: 'Please be prepared for your event!',
+        msgBody: "It's almost time for your event, and don't forget you're the host.",
+        sideNote: 'Remember to be on time.',
+      },
     };
     return new Promise((resolve) => {
       transporter.sendMail(mailOptions, (error, info) => {
@@ -242,8 +261,23 @@ module.exports = {
         to: receivers[i].email,
         subject: `Reminder To Your Event: ${event.name}`,
         attachDataUrls: true,
-        html: `We hope you have prepared yourself for our event, this is an automatic reminder for your upcoming event
-               <br>Please be on time for your event which is at: ${event.startTime}`,
+        template: 'reminder',
+        attachments: [
+          {
+            filename: 'Logo.png',
+            path: path.join(__dirname, '../', '/public/images/Logo.png'),
+            cid: 'logo',
+          },
+        ],
+        context: {
+          event,
+          id: event._id,
+          firstImage: event.urls.length === 0 ? defaultUrl : event.urls[0].url,
+          msgHeader: 'Please be prepared for your invited event!',
+          msgBody:
+            'We hope you have prepared yourself for our event, this is an automatic reminder for your upcoming event!',
+          sideNote: `Please be on time for your event which is at: ${event.startTime}`,
+        },
       };
       promises.push(
         new Promise((resolve, reject) => {

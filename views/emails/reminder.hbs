@@ -7,13 +7,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <style>
-    /*body {*/
-    /*  background: #10151b url('images/Logo.png') no-repeat fixed center center;*/
-    /*  background-size: cover;*/
-    /*  font-family: "Oswald", sans-serif;*/
-    /*  -webkit-font-smoothing: antialiased;*/
-    /*  font-smoothing: antialiased;*/
-    /*}*/
 
     body {
       border-collapse: collapse;
@@ -61,32 +54,6 @@
     }
   </style>
 </head>
-<!--<body>-->
-<!--  <h1>{{title}}</h1>-->
-<!--  <p>Welcome to {{title}}</p>-->
-<!--  <button class='btn-socket' onclick='emitStuff()'>Click Me</button>-->
-<!--  <script src="/socket.io/socket.io.js"></script>-->
-<!--  <script>-->
-<!--    const socket = io.connect('http://localhost:3000/');-->
-
-<!--    socket.on('reply-from-server', (request) => {-->
-<!--      console.log('Got reply:', request);-->
-<!--    });-->
-
-<!--    socket.on('test-cron-emit', (request) => {-->
-<!--      console.log('This message is sent each 1 minute: ', request);-->
-<!--    });-->
-
-<!--    emitStuff = () =>{-->
-<!--      socket.emit('get-event-status', {-->
-<!--        message: {-->
-<!--          msgBody: 'Hello from client',-->
-<!--          msgError: false,-->
-<!--        },-->
-<!--      })-->
-<!--    }-->
-<!--  </script>-->
-<!--</body>-->
 
 <body>
 <table class="email-container">
@@ -117,7 +84,7 @@
         <tr>
           <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
 			padding-top: 20px;" class="hero">
-            <img src="{{firtImages}}"
+            <img src="{{{firstImage}}}"
                  alt="Please enable images to view this content"
                  title="Event Image"
                  width="530"
@@ -132,6 +99,12 @@
         </tr>
 
         <tr>
+          <td class="reminder">
+            {{sideNote}}
+          </td>
+        </tr>
+
+        <tr>
           <table border="0" cellpadding="0" cellspacing="0" align="center"
                  style="max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;">
             <td align="center" valign="middle"
@@ -139,7 +112,7 @@
                 bgcolor="#0B5073">
               <a target="_blank" style="text-decoration: underline;
 					color: #FFFFFF; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 120%;"
-                 href="href='https://client-web-front-end.vercel.app/information/{{id}}'">
+                 href="https://client-web-front-end.vercel.app/information/{{id}}">
                 Click Here For Event Info
               </a>
             </td>

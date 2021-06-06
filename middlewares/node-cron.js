@@ -8,7 +8,7 @@ const NotificationHelper = require('./expo-notification');
 module.exports = {
   eventReminder: () => {
     CronJob.schedule(
-      '*/5 * * * *',
+      '*/5 * * * * *',
       async () => {
         Events.getOneHourLeftEvents((err, document) => {
           if (err) {
@@ -72,7 +72,7 @@ module.exports = {
                 Users.findOne({ _id: item.creator }).then(async (value) => {
                   await nodeMailer.eventReminderHost(
                     value.email,
-                    item.name,
+                    item,
                     (error, info) => {
                       if (error) {
                         throw error;
