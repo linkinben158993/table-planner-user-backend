@@ -83,35 +83,55 @@ module.exports = {
   },
   importGuests: async (req, res) => {
     const temp = req.body;
-    const guests = temp.map((element) => ({
-      name: element.name,
-      email: element.email,
-      phoneNumber: element.phoneNumber,
-      priority: element.priority,
-      invited: false,
-      event: element.eventId,
-      table: element.table,
-      group: element.group,
-    }));
-    Guests.importGuestsToEvent(guests, (err, response) => {
-      if (err) {
-        if (err.message.msgBody === 'Duplicate email') {
-          res.status(400).json(err);
+    const duplicateEmails = temp.reduce(
+      (dEmails, current) => {
+        if (dEmails[0].some((el) => el === current.email)) {
+          if (!dEmails[1].some((el) => el === current.email)) {
+            dEmails[1] = [...dEmails[1], current.email];
+          }
         } else {
-          const response1 = CustomResponse.SERVER_ERROR;
-          response1.trace = err;
-          res.status(500).json(response1);
+          dEmails[0] = [...dEmails[0], current.email];
         }
-      } else {
-        res.status(200).json({
-          message: {
-            msgBody: 'Import Guest Successful!',
-            msgError: false,
-          },
-          response,
-        });
-      }
-    });
+        return dEmails;
+      },
+      [[], []],
+    );
+    if (duplicateEmails[1].length > 0) {
+      res.status(400).json({
+        errMsg: 'Duplicate emails in input file',
+        duplicateEmails: duplicateEmails[1],
+      });
+    } else {
+      const guests = temp.map((element) => ({
+        name: element.name,
+        email: element.email,
+        phoneNumber: element.phoneNumber,
+        priority: element.priority,
+        invited: false,
+        event: element.eventId,
+        table: element.table,
+        group: element.group,
+      }));
+      Guests.importGuestsToEvent(guests, (err, response) => {
+        if (err) {
+          if (err.message.msgBody === 'Duplicate email') {
+            res.status(400).json(err);
+          } else {
+            const response1 = CustomResponse.SERVER_ERROR;
+            response1.trace = err;
+            res.status(500).json(response1);
+          }
+        } else {
+          res.status(200).json({
+            message: {
+              msgBody: 'Import Guest Successful!',
+              msgError: false,
+            },
+            response,
+          });
+        }
+      });
+    }
   },
   updateGuestList: async (req, res) => {
     const temp = req.body;
