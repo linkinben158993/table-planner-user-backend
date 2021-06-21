@@ -134,8 +134,18 @@ module.exports = {
           { creator: req.user._id },
           {
             $or: [
-              { name: { $regex: queryParams.q, $options: 'i' } },
-              { location: { $regex: queryParams.q, $options: 'i' } },
+              {
+                name: {
+                  $regex: queryParams.q,
+                  $options: 'i',
+                },
+              },
+              {
+                location: {
+                  $regex: queryParams.q,
+                  $options: 'i',
+                },
+              },
             ],
           },
         ],
@@ -150,8 +160,18 @@ module.exports = {
                 { creator: req.user._id },
                 {
                   $or: [
-                    { name: { $regex: queryParams.q, $options: 'i' } },
-                    { location: { $regex: queryParams.q, $options: 'i' } },
+                    {
+                      name: {
+                        $regex: queryParams.q,
+                        $options: 'i',
+                      },
+                    },
+                    {
+                      location: {
+                        $regex: queryParams.q,
+                        $options: 'i',
+                      },
+                    },
                   ],
                 },
               ],
@@ -347,17 +367,54 @@ module.exports = {
       });
     }
   },
+  deleteEvent: async (req, res) => {
+    const { id } = req.body;
+    if (!id) {
+      res.status(400).json(CustomResponse.BAD_REQUEST);
+    } else {
+      Events.removeEvent(req.user._id, id, (error, response) => {
+        if (error) {
+          const response1 = CustomResponse.SERVER_ERROR;
+          response1.trace = error;
+          res.status(500).json(response1);
+        } else if (response.deletedCount !== 0) {
+          res.status(200).json({
+            message: {
+              msgBody: 'Delete event successful!',
+              msgError: true,
+            },
+          });
+        } else {
+          res.status(500).json({
+            message: {
+              msgBody: 'Delete failed! This event might not be yours',
+              msgError: true,
+            },
+          });
+        }
+      });
+    }
+  },
   sendMailToAllGuest: async (req, res) => {
     const { id } = req.body;
     if (!id) {
       res.status(400).json(CustomResponse.BAD_REQUEST);
     } else {
-      Events.findOne({ _id: id, creator: req.user._id }, 'name description startTime creator')
+      Events.findOne(
+        {
+          _id: id,
+          creator: req.user._id,
+        },
+        'name description startTime creator',
+      )
         .populate('creator')
         .then((event) => {
           // Get all guest's emails of event
           if (event !== null) {
-            Guests.find({ event: id, invited: false })
+            Guests.find({
+              event: id,
+              invited: false,
+            })
               .select('email _id event')
               .then(async (mails) => {
                 if (mails.length === 0) {

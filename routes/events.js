@@ -112,6 +112,30 @@ router.post(
 );
 
 router.post(
+  '/delete',
+  /*
+    #swagger.parameters['loginUser'] = {
+       in: 'header',
+       description: 'Token From Login.',
+       required: true,
+       name: 'access_token',
+       value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIdW5nS2hhQW5LaWV0VHVhbiIsInN1YiI6IjYwNjlkOWM4YjVjYzZlMDAyMGZiMGJjZSIsImlhdCI6MTYxODE1MzMzNCwiZXhwIjoyODI3NzUzMzM0fQ.5_nY8cUEwKq1zg5vW3g7yIrZ97_rxd-KbgVvI_L3jFQ'
+    },
+    #swagger.parameters['removeEvent'] = {
+       in: 'body',
+       description: 'Event Id For Removing.',
+       required: true,
+       name: 'removeEvent',
+       schema: {
+        $id: '6048506f8fb7b6249151343e',
+      }
+    }
+*/
+  passport.jwtStrategy,
+  eventCtrl.deleteEvent
+);
+
+router.post(
   '/invite-qr',
   /*
   #swagger.parameters['loginUser'] = {

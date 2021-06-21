@@ -68,6 +68,19 @@ EventSchema.statics.getEventById = function (eventId, callBack) {
     });
 };
 
+EventSchema.statics.removeEvent = function (userId, event, callBack) {
+  this.deleteOne({
+    _id: event,
+    creator: userId,
+  })
+    .then((document) => {
+      callBack(null, document);
+    })
+    .catch((error) => {
+      callBack(error);
+    });
+};
+
 // Add new event and which user is its host
 EventSchema.statics.addEvent = function (userId, event, callBack) {
   const { name, description, startTime, endTime, location } = event;
@@ -200,6 +213,7 @@ EventSchema.statics.findMyAttendingEvent = function (email, queryParams, callBac
         location: '$location',
         startTime: '$startTime',
         endTime: '$endTime',
+        urls: '$urls',
       },
     },
     {
@@ -219,6 +233,7 @@ EventSchema.statics.findMyAttendingEvent = function (email, queryParams, callBac
         location: 1,
         startTime: 1,
         endTime: 1,
+        urls: 1,
         guestInfo: {
           id: {
             $toString: '$guestInfo._id',
@@ -245,7 +260,20 @@ EventSchema.statics.findMyAttendingEvent = function (email, queryParams, callBac
               $and: [
                 { 'guestInfo.email': email },
                 {
-                  $or: [{ name: { $regex: q, $options: 'i' } }, { location: { $regex: q, $options: 'i' } }],
+                  $or: [
+                    {
+                      name: {
+                        $regex: q,
+                        $options: 'i',
+                      },
+                    },
+                    {
+                      location: {
+                        $regex: q,
+                        $options: 'i',
+                      },
+                    },
+                  ],
                 },
               ],
             },
@@ -312,7 +340,20 @@ EventSchema.statics.countMyAttendingEvent = function (email, queryParams, callBa
             $and: [
               { 'guestInfo.email': email },
               {
-                $or: [{ name: { $regex: q, $options: 'i' } }, { location: { $regex: q, $options: 'i' } }],
+                $or: [
+                  {
+                    name: {
+                      $regex: q,
+                      $options: 'i',
+                    },
+                  },
+                  {
+                    location: {
+                      $regex: q,
+                      $options: 'i',
+                    },
+                  },
+                ],
               },
             ],
           },
