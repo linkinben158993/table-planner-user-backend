@@ -79,8 +79,6 @@ router.post('/events', async (req, res) => {
       const urls = [];
       const { files } = req;
 
-      // eslint-disable-next-line no-console
-      console.log(files);
       if (files.length > 5 || files.length < 1) {
         res.status(400).json({
           message: {
@@ -166,7 +164,6 @@ router.post(
           const { url } = newPath;
           Users.updateAvatar(req.user._id, url, (err1, document) => {
             if (err1) {
-              console.log(err1);
               const response = CustomResponse.SERVER_ERROR;
               response.trace = err1;
               res.status(500).json(response);

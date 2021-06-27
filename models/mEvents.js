@@ -130,10 +130,19 @@ EventSchema.statics.editEvent = function (event, callBack) {
       } else {
         if (value.urls.length !== 0 && event.urls) {
           const { urls } = value;
-          const urlsUpdate = urls.map((item) => ({
-            url: item.url,
-            publicId: item.publicId,
-          }));
+          const urlsFromRequest = event.urls.map((item) => item.publicId);
+          const urlsUpdate = urls
+            .filter((item) => {
+              const existed = urlsFromRequest.indexOf(item.publicId);
+              if (existed !== -1) {
+                return false;
+              }
+              return true;
+            })
+            .map((item) => ({
+              publicId: item.publicId,
+              url: item.url,
+            }));
           event.urls = event.urls.concat(urlsUpdate);
         }
         this.update({ _id: event.id }, event, (err, document) => {
