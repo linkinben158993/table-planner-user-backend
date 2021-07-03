@@ -2,6 +2,9 @@
   "name": "table-planning-backend-user",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": ">=12.9"
+  },
   "dependencies": {
     "bcrypt": "^5.0.0",
     "cloudinary": "^1.25.0",

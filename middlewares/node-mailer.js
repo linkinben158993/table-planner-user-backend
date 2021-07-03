@@ -22,6 +22,8 @@ const transporter = nodeMailer.createTransport({
   port: 465,
   secure: true, // true for 465, false for other ports
   pool: true,
+  maxConnections: 30,
+  maxMessages: 200,
   auth: {
     type: 'OAuth2',
     user: email,
@@ -200,17 +202,19 @@ module.exports = {
 
       promises.push(
         new Promise((resolve, reject) => {
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(info);
-            }
-          });
+          setTimeout(() => {
+            transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(info);
+              }
+            });
+          }, 500);
         }),
       );
     }
-    Promise.all(promises).then(
+    Promise.allSettled(promises).then(
       (info) => {
         callBack(null, info);
       },
@@ -281,17 +285,19 @@ module.exports = {
       };
       promises.push(
         new Promise((resolve, reject) => {
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(info);
-            }
-          });
+          setTimeout(() => {
+            transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(info);
+              }
+            });
+          }, 500);
         }),
       );
     }
-    Promise.all(promises).then(
+    Promise.allSettled(promises).then(
       (info) => {
         callBack(null, info);
       },
