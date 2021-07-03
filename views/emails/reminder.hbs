@@ -1,129 +1,134 @@
-<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
 
-    body {
-      border-collapse: collapse;
-      border-spacing: 0;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      text-size-adjust: 100%;
-      line-height: 100%;
-      background-color: #FFFFFF;
-      color: #000000;
-    }
+      body { border-collapse: collapse; border-spacing: 0; margin: 0; padding:
+      0; width: 100%; height: 100%; text-size-adjust: 100%; line-height: 100%;
+      background-color: #FFFFFF; color: #000000; } .email-container { border: 0;
+      cellpadding: 0; cellspacing: 0; border-collapse: collapse; border-spacing:
+      0; margin: 0; padding: 0; width: 100%; } .reminder { margin: 0; width:
+      87.5%; font-size: 17px; font-weight: 400; line-height: 160%; padding: 25px
+      6.25% 0; color: #FFFFFF; font-family: sans-serif; } .event-logo { width:
+      88.33%; max-width: 530px; color: #FFFFFF; font-size: 13px; margin: 0;
+      padding: 0; display: block; }
+    </style>
+  </head>
 
-    .email-container {
-      border: 0;
-      cellpadding: 0;
-      cellspacing: 0;
-      border-collapse: collapse;
-      border-spacing: 0;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-    }
+  <body>
+    <table class="email-container">
+      <tr>
+        <td
+          align="center"
+          valign="top"
+          style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;"
+          bgcolor="#127DB3"
+        >
+          <table
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            align="center"
+            width="600"
+            style="border-collapse: collapse; border-spacing: 0; padding: 0; width: inherit;
+	max-width: 600px;"
+            class="wrapper"
+          >
 
-    .reminder {
-      margin: 0;
-      width: 87.5%;
-      font-size: 17px;
-      font-weight: 400;
-      line-height: 160%;
-      padding: 25px 6.25% 0;
-      color: #FFFFFF;
-      font-family: sans-serif;
-    }
-
-    .event-logo {
-      width: 88.33%;
-      max-width: 530px;
-      color: #FFFFFF;
-      font-size: 13px;
-      margin: 0;
-      padding: 0;
-      display: block;
-    }
-  </style>
-</head>
-
-<body>
-<table class="email-container">
-  <tr>
-    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;"
-        bgcolor="#127DB3">
-      <table border="0" cellpadding="0" cellspacing="0" align="center"
-             width="600" style="border-collapse: collapse; border-spacing: 0; padding: 0; width: inherit;
-	max-width: 600px;" class="wrapper">
-
-        <tr>
-          <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 24px; font-weight: bold; line-height: 130%;
+            <tr>
+              <td
+                align="center"
+                valign="top"
+                style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 24px; font-weight: bold; line-height: 130%;
 			padding-top: 20px;
 			color: #FFFFFF;
-			font-family: sans-serif;" class="header">
-            {{msgHeader}}
-          </td>
-        </tr>
-        <tr>
-          <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-bottom: 3px; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 18px; font-weight: 300; line-height: 150%;
+			font-family: sans-serif;"
+                class="header"
+              >
+                {{msgHeader}}
+              </td>
+            </tr>
+            <tr>
+              <td
+                align="center"
+                valign="top"
+                style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-bottom: 3px; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 18px; font-weight: 300; line-height: 150%;
 			padding-top: 5px;
 			color: #FFFFFF;
-			font-family: sans-serif;" class="subheader">
-            Auto reminder from My Table Planner
-          </td>
-        </tr>
+			font-family: sans-serif;"
+                class="subheader"
+              >
+                Auto reminder from My Table Planner
+              </td>
+            </tr>
 
-        <tr>
-          <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
-			padding-top: 20px;" class="hero">
-            <img src="{{{firstImage}}}"
-                 alt="Please enable images to view this content"
-                 title="Event Image"
-                 width="530"
-                 class='event-logo' />
-          </td>
-        </tr>
+            <tr>
+              <td
+                align="center"
+                valign="top"
+                style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
+			padding-top: 20px;"
+                class="hero"
+              >
+                <img
+                  src="{{{firstImage}}}"
+                  alt="Please enable images to view this content"
+                  title="Event Image"
+                  width="530"
+                  class="event-logo"
+                />
+              </td>
+            </tr>
 
-        <tr>
-          <td class="reminder">
-            {{msgBody}}
-          </td>
-        </tr>
+            <tr>
+              <td class="reminder">
+                {{msgBody}}
+              </td>
+            </tr>
 
-        <tr>
-          <td class="reminder">
-            {{sideNote}}
-          </td>
-        </tr>
+            <tr>
+              <td class="reminder">
+                {{sideNote}}
+              </td>
+            </tr>
 
-        <tr>
-          <table border="0" cellpadding="0" cellspacing="0" align="center"
-                 style="max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;">
-            <td align="center" valign="middle"
-                style="padding: 12px 24px; margin: 0; text-decoration: underline; border-collapse: collapse; border-spacing: 0; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px;"
-                bgcolor="#0B5073">
-              <a target="_blank" style="text-decoration: underline;
+            <tr>
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                align="center"
+                style="max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;"
+              >
+                <td
+                  align="center"
+                  valign="middle"
+                  style="padding: 12px 24px; margin: 0; text-decoration: underline; border-collapse: collapse; border-spacing: 0; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px;"
+                  bgcolor="#0B5073"
+                >
+                  <a
+                    target="_blank"
+                    style="text-decoration: underline;
 					color: #FFFFFF; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 120%;"
-                 href="https://client-web-front-end.vercel.app/information/{{id}}">
-                Click Here For Event Info
-              </a>
-            </td>
+                    href="https://table-planner.vercel.app/information/{{id}}"
+                  >
+                    Click Here For Event Info
+                  </a>
+                </td>
+              </table>
+            </tr>
+
           </table>
-        </tr>
+        </td>
+      </tr>
+    </table>
 
-      </table>
-    </td>
-  </tr>
-</table>
-
-</body>
+  </body>
 
 </html>

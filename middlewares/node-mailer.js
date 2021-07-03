@@ -22,7 +22,7 @@ const transporter = nodeMailer.createTransport({
   port: 465,
   secure: true, // true for 465, false for other ports
   pool: true,
-  maxConnections: 30,
+  maxConnections: 20,
   maxMessages: 200,
   auth: {
     type: 'OAuth2',
@@ -136,6 +136,7 @@ module.exports = {
         msgBody: 'Provide Following OTP To Activate Reset Your Password Your Password',
         sideNote: 'If this is not you, ignore this email!',
         otp,
+        client: 'https://table-planner.vercel.app',
         host: process.env.host || '',
       },
     };
@@ -195,6 +196,7 @@ module.exports = {
           event: event._id,
           msgBody: `Invite you attend ${event.name} `,
           sideNote: 'Please present QR code provided below for checking in event!',
+          client: 'https://table-planner.vercel.app',
           result,
           host: process.env.host || '',
         },
@@ -202,15 +204,15 @@ module.exports = {
 
       promises.push(
         new Promise((resolve, reject) => {
-          setTimeout(() => {
-            transporter.sendMail(mailOptions, (error, info) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(info);
-              }
-            });
-          }, 500);
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              // eslint-disable-next-line no-console
+              console.log('Error:', error);
+              reject(error);
+            } else {
+              resolve(info);
+            }
+          });
         }),
       );
     }
@@ -244,6 +246,7 @@ module.exports = {
         msgHeader: 'Please be prepared for your event!',
         msgBody: "It's almost time for your event, and don't forget you're the host.",
         sideNote: 'Remember to be on time.',
+        client: 'https://table-planner.vercel.app',
       },
     };
     return new Promise((resolve) => {
@@ -281,19 +284,20 @@ module.exports = {
           msgBody:
             'We hope you have prepared yourself for our event, this is an automatic reminder for your upcoming event!',
           sideNote: `Please be on time for your event which is at: ${event.startTime}`,
+          client: 'https://table-planner.vercel.app',
         },
       };
       promises.push(
         new Promise((resolve, reject) => {
-          setTimeout(() => {
-            transporter.sendMail(mailOptions, (error, info) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(info);
-              }
-            });
-          }, 500);
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              // eslint-disable-next-line no-console
+              console.log('Error:', error);
+              reject(error);
+            } else {
+              resolve(info);
+            }
+          });
         }),
       );
     }

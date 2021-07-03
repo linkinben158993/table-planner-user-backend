@@ -1,98 +1,56 @@
-<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Activate Your Account At Table Planner</title>
-  <style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Activate Your Account At Table Planner</title>
+    <style>
 
-    .email-container {
-      background-color: #56afde;
-      top: 50%;
-      left: 50%;
-      display: table;
-      width: 100%;
-    }
-
-    .content {
-      margin: auto;
-      text-align: center;
-      vertical-align: center;
-    }
-
-    .title {
-
-      width: 30%;
-      height: 30%;
-      border-radius: 100px;
-      background-color: whitesmoke;
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-    }
-
-    .title p {
-      font-family: 'Courier New', monospace;
-      font-weight: 100;
-      color: #56afde;
-      font-size: 2.5em;
-      text-align: center;
-      margin: auto;
-      line-height: 90px;
-    }
-
-    .intro {
-      color: white;
-      font-family: 'Arial Narrow Bold', sans-serif;
-      font-weight: 200;
-      font-style: italic;
-      font-size: 1.5em;
-    }
-
-    .highlight {
-      margin: auto;
-      background-color: white;
-      padding: 1em;
-      width: 80px;
-      height: 80px;
-      text-align: center;
-      margin: auto;
-      line-height: 80px;
-      border-radius: 100px;
-      color: black;
-      font-family: 'Courier New', monospace;
-      font-weight: 100;
-    }
-  </style>
-</head>
-<body>
-<table class='email-container'>
-  <tr class='content'>
-    <td class='title'>
-      <p>My Table Planner</p>
-    </td>
-  </tr>
-  <tr class='content'>
-    <td class='intro'>
-      <h1>
-        Welcome To Table Planner
-      </h1>
-      <h3>
-        Enter OPT For Below For Account Activation
-      </h3>
-    </td>
-  </tr>
-  <td class='content'>
-    <section>
-      <a class="highlight">
-        {{otp}}
-      </a>
-    </section>
-    <section class='section-content'>
-      <a class='highlight' href="https://client-web-front-end.vercel.app">Click Here To View Home Page</a>
-    </section>
-  </td>
-</table>
-</body>
+      .email-container { background-color: #56afde; top: 50%; left: 50%;
+      display: table; width: 100%; } .content { margin: auto; text-align:
+      center; vertical-align: center; } .title { width: 30%; height: 30%;
+      border-radius: 100px; background-color: whitesmoke; overflow-wrap:
+      break-word; word-wrap: break-word; } .title p { font-family: 'Courier
+      New', monospace; font-weight: 100; color: #56afde; font-size: 2.5em;
+      text-align: center; margin: auto; line-height: 90px; } .intro { color:
+      white; font-family: 'Arial Narrow Bold', sans-serif; font-weight: 200;
+      font-style: italic; font-size: 1.5em; } .highlight { margin: auto;
+      background-color: white; padding: 1em; width: 80px; height: 80px;
+      text-align: center; margin: auto; line-height: 80px; border-radius: 100px;
+      color: black; font-family: 'Courier New', monospace; font-weight: 100; }
+    </style>
+  </head>
+  <body>
+    <table class="email-container">
+      <tr class="content">
+        <td class="title">
+          <p>My Table Planner</p>
+        </td>
+      </tr>
+      <tr class="content">
+        <td class="intro">
+          <h1>
+            Welcome To Table Planner
+          </h1>
+          <h3>
+            Enter OPT For Below For Account Activation
+          </h3>
+        </td>
+      </tr>
+      <td class="content">
+        <section>
+          <a class="highlight">
+            {{otp}}
+          </a>
+        </section>
+        <section class="section-content">
+          <a class="highlight" href="https://table-planner.vercel.app">Click
+            Here To View Home Page</a>
+        </section>
+      </td>
+    </table>
+  </body>
 </html>
