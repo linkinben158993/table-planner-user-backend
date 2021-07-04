@@ -425,17 +425,18 @@ module.exports = {
                     },
                   });
                 } else {
-                  await nodeMailer.sendQRCodeToGuests(mails, event, (err1) => {
-                    if (err1) {
+                  nodeMailer
+                    .sendQRCodeToGuests(mails, event)
+                    .then(() => {
+                      // eslint-disable-next-line no-console
+                      console.info('All mail has been delivered!:', event);
+                    })
+                    .catch((err1) => {
                       const response1 = CustomResponse.SERVER_ERROR;
                       response1.trace = err1;
                       // eslint-disable-next-line no-console
                       console.info('Some mail may not be delivered:', err1);
-                    } else {
-                      // eslint-disable-next-line no-console
-                      console.info('All mail has been delivered!:', event);
-                    }
-                  });
+                    });
                   const userEmails = mails.map((item) => item.email);
                   Guests.updateInvitationStatus(mails, (err2) => {
                     if (err2) {
