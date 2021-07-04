@@ -1,6 +1,7 @@
 const express = require('express');
 const eventCtrl = require('../controllers/events.controller');
 const passport = require('../middlewares/passport');
+const timeout = require('connect-timeout');
 
 const router = express.Router();
 
@@ -155,6 +156,7 @@ router.post(
     }
   }
 */
+  timeout('30s'),
   passport.jwtStrategy,
   eventCtrl.sendMailToAllGuest
 );
