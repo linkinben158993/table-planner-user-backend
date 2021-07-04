@@ -429,71 +429,74 @@ module.exports = {
                     if (err1) {
                       const response1 = CustomResponse.SERVER_ERROR;
                       response1.trace = err1;
-                      res.status(500).json(response1);
+                      // eslint-disable-next-line no-console
+                      console.info('Some mail may not be delivered:', err1);
                     } else {
-                      const userEmails = mails.map((item) => item.email);
-                      Guests.updateInvitationStatus(mails, (err2) => {
-                        if (err2) {
-                          const response2 = CustomResponse.SERVER_ERROR;
-                          response2.trace = err2;
-                          res.status(500).json(response2);
-                        } else {
-                          Users.findExpoTokenByEmail(userEmails, async (err3, userExpo) => {
-                            if (err3) {
-                              const response3 = CustomResponse.SERVER_ERROR;
-                              response3.trace = err3;
-                              res.status(500).json(response3);
-                            }
-                            const userNotifications = userExpo.map((item) => item.expoToken);
-                            Users.findOne({ _id: event.creator }).then((host) => {
-                              if (host.expoToken) {
-                                NotificationHelper.reminderApplication(
-                                  [host.expoToken],
-                                  `You have just invited your guests in ${event.name}`,
-                                  { eventId: id },
-                                  (err4) => {
-                                    if (err4) {
-                                      throw err4;
-                                    }
-                                  },
-                                );
-                              }
-                            });
-                            if (userNotifications.length === 0) {
-                              res.status(200).json({
+                      // eslint-disable-next-line no-console
+                      console.info('All mail has been delivered!:', event);
+                    }
+                  });
+                  const userEmails = mails.map((item) => item.email);
+                  Guests.updateInvitationStatus(mails, (err2) => {
+                    if (err2) {
+                      const response2 = CustomResponse.SERVER_ERROR;
+                      response2.trace = err2;
+                      res.status(500).json(response2);
+                    } else {
+                      Users.findExpoTokenByEmail(userEmails, async (err3, userExpo) => {
+                        if (err3) {
+                          const response3 = CustomResponse.SERVER_ERROR;
+                          response3.trace = err3;
+                          res.status(500).json(response3);
+                        }
+                        const userNotifications = userExpo.map((item) => item.expoToken);
+                        Users.findOne({ _id: event.creator }).then((host) => {
+                          if (host.expoToken) {
+                            NotificationHelper.reminderApplication(
+                              [host.expoToken],
+                              `You have just invited your guests in ${event.name}`,
+                              { eventId: id },
+                              (err4) => {
+                                if (err4) {
+                                  throw err4;
+                                }
+                              },
+                            );
+                          }
+                        });
+                        if (userNotifications.length === 0) {
+                          res.status(200).json({
+                            message: {
+                              msgBody: 'Send invitation success!',
+                              msgError: false,
+                            },
+                            trace: {
+                              msgBody: 'No guest using application found!',
+                              msgError: false,
+                            },
+                          });
+                        }
+                        await NotificationHelper.reminderApplication(
+                          userNotifications,
+                          `You have been invited for ${event.name}`,
+                          { eventId: id },
+                          (err5) => {
+                            if (err5) {
+                              const response4 = CustomResponse.SERVER_ERROR;
+                              response4.trace = err5;
+                              res.status(500).json(response4);
+                            } else {
+                              // Update guests' status to invited
+                              const successResponse = {
                                 message: {
                                   msgBody: 'Send invitation success!',
                                   msgError: false,
                                 },
-                                trace: {
-                                  msgBody: 'No guest using application found!',
-                                  msgError: false,
-                                },
-                              });
+                              };
+                              res.status(200).json(successResponse);
                             }
-                            await NotificationHelper.reminderApplication(
-                              userNotifications,
-                              `You have been invited for ${event.name}`,
-                              { eventId: id },
-                              (err5) => {
-                                if (err5) {
-                                  const response4 = CustomResponse.SERVER_ERROR;
-                                  response4.trace = err5;
-                                  res.status(500).json(response4);
-                                } else {
-                                  // Update guests' status to invited
-                                  const successResponse = {
-                                    message: {
-                                      msgBody: 'Send invitation success!',
-                                      msgError: false,
-                                    },
-                                  };
-                                  res.status(200).json(successResponse);
-                                }
-                              },
-                            );
-                          });
-                        }
+                          },
+                        );
                       });
                     }
                   });
