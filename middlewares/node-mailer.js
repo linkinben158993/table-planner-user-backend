@@ -157,8 +157,9 @@ module.exports = {
     });
   },
 
-  sendQRCodeToGuests: async (receivers, event, callBack) => {
+  sendQRCodeToGuests: async (receivers, event) => {
     const promises = [];
+    let failedRecipients = 0;
 
     for (let i = 0; i < receivers.length; i += 1) {
       const data = {
@@ -203,12 +204,14 @@ module.exports = {
       };
 
       promises.push(
-        new Promise((resolve, reject) => {
+        // eslint-disable-next-line no-loop-func
+        new Promise((resolve) => {
           transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
               // eslint-disable-next-line no-console
-              console.log('Error:', error);
-              reject(error);
+              console.info('Failed for receiver:', receivers[i].email);
+              failedRecipients += 1;
+              resolve(`Mail failed: ${receivers[i].email}`);
             } else {
               resolve(info);
             }
@@ -216,14 +219,10 @@ module.exports = {
         }),
       );
     }
-    Promise.allSettled(promises).then(
-      (info) => {
-        callBack(null, info);
-      },
-      (err) => {
-        callBack(err);
-      },
-    );
+    Promise.allSettled(promises).then(() => {
+      // eslint-disable-next-line no-console
+      console.log('Send mail:', receivers.length - failedRecipients);
+    });
   },
   eventReminderHost: (receiver, event) => {
     const mailOptions = {
@@ -288,12 +287,12 @@ module.exports = {
         },
       };
       promises.push(
-        new Promise((resolve, reject) => {
+        new Promise((resolve) => {
           transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
               // eslint-disable-next-line no-console
-              console.log('Error:', error);
-              reject(error);
+              console.info('Failed for receiver:', receivers[i].email);
+              resolve(`Mail failed: ${receivers[i].email}`);
             } else {
               resolve(info);
             }
