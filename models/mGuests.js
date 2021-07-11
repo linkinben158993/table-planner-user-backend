@@ -198,6 +198,16 @@ GuestSchema.statics.deleteGuestById = function (id, callBack) {
     });
 };
 
+GuestSchema.statics.removeGuestsInEvent = function (event, callBack) {
+  this.deleteMany({ event })
+    .then((document) => {
+      callBack(null, document);
+    })
+    .catch((err) => {
+      callBack(err);
+    });
+};
+
 GuestSchema.statics.importGuestsToEvent = function (guests, callBack) {
   const emails = guests.map((guest) => guest.email);
   // eslint-disable-next-line no-use-before-define

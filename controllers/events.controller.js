@@ -429,7 +429,7 @@ module.exports = {
                     .sendQRCodeToGuests(mails, event)
                     .then(() => {
                       // eslint-disable-next-line no-console
-                      console.info('All mail has been delivered!:', event);
+                      console.info('All mail should be delivered!:', event);
                     })
                     .catch((err1) => {
                       const response1 = CustomResponse.SERVER_ERROR;
@@ -437,7 +437,10 @@ module.exports = {
                       // eslint-disable-next-line no-console
                       console.info('Some mail may not be delivered:', err1);
                     });
-                  const userEmails = mails.map((item) => item.email);
+                  const userEmails = mails.map((item) => ({
+                    email: item.email,
+                    guestId: item._id,
+                  }));
                   Guests.updateInvitationStatus(mails, (err2) => {
                     if (err2) {
                       const response2 = CustomResponse.SERVER_ERROR;
@@ -450,11 +453,21 @@ module.exports = {
                           response3.trace = err3;
                           res.status(500).json(response3);
                         }
-                        const userNotifications = userExpo.map((item) => item.expoToken);
+                        const userNotifications = userExpo.map((item) => {
+                          const guestId = userEmails.indexOf(item.email);
+                          return {
+                            expoToken: item.expoToken,
+                            guestId,
+                          };
+                        });
                         Users.findOne({ _id: event.creator }).then((host) => {
                           if (host.expoToken) {
                             NotificationHelper.reminderApplication(
-                              [host.expoToken],
+                              [
+                                {
+                                  expoToken: host.expoToken,
+                                },
+                              ],
                               `You have just invited your guests in ${event.name}`,
                               { eventId: id },
                               (err4) => {

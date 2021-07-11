@@ -9,12 +9,16 @@ module.exports = {
   reminderApplication: async (tokens, reminder, data, callBack) => {
     const messages = [];
     tokens.forEach((item) => {
-      if (isPushToken(item)) {
+      if (isPushToken(item.expoToken)) {
+        const dataItem = {
+          ...data,
+          guestId: item.guestId,
+        };
         messages.push({
-          to: item,
+          to: item.expoToken,
           sound: 'default',
           body: reminder,
-          data,
+          data: dataItem,
         });
       }
     });

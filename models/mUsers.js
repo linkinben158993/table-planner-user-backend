@@ -356,8 +356,9 @@ UserSchema.statics.updateExpoToken = function (id, expoToken, callBack) {
 };
 
 UserSchema.statics.findExpoTokenByEmail = function (emails, callBack) {
+  const guestEmails = emails.map((item) => item.email);
   return this.find({
-    email: { $in: emails },
+    email: { $in: guestEmails },
     expoToken: { $ne: null },
   })
     .then((value) => {

@@ -8,7 +8,7 @@ const NotificationHelper = require('./expo-notification');
 module.exports = {
   eventReminder: () => {
     CronJob.schedule(
-      '*/5 * * * *',
+      '*/5 * * * * *',
       async () => {
         Events.getOneHourLeftEvents((err, document) => {
           if (err) {
@@ -42,7 +42,13 @@ module.exports = {
                             console.log(err2);
                           }
                           const pushNotificationUser = userDocument.map(
-                            (userItem) => userItem.expoToken
+                            (userItem) => {
+                              const guestId = emails.indexOf(userItem.email);
+                              return {
+                                expoToken: userItem.expoToken,
+                                guestId: guestDocument[guestId]._id,
+                              };
+                            }
                           );
                           await NotificationHelper.reminderApplication(
                             pushNotificationUser,
@@ -84,7 +90,11 @@ module.exports = {
                   // Remind host application
                   if (value.expoToken) {
                     await NotificationHelper.reminderApplication(
-                      [value.expoToken],
+                      [
+                        {
+                          expoToken: value.expoToken,
+                        },
+                      ],
                       `Your hosting event ${item.name} is coming soon.`,
                       { eventId: item._id },
                       (err3) => {
