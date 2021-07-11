@@ -453,11 +453,12 @@ module.exports = {
                           response3.trace = err3;
                           res.status(500).json(response3);
                         }
+                        const guestIds = userEmails.map((item) => item.email);
                         const userNotifications = userExpo.map((item) => {
-                          const guestId = userEmails.indexOf(item.email);
+                          const guestId = guestIds.indexOf(item.email);
                           return {
                             expoToken: item.expoToken,
-                            guestId,
+                            guestId: userEmails[guestId].guestId,
                           };
                         });
                         Users.findOne({ _id: event.creator }).then((host) => {
