@@ -21,7 +21,8 @@
     "*.hbs",
     "*-io.js",
     "routes/*",
-    "middlewares/node-cron.js"
+    "middlewares/node-cron.js",
+    "*.hbs"
   ],
   "rules": {
     "no-console": 2,

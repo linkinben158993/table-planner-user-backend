@@ -198,8 +198,6 @@ module.exports = {
           msgBody: `Invite you attend ${event.name} `,
           sideNote: 'Please present QR code provided below for checking in event!',
           client: 'https://table-planner.vercel.app',
-          result,
-          host: process.env.host || '',
         },
       };
 
