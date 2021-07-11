@@ -8,7 +8,7 @@ const NotificationHelper = require('./expo-notification');
 module.exports = {
   eventReminder: () => {
     CronJob.schedule(
-      '*/5 * * * * *',
+      '*/5 * * * *',
       async () => {
         Events.getOneHourLeftEvents((err, document) => {
           if (err) {
