@@ -21,6 +21,7 @@
     "*.hbs",
     "*-io.js",
     "routes/*",
+    "views/emails/*",
     "middlewares/node-cron.js",
     "*.hbs"
   ],
